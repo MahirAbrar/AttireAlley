@@ -20,6 +20,7 @@
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
+    "react-fontawesome": "^1.7.1",
     "react-toastify": "^9.1.3",
     "stripe": "^14.5.0"
   },

@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <GlobalState>
           <Navbar />
-          <main>
+          <main className='mt-14'>
             {children}
           </main>
 
