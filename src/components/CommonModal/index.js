@@ -47,7 +47,13 @@ export default function CommonModal({
                           <Dialog.Title>{modalTitle}</Dialog.Title>
                         </div> : null
                       }
-                      <div className="mt-20">{mainContent}</div>
+                      <div className="mt-20">
+                        <ul>
+                          {mainContent.map(item => (<li key={item.id}>
+                            <a href={item.path} className="block py-2 px-3 text-black bg-none rounded hover:bg-sky-700 hover:text-white" aria-current="page">{item.label}</a>
+                          </li>))}
+                        </ul>
+                      </div>
                     </div>
                     {showButtons ? (
                       <div className="border-none px-4 py-6 sm:px-6">

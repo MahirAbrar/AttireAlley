@@ -1,26 +1,26 @@
 export const navOptions = [
   {
-    id: "home",
+    id: 1,
     label: "Home",
     path: "/",
   },
   {
-    id: "list",
+    id: 2,
     label: "All Products",
     path: "/product/listing/all-products",
   },
   {
-    id: "listMen",
+    id: 3,
     label: "Men",
     path: "/product/listing/men",
   },
   {
-    id: "listWomen",
+    id: 4,
     label: "Women",
     path: "/product/listing/women",
   },
   {
-    id: "listKids",
+    id: 5,
     label: "kids",
     path: "/product/listing/kids",
   },
