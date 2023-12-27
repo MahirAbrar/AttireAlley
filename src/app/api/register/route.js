@@ -21,6 +21,13 @@ export async function POST(req) {
   const { name, email, password, role } = await req.json();
   //validate the schema
 
+  let correctName = name
+    .split(" ")
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join(" ");
+
+  let correctEmail = email.toLowerCase();
+
   const { error } = schema.validate({ name, email, password, role });
 
   if (error) {
@@ -34,7 +41,11 @@ export async function POST(req) {
   try {
     //check if the user is exists or not
 
-    const isUserAlreadyExists = await User.findOne({ email });
+    // convert name so that the first letter of each word is capital
+
+    console.log(correctEmail, correctName);
+    const isUserAlreadyExists = await User.findOne({ email: correctEmail });
+    console.log(isUserAlreadyExists);
 
     if (isUserAlreadyExists) {
       return NextResponse.json({
@@ -45,8 +56,8 @@ export async function POST(req) {
       const hashPassword = await hash(password, 12);
 
       const newlyCreatedUser = await User.create({
-        name,
-        email,
+        name: correctName,
+        email: correctEmail,
         password: hashPassword,
         role,
       });
