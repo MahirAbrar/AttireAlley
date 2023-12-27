@@ -1,7 +1,7 @@
 // joi is a schema validator
 
-import connectToDB from "@/database";
-import User from "@/models/user";
+import connectToDB from "@/app/database";
+import User from "@/app/models/user";
 import { hash } from "bcryptjs";
 import Joi from "joi";
 import { NextResponse } from "next/server";

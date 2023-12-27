@@ -10,12 +10,17 @@ export default function CommonModal({
   buttonComponent,
   show,
   setShow,
-  showModalTitle
+  showModalTitle,
+  checkBoxRef,
 }) {
+  let handleClose = () => {
+    setShow(false);
+    checkBoxRef.current.checked = false;
+  };
   return (
     // show is a headless ui attribute to show or not show
     <Transition.Root show={show} as={Fragment}>
-      <Dialog as="div" className={"relative z-10"} onClose={setShow}>
+      <Dialog as="div" className={"relative z-10"} onClose={handleClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-900"
@@ -42,16 +47,24 @@ export default function CommonModal({
                 <Dialog.Panel className={"w-screen max-w-md"}>
                   <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-                      {
-                        showModalTitle ? <div className="flex items-start justify-between">
+                      {showModalTitle ? (
+                        <div className="flex items-start justify-between">
                           <Dialog.Title>{modalTitle}</Dialog.Title>
-                        </div> : null
-                      }
+                        </div>
+                      ) : null}
                       <div className="mt-20">
                         <ul>
-                          {mainContent.map(item => (<li key={item.id}>
-                            <a href={item.path} className="block py-2 px-3 text-black bg-none rounded hover:bg-sky-700 hover:text-white" aria-current="page">{item.label}</a>
-                          </li>))}
+                          {mainContent.map((item) => (
+                            <li key={item.id}>
+                              <a
+                                href={item.path}
+                                className="block rounded bg-none px-3 py-2 text-black hover:bg-sky-700 hover:text-white"
+                                aria-current="page"
+                              >
+                                {item.label}
+                              </a>
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     </div>

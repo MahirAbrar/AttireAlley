@@ -2,12 +2,13 @@
 
 import { GlobalContext } from "@/context";
 import { adminNavOptions, navOptions } from "@/utils";
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect, useRef } from "react";
 import CommonModal from "../CommonModal";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const isAdminView = false;
-const isAuthUser = true; // logged in
+const isAuthUser = false; // logged in
 
 const user = {
   // admin or sth else
@@ -17,38 +18,37 @@ const user = {
 function Navbar() {
   const { showNavModal, setShowNavModal } = useContext(GlobalContext);
 
+  let checkBoxRef = useRef();
   const router = useRouter();
-
   return (
     <>
-      <nav className="fixed start-0 top-0 z-20 w-full border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900">
+      <nav className="sticky start-0 top-0 z-20 w-full border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900">
         <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-          <a
+          <Link
             href="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/`);
+            }}
           >
-            <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              className="h-8"
-              alt="Flowbite Logo"
-            />
             <span className="whitespace-nowrap text-sm font-semibold dark:text-white sm:text-xl lg:text-2xl ">
               eComms
             </span>
-          </a>
+          </Link>
           <div className="flex space-x-3 rtl:space-x-reverse md:order-2 md:space-x-0">
             <div>
               {!isAdminView && isAuthUser ? (
                 <Fragment>
                   <button
                     type="button"
-                    className="bg-secondary dark:bg-primaryDark dark:text-textDark hover:bg-primary text-text mb-2 me-2 rounded-lg px-5 py-2.5 text-sm font-medium transition delay-150 duration-300 ease-in-out  hover:scale-110 focus:outline-none focus:ring-4 focus:ring-gray-300  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                    className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
                   >
                     Account
                   </button>
                   <button
                     type="button"
-                    className="bg-secondary dark:bg-primaryDark dark:text-textDark hover:bg-primary text-text mb-2 me-2 rounded-lg px-5 py-2.5 text-sm font-medium transition delay-150 duration-300 ease-in-out  hover:scale-110 focus:outline-none focus:ring-4 focus:ring-gray-300  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                    className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
                   >
                     Cart
                   </button>
@@ -57,55 +57,62 @@ function Navbar() {
 
               {user?.role === "admin" ? (
                 isAdminView ? (
-                  <button className="bg-secondary dark:bg-primaryDark dark:text-textDark hover:bg-primary text-text mb-2 me-2 rounded-lg px-5 py-2.5 text-sm font-medium transition delay-150 duration-300 ease-in-out  hover:scale-110 focus:outline-none focus:ring-4 focus:ring-gray-300  dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                  <button className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700">
                     Client view
                   </button>
                 ) : (
-                  <button className="bg-secondary dark:bg-primaryDark dark:text-textDark hover:bg-primary text-text mb-2 me-2 rounded-lg px-5 py-2.5 text-sm font-medium transition delay-150 duration-300 ease-in-out  hover:scale-110 focus:outline-none focus:ring-4 focus:ring-gray-300  dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                  <button className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700">
                     Admin View
                   </button>
                 )
               ) : null}
               {isAuthUser ? (
-                <button className="bg-secondary dark:bg-primaryDark dark:text-textDark hover:bg-primary text-text mb-2 me-2 rounded-lg px-5 py-2.5 text-sm font-medium transition delay-150 duration-300 ease-in-out  hover:scale-110 focus:outline-none focus:ring-4 focus:ring-gray-300  dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                <button className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700">
                   Logout
                 </button>
               ) : (
                 <button
-                  className="bg-secondary dark:bg-primaryDark dark:text-textDark hover:bg-primary text-text mb-2 me-2 rounded-lg px-5 py-2.5 text-sm font-medium transition delay-150 duration-300 ease-in-out  hover:scale-110 focus:outline-none focus:ring-4 focus:ring-gray-300  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                  className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
                   onClick={() => router.push("./login")}
                 >
                   Login
                 </button>
               )}
             </div>
-            <button
-              data-collapse-toggle="navbar-sticky"
-              type="button"
-              className="hover:bg-secondary dark:hover:bg-secondaryDark text-text inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:focus:ring-gray-600 lg:hidden"
-              aria-controls="navbar-sticky"
-              aria-expanded="false"
-              onClick={() =>
-                showNavModal ? setShowNavModal(false) : setShowNavModal(true)
-              }
-            >
+
+            <label className="btn btn-circle swap swap-rotate">
+              {/* this hidden checkbox controls the state */}
+              <input
+                type="checkbox"
+                onClick={() =>
+                  !showNavModal ? setShowNavModal(true) : setShowNavModal(false)
+                }
+                ref={checkBoxRef}
+              />
               <span className="sr-only">Open main menu</span>
+              {/* hamburger icon */}
+
+              {/* closed menu showing hamburger */}
+
               <svg
-                className="h-5 w-5"
-                aria-hidden="true"
+                className="swap-off fill-current"
                 xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
+                width="32"
+                height="32"
+                viewBox="0 0 512 512"
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
+                <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
               </svg>
-            </button>
+              <svg
+                className="swap-on fill-current"
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 512 512"
+              >
+                <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
+              </svg>
+            </label>
           </div>
           <div
             className="w-full items-center justify-between md:order-1 md:flex md:w-auto"
@@ -115,24 +122,32 @@ function Navbar() {
               {isAdminView
                 ? adminNavOptions.map((item) => (
                     <li key={item.id}>
-                      <a
+                      <Link
                         href={item.path}
-                        className="hover: bg-secondary hover:bg-primary dark:text-textDark block  rounded px-3 py-2 duration-300 hover:-translate-y-1 hover:scale-110 hover:px-3 hover:py-1 hover:text-white md:bg-transparent md:p-0 "
+                        className="hover: block rounded bg-secondary px-3  py-2 duration-300 hover:-translate-y-1 hover:scale-110 hover:bg-primary hover:px-3 hover:py-1 hover:text-white dark:text-textDark md:bg-transparent md:p-0 "
                         aria-current="page"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          router.push(`${item.path}`);
+                        }}
                       >
                         {item.label}
-                      </a>
+                      </Link>
                     </li>
                   ))
                 : navOptions.map((item) => (
                     <li key={item.id}>
-                      <a
+                      <Link
                         href={item.path}
-                        className="hover: bg-secondary hover:bg-primary dark:text-textDark block  rounded px-3 py-2 duration-300 hover:-translate-y-1 hover:scale-110 hover:px-3 hover:py-1 hover:text-white md:bg-transparent md:p-0 "
+                        className="hover: block rounded bg-secondary px-3  py-2 duration-300 hover:-translate-y-1 hover:scale-110 hover:bg-primary hover:px-3 hover:py-1 hover:text-white dark:text-textDark md:bg-transparent md:p-0 "
                         aria-current="page"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          router.push(`${item.path}`);
+                        }}
                       >
                         {item.label}
-                      </a>
+                      </Link>
                     </li>
                   ))}
             </ul>
@@ -144,6 +159,8 @@ function Navbar() {
         mainContent={navOptions}
         show={showNavModal}
         setShow={setShowNavModal}
+        router={router}
+        checkBoxRef={checkBoxRef}
       />
     </>
   );

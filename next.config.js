@@ -1,4 +1,25 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
-module.exports = nextConfig
+module.exports = {
+  webpack: (config, { dev, isServer }) => {
+    const serverSideOrProd = isServer || !dev;
+    if (!serverSideOrProd)
+      config.plugins.push(
+        new BrowserSyncPlugin(
+          {
+            host: "0.0.0.0",
+            port: 4000,
+            open: false,
+            proxy: "http://localhost:3000/",
+          },
+          {
+            reload: false,
+            injectChanges: false,
+          },
+        ),
+      );
+
+    return config;
+  },
+};

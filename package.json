@@ -3,11 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
-    "build": "next build",
+    "dev": "next dev",
     "start": "next start",
-    "lint": "next lint",
-    "next-dev": "next dev"
+    "build": "next build"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -31,6 +29,7 @@
   "devDependencies": {
     "autoprefixer": "^10.0.1",
     "browser-sync": "^2.29.3",
+    "daisyui": "^4.4.24",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "postcss": "^8",
