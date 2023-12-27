@@ -1,10 +1,10 @@
-// Run this function of RegisterNewUser
+// Run this function of LoginUser
 
-export const registerNewUser = async (formData) => {
+export const loginUser = async (formData) => {
   try {
-    console.log("registerNewUser");
+    console.log("logging in from services");
     console.log(JSON.stringify(formData));
-    const response = await fetch("/api/register", {
+    const response = await fetch("/api/login", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -13,13 +13,13 @@ export const registerNewUser = async (formData) => {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("Network response was not ok from services/login");
     }
 
     const finalData = await response.json();
 
     return finalData;
   } catch (e) {
-    console.log("error in services/register", e);
+    console.log("error in services/login", e);
   }
 };
