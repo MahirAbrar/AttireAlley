@@ -73,7 +73,7 @@ function Navbar() {
               ) : (
                 <button
                   className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-                  onClick={() => router.push("./login")}
+                  onClick={() => router.push("/login")}
                 >
                   Login
                 </button>
