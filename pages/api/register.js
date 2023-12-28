@@ -15,7 +15,7 @@ const schema = Joi.object({
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req) {
+export default async function POST(req) {
   await connectToDB();
 
   const { name, email, password, role } = await req.json();
