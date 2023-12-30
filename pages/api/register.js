@@ -15,14 +15,12 @@ const schema = Joi.object({
 
 export const dynamic = "force-dynamic";
 
-export default async function POST(req) {
+export default async function handler(req, res) {
   console.log("running api/register");
   await connectToDB();
-  console.log(req.body);
-  console.log(typeof req.body);
-  const { name, email, password, role } = await req.body;
+  const { name, email, password, role } = req.body;
   //validate the schema
-
+  console.log(name, email, password, role);
   let correctName = name
     .split(" ")
     .map((word) => word[0].toUpperCase() + word.slice(1))
@@ -34,23 +32,18 @@ export default async function POST(req) {
 
   if (error) {
     console.log(error);
-    return NextResponse.json({
+    return res.status(400).json({
       success: false,
       message: error.details[0].message,
     });
   }
 
   try {
-    //check if the user is exists or not
-
-    // convert name so that the first letter of each word is capital
-
-    console.log(correctEmail, correctName);
     const isUserAlreadyExists = await User.findOne({ email: correctEmail });
     console.log(isUserAlreadyExists);
 
     if (isUserAlreadyExists) {
-      return NextResponse.json({
+      return res.status(400).json({
         success: false,
         message: "User exits, please try a different email.",
       });
@@ -65,7 +58,7 @@ export default async function POST(req) {
       });
 
       if (newlyCreatedUser) {
-        return NextResponse.json({
+        return res.status(201).json({
           success: true,
           message: "Account created successfully.",
         });
@@ -74,7 +67,7 @@ export default async function POST(req) {
   } catch (error) {
     console.log("Error while new user registration. Please try again");
 
-    return NextResponse.json({
+    return res.status(500).json({
       success: false,
       message: "Something went wrong ! Please try again later",
     });

@@ -1,12 +1,11 @@
-// Run this function of LoginUser
-
-export const loginUser = async (formData) => {
+export const LoginUser = async (formData) => {
   try {
     console.log(
       "logging in from services",
       "sending",
       JSON.stringify(formData),
     );
+
     const response = await fetch("/api/login", {
       method: "POST",
       headers: {
@@ -15,14 +14,18 @@ export const loginUser = async (formData) => {
       body: JSON.stringify(formData),
     });
 
+    const data = await response.json();
+    console.log("This is the response", data);
+
     if (!response.ok) {
-      throw new Error("Network response was not ok from services/login");
+      throw new Error(
+        data.message || "Network response was not ok from services/login",
+      );
     }
 
-    const finalData = await response.json();
-
-    return finalData;
+    return data;
   } catch (e) {
     console.log("error in services/login", e);
+    throw e; // re-throw the error to be caught in the component where LoginUser is called
   }
 };

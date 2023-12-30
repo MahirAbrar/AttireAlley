@@ -14,7 +14,7 @@ let pass = process.env.DB_PASS;
 let connectToDB = async () => {
   const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/`;
   console.log("connecting to database");
-  mongoose
+  return mongoose
     .connect(connectionUrl, configOptions)
     .then(() => console.log("Successfully connected to MongoDB Database"))
     .catch((e) => {
