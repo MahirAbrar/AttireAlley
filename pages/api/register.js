@@ -16,9 +16,11 @@ const schema = Joi.object({
 export const dynamic = "force-dynamic";
 
 export default async function POST(req) {
+  console.log("running api/register");
   await connectToDB();
-
-  const { name, email, password, role } = await req.json();
+  console.log(req.body);
+  console.log(typeof req.body);
+  const { name, email, password, role } = await req.body;
   //validate the schema
 
   let correctName = name

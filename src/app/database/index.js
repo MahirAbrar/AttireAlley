@@ -12,13 +12,14 @@ let pass = process.env.DB_PASS;
 
 // connecting to database function
 let connectToDB = async () => {
-  const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaq.mongodb.net/databasename`; // replace 'databasename'
-  try {
-    await mongoose.connect(connectionUrl, configOptions);
-    console.log("Ecommerce database connected successfully!");
-  } catch (err) {
-    console.log(`Unable to connect to database: ${err.message}`);
-  }
+  const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/`;
+  console.log("connecting to database");
+  mongoose
+    .connect(connectionUrl, configOptions)
+    .then(() => console.log("Successfully connected to MongoDB Database"))
+    .catch((e) => {
+      console.log("error connecting to database", e.message);
+    });
 };
 
 export default connectToDB;

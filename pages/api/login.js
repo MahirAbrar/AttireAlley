@@ -16,6 +16,7 @@ export default async function POST(req) {
   console.log("Running api/login");
   await connectToDB();
 
+  console.log(req);
   const { email, password } = await req.json();
 
   const { error } = schema.validate({ email, password });

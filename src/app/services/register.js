@@ -2,7 +2,7 @@
 
 export const registerNewUser = async (formData) => {
   try {
-    console.log("registerNewUser");
+    console.log("services/ register");
     console.log(JSON.stringify(formData));
     const response = await fetch("/api/register", {
       method: "POST",
