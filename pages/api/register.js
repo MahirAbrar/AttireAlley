@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       message: error.details[0].message,
     });
   }
-
+  console.log("Schema validated");
   try {
     const isUserAlreadyExists = await User.findOne({ email: correctEmail });
     console.log(isUserAlreadyExists);

@@ -2,8 +2,6 @@ import connectToDB from "@/app/database";
 import passport from "passport";
 import "@/app/auth/passport-config";
 
-import User from "@/app/models/user";
-import { compare } from "bcryptjs";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 

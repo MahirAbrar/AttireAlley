@@ -1,5 +1,3 @@
-// Run this function of RegisterNewUser
-
 export const registerNewUser = async (formData) => {
   try {
     console.log("services/ register");
@@ -12,14 +10,18 @@ export const registerNewUser = async (formData) => {
       body: JSON.stringify(formData),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      return {
+        success: false,
+        message: data.message || "Network response was not ok",
+      };
     }
 
-    const finalData = await response.json();
-
-    return finalData;
+    return { success: true, data };
   } catch (e) {
     console.log("error in services/register", e);
+    return { success: false, message: e.message };
   }
 };

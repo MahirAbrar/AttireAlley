@@ -12,7 +12,9 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({
+          email: { $regex: new RegExp(`^${email}$`, "i") },
+        });
         if (!user || !(await bcrypt.compare(password, user.password))) {
           return done(null, false, { message: "Incorrect email or password." });
         }

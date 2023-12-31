@@ -18,14 +18,16 @@ export const LoginUser = async (formData) => {
     console.log("This is the response", data);
 
     if (!response.ok) {
-      throw new Error(
-        data.message || "Network response was not ok from services/login",
-      );
+      return {
+        success: false,
+        message:
+          data.message || "Network response was not ok from services/login",
+      };
     }
 
-    return data;
+    return { success: true, data };
   } catch (e) {
     console.log("error in services/login", e);
-    throw e; // re-throw the error to be caught in the component where LoginUser is called
+    return { success: false, message: e.message };
   }
 };
