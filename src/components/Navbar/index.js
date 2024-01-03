@@ -7,19 +7,15 @@ import CommonModal from "../CommonModal";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const isAdminView = false;
-const isAuthUser = false; // logged in
-
-const user = {
-  // admin or sth else
-  role: "admin",
-};
-
 function Navbar() {
-  const { showNavModal, setShowNavModal } = useContext(GlobalContext);
+  const { showNavModal, setShowNavModal, isAuthUser, user } =
+    useContext(GlobalContext);
 
   let checkBoxRef = useRef();
   const router = useRouter();
+
+  let isAdminView = user && user.role === "admin" ? true : false;
+
   return (
     <>
       <nav className="sticky start-0 top-0 z-20 w-full border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900">

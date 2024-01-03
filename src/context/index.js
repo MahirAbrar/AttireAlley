@@ -1,14 +1,27 @@
 "use client";
 import "../app/globals.css";
 
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext(null);
 
 export default function GlobalState({ children }) {
   const [showNavModal, setShowNavModal] = useState(false);
-  const [isAuthUser, setFormState] = useState(null);
+  // Is used logged in?
+  const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    if (token && user) {
+      setIsAuthUser(true);
+      setUser(JSON.parse(user));
+    } else {
+      setIsAuthUser(false);
+      setUser(null);
+    }
+  }, []);
 
   return (
     <GlobalContext.Provider
@@ -16,7 +29,7 @@ export default function GlobalState({ children }) {
         showNavModal,
         setShowNavModal,
         isAuthUser,
-        setFormState,
+        setIsAuthUser,
         user,
         setUser,
       }}
