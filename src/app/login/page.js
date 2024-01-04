@@ -1,10 +1,13 @@
 "use client";
+import Loader from "@/components/Loader";
+
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useState, useContext } from "react";
 import { LoginUser } from "@/app/services/login";
 import { GlobalContext } from "@/context/index";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 const btnStyle =
   "mt-2 w-full bg-transparent hover:bg-blue-700 text-white-700  font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded transition ease-in-out delay-150 bg-blue-500 hover:scale-110 hover:bg-indigo-500 duration-300 hover:";
@@ -17,8 +20,20 @@ const login = () => {
     password: "",
   });
 
-  const { isAuthUser, setIsAuthUser, user, setUser } =
-    useContext(GlobalContext);
+  const {
+    isAuthUser,
+    setIsAuthUser,
+    user,
+    setUser,
+    componentLoader,
+    setComponentLoader,
+    pageLoader,
+    setPageLoader,
+  } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (isAuthUser) router.push("/");
+  }, [isAuthUser]);
 
   const [nameTyped, setNameTyped] = useState(false);
   // Handle input changes
@@ -46,20 +61,35 @@ const login = () => {
   async function handleLoginOnSubmit(e) {
     // calls database and save the data
     e.preventDefault();
+    setComponentLoader({ loading: true, id: "" });
     const res = await LoginUser(formState);
     if (res.success) {
+      toast.success(res.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
+
       setIsAuthUser(true);
       setUser(res.data.user);
       setFormState({ email: "", password: "" });
       router.push("/");
       Cookies.set("token", res?.data?.token);
       localStorage.setItem("user", JSON.stringify(res?.data?.user));
+    } else {
+      console.log("not success");
+      toast.error(res.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
     }
+    setComponentLoader({ loading: false, id: "" });
   }
-
-  useEffect(() => {
-    if (isAuthUser) router.push("/");
-  }, [isAuthUser]);
 
   return (
     <div>
@@ -113,7 +143,7 @@ const login = () => {
                     className="text-white-700 w-full rounded border border-accent  bg-transparent px-4 py-2 font-semibold transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent  hover:bg-primary hover:text-white"
                     onClick={(e) => handleLoginOnSubmit(e)}
                   >
-                    Login
+                    Login {componentLoader.loading && <Loader />}
                   </button>
                 ) : (
                   <button
@@ -121,7 +151,7 @@ const login = () => {
                     className="text-white-700  w-full rounded border border-accent bg-transparent px-4 py-2 font-semibold"
                     disabled={true}
                   >
-                    Login
+                    Login {componentLoader.loading && <Loader />}
                   </button>
                 )}
               </form>

@@ -6,16 +6,32 @@ import { Fragment, useContext, useEffect, useRef } from "react";
 import CommonModal from "../CommonModal";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 function Navbar() {
-  const { showNavModal, setShowNavModal, isAuthUser, user } =
-    useContext(GlobalContext);
+  const {
+    showNavModal,
+    setShowNavModal,
+    isAuthUser,
+    user,
+    setIsAuthUser,
+    setUser,
+  } = useContext(GlobalContext);
 
   let checkBoxRef = useRef();
   const router = useRouter();
 
-  let isAdminView = user && user.role === "admin" ? true : false;
+  const handleLogout = () => {
+    setIsAuthUser(false);
+    Cookies.remove("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    router.push("/");
+    toast.success("Logged out successfully");
+  };
 
+  let isAdminView = user && user.role === "admin" ? true : false;
   return (
     <>
       <nav className="sticky start-0 top-0 z-20 w-full border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900">
@@ -63,7 +79,10 @@ function Navbar() {
                 )
               ) : null}
               {isAuthUser ? (
-                <button className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                <button
+                  onClick={handleLogout}
+                  className="mb-2 me-2 rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-text transition delay-150 duration-300 ease-in-out hover:scale-110 hover:bg-primary focus:outline-none  focus:ring-4 focus:ring-gray-300 dark:bg-primaryDark dark:text-textDark  dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                >
                   Logout
                 </button>
               ) : (

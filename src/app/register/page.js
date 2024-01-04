@@ -1,11 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useContext } from "react";
+import { GlobalContext } from "@/context/index";
 import RegisterForm from "./registerForm";
+import { useRouter } from "next/navigation";
 
 const isRegistered = false;
 
 const register = () => {
+  const { isAuthUser } = useContext(GlobalContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthUser) {
+      router.push("/");
+    }
+  }, [isAuthUser]);
+
   return (
     <div>
       <div className="mx-auto flex h-screen flex-col items-center justify-center bg-background px-6 dark:bg-backgroundDark  lg:py-0">

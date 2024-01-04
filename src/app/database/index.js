@@ -14,12 +14,13 @@ let pass = process.env.DB_PASS;
 let connectToDB = async () => {
   const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/`;
   console.log("connecting to database");
-  return mongoose
-    .connect(connectionUrl, configOptions)
-    .then(() => console.log("Successfully connected to MongoDB Database"))
-    .catch((e) => {
-      console.log("error connecting to database", e.message);
-    });
+  try {
+    await mongoose.connect(connectionUrl, configOptions);
+    console.log("Successfully connected to MongoDB Database");
+  } catch (e) {
+    console.error("error connecting to database", e.message);
+    throw e; // throw the error to be caught in the calling function
+  }
 };
 
 export default connectToDB;

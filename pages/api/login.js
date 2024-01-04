@@ -11,12 +11,22 @@ const schema = Joi.object({
 });
 
 export default function handler(req, res, next) {
-  console.log("Running api/login");
+  const { error } = schema.validate(req.body);
+  if (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.details[0].message,
+    });
+  }
   connectToDB()
     .then(() => {
       passport.authenticate("local", (err, user, info) => {
         if (err) {
-          return next(err);
+          console.error("Authentication error", err);
+          return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+          });
         }
         if (!user) {
           return res.status(400).json({
@@ -26,7 +36,11 @@ export default function handler(req, res, next) {
         }
         req.logIn(user, { session: false }, async (err) => {
           if (err) {
-            return next(err);
+            console.error("Login error", err);
+            return res.status(500).json({
+              success: false,
+              message: "Internal server error",
+            });
           }
           // Generate JWT or any other post-login logic here
           const token = jwt.sign(
