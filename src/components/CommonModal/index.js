@@ -2,21 +2,28 @@
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CommonModal({
   modalTitle,
-  mainContent,
   showButtons,
   buttonComponent,
   show,
   setShow,
   showModalTitle,
   checkBoxRef,
+  navOptions,
+  adminNavOptions,
+  isAdminView,
 }) {
   let handleClose = () => {
     setShow(false);
     checkBoxRef.current.checked = false;
   };
+
+  let router = useRouter();
+
+  let mainContent = isAdminView ? adminNavOptions : navOptions;
   return (
     // show is a headless ui attribute to show or not show
     <Transition.Root show={show} as={Fragment}>
@@ -55,14 +62,12 @@ export default function CommonModal({
                       <div className="mt-20">
                         <ul>
                           {mainContent.map((item) => (
-                            <li key={item.id}>
-                              <a
-                                href={item.path}
-                                className="block rounded bg-none px-3 py-2 text-black hover:bg-sky-700 hover:text-white"
-                                aria-current="page"
-                              >
-                                {item.label}
-                              </a>
+                            <li
+                              key={item.id}
+                              className="block rounded bg-none px-3 py-2 text-black hover:bg-sky-700 hover:text-white"
+                              onClick={() => router.push(item.path)}
+                            >
+                              {item.label}
                             </li>
                           ))}
                         </ul>
