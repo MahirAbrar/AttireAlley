@@ -19,7 +19,9 @@ export default function RootLayout({ children }) {
         <GlobalState>
           <Navbar />
           <ToastContainer />
-          <main>{children}</main>
+          <main className=" flex items-center justify-center bg-background p-6 dark:bg-backgroundDark">
+            {children}
+          </main>
         </GlobalState>
       </body>
     </html>
