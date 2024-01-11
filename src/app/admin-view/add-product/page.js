@@ -1,13 +1,64 @@
 "use client";
 import React, { useState } from "react";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig, firebaseStroageURL } from "@/utils";
+import {
+  getStorage,
+  uploadBytesResumable,
+  ref,
+  getDownloadURL,
+} from "firebase/storage";
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app, firebaseStroageURL);
 
 const addProduct = () => {
   const [selectedSize, setSelectedSize] = useState("S");
 
+  async function handleImage(event) {
+    const extractImageUrl = await imageUploadHelper(event.target.files[0]);
+
+    console.log(extractImageUrl);
+  }
+
+  // Creates a unique file name.
+  const createUniqueFileName = (getFile) => {
+    const timeStamp = Date.now();
+    const randomStringValue = Math.random().toString(36).substring(2, 12);
+    return `${getFile.name}-${timeStamp}-${randomStringValue}`;
+  };
+
+  async function imageUploadHelper(file) {
+    const getFileName = createUniqueFileName(file);
+    const storageReference = ref(storage, `ecommerce/${getFileName}`);
+    const uploadImage = uploadBytesResumable(storageReference, file);
+
+    return new Promise((resolve, reject) => {
+      uploadImage.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadImage.snapshot.ref)
+            .then((downloadUrl) => resolve(downloadUrl))
+            .catch((error) => reject(error));
+        },
+      );
+    });
+  }
+
   return (
     <div className="card w-full max-w-sm shrink-0 bg-base-100 p-4 shadow-2xl">
       <label className="form-control w-full">
-        <input type="file" className="file-input w-full max-w-xs" />
+        <input
+          type="file"
+          className="file-input w-full max-w-xs"
+          accept="image/*"
+          onChange={handleImage}
+        />
       </label>
       <label className="form-control w-full">
         <div className="label">
