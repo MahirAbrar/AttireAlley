@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useContext, useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import { firebaseConfig, firebaseStroageURL } from "@/utils";
+import { firebaseConfig } from "@/utils";
 import {
   getStorage,
   uploadBytesResumable,
@@ -26,12 +26,26 @@ const addProduct = () => {
   //   if (!isAuthUser) router.push("/");
   // }, []);
 
-  const [selectedSize, setSelectedSize] = useState("S");
+  const [formData, setFormData] = useState({
+    sizes: [],
+    name: "",
+    price: 0,
+    description: "",
+    category: "Men",
+    deliveryInfo: "",
+    onSale: "No",
+    imageURL: "",
+    priceDrop: 0,
+  });
 
   async function handleImage(event) {
     const extractImageUrl = await imageUploadHelper(event.target.files[0]);
 
     console.log(extractImageUrl);
+
+    if (extractImageUrl) {
+      setFormData({ ...formData, imageURL: extractImageUrl });
+    }
   }
 
   // Creates a unique file name.
@@ -43,6 +57,8 @@ const addProduct = () => {
 
   async function imageUploadHelper(file) {
     const getFileName = createUniqueFileName(file);
+
+    // Create a storage reference from our storage service. ref(getStorage(app, {firebaseStorageURL}), {folder location})
     const storageReference = ref(storage, `ecommerce/${getFileName}`);
     const uploadImage = uploadBytesResumable(storageReference, file);
 
@@ -63,6 +79,21 @@ const addProduct = () => {
     });
   }
 
+  const handleSizeClick = (size) => {
+    if (formData.sizes.includes(size)) {
+      setFormData({
+        ...formData,
+        sizes: formData.sizes.filter((s) => s !== size),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        sizes: [...formData.sizes, size],
+      });
+    }
+  };
+
+  console.log(formData);
   return (
     <div className="card w-full max-w-sm shrink-0 bg-base-100 p-4 shadow-2xl">
       <label className="form-control w-full">
@@ -80,24 +111,24 @@ const addProduct = () => {
         <ul className="menu  menu-horizontal rounded-box bg-base-200">
           <li>
             <a
-              className={selectedSize === "S" ? "active" : ""}
-              onClick={() => setSelectedSize("S")}
+              className={formData.sizes.includes("S") ? "active" : ""}
+              onClick={() => handleSizeClick("S")}
             >
               S
             </a>
           </li>
           <li>
             <a
-              className={selectedSize === "M" ? "active" : ""}
-              onClick={() => setSelectedSize("M")}
+              className={formData.sizes.includes("M") ? "active" : ""}
+              onClick={() => handleSizeClick("M")}
             >
               M
             </a>
           </li>
           <li>
             <a
-              className={selectedSize === "L" ? "active" : ""}
-              onClick={() => setSelectedSize("L")}
+              className={formData.sizes.includes("L") ? "active" : ""}
+              onClick={() => handleSizeClick("L")}
             >
               L
             </a>
@@ -112,6 +143,7 @@ const addProduct = () => {
           type="text"
           placeholder="Enter name"
           className="input input-bordered w-full "
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
       </label>
       <label className="form-control w-full ">
@@ -122,6 +154,7 @@ const addProduct = () => {
           type="number"
           placeholder="Enter price"
           className="input input-bordered w-full "
+          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
         />
       </label>
       <label className="form-control w-full ">
@@ -132,16 +165,25 @@ const addProduct = () => {
           type="text"
           placeholder="Enter description"
           className="input input-bordered w-full "
+          onChange={(e) =>
+            setFormData({ ...formData, description: e.target.value })
+          }
         />
       </label>
       <label className="form-control w-full ">
         <div className="label">
           <span className="label-text">Category</span>
         </div>
-        <select className="select select-bordered">
-          <option>Men</option>
-          <option>Women</option>
-          <option>Kids</option>
+
+        <select
+          onChange={(e) =>
+            setFormData({ ...formData, category: e.target.value })
+          }
+          className="select select-bordered"
+        >
+          <option value="Men">Men</option>
+          <option value="Women">Women</option>
+          <option value="Kids">Kids</option>
         </select>
       </label>
       <label className="form-control w-full ">
@@ -152,15 +194,21 @@ const addProduct = () => {
           type="text"
           placeholder="Enter delivery info"
           className="input input-bordered w-full "
+          onChange={(e) =>
+            setFormData({ ...formData, deliveryInfo: e.target.value })
+          }
         />
       </label>
       <label className="form-control w-full ">
         <div className="label">
           <span className="label-text">On Sale</span>
         </div>
-        <select className="select select-bordered">
-          <option>Yes</option>
-          <option>No</option>
+        <select
+          onChange={(e) => setFormData({ ...formData, onSale: e.target.value })}
+          className="select select-bordered"
+        >
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
         </select>
       </label>
 
@@ -172,6 +220,9 @@ const addProduct = () => {
           type="number"
           placeholder="Enter Price Drop"
           className="input input-bordered w-full "
+          onChange={(e) =>
+            setFormData({ ...formData, priceDrop: e.target.value })
+          }
         />
       </label>
       <button className="btn mt-2 w-full">Add Product</button>
