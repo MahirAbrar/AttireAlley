@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig, firebaseStroageURL } from "@/utils";
 import {
@@ -8,11 +8,24 @@ import {
   ref,
   getDownloadURL,
 } from "firebase/storage";
+import { GlobalContext } from "@/context/index";
+import { useRouter } from "next/navigation";
 
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app, firebaseStroageURL);
+// This is saved in the env.local file FIREBASE_STORAGE_URL=gs://next-js-ecomm-478a2.appspot.com how do i access it?
+const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
 
 const addProduct = () => {
+  const app = initializeApp(firebaseConfig);
+  const storage = getStorage(app, firebaseStorageUrl);
+
+  const router = useRouter();
+  const { isAuthUser, user } = useContext(GlobalContext);
+
+  // toadd user
+  // useEffect(() => {
+  //   if (!isAuthUser) router.push("/");
+  // }, []);
+
   const [selectedSize, setSelectedSize] = useState("S");
 
   async function handleImage(event) {
@@ -126,7 +139,7 @@ const addProduct = () => {
           <span className="label-text">Category</span>
         </div>
         <select className="select select-bordered">
-          <option selected>Men</option>
+          <option>Men</option>
           <option>Women</option>
           <option>Kids</option>
         </select>
@@ -146,7 +159,7 @@ const addProduct = () => {
           <span className="label-text">On Sale</span>
         </div>
         <select className="select select-bordered">
-          <option selected>Yes</option>
+          <option>Yes</option>
           <option>No</option>
         </select>
       </label>

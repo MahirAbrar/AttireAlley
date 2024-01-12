@@ -22,7 +22,6 @@ function Navbar() {
   const router = useRouter();
   const pathName = usePathname();
   const isAdminView = pathName.includes("admin-view");
-  console.log(isAdminView);
 
   const handleLogout = useCallback(() => {
     setIsAuthUser(false);
