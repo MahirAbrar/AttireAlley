@@ -1,6 +1,7 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
 import Joi from "joi";
+import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -18,28 +19,27 @@ const addNewProductSchema = Joi.object({
 
 export default function handler(req, res, next) {
   // todo
-  const { error } = addNewProductSchema.validate(req.body);
+  // const { error } = addNewProductSchema.validate(req.body);
 
-  if (error) {
-    return res.status(400).json({
-      success: false,
-      message: "Schema Validation Error",
-    });
-  }
-  connectToDB()
-    .then(() => {
-      console.log("Connected to database");
+  // if (error) {
+  //   return NextResponse.status(400).json({
+  //     success: false,
+  //     message: error.details[0].message,
+  //   });
+  // }
+  connectToDB().then(() => {
+    console.log("Connected to database");
 
-      const user = "admin";
+    const user = "admin";
 
-      if (user === "admin") {
-        console.log("Admin user. Add product");
+    if (user === "admin") {
+      console.log("Admin user. Add product");
 
         const data = req.body;
-
         console.log(data);
-        // This is a promise
+
         const newDataCreated = Product.create(data);
+        console.log(newDataCreated);
         if (newDataCreated) {
           return res.status(200).json({
             success: true,
@@ -53,17 +53,21 @@ export default function handler(req, res, next) {
           });
         }
       } else {
-        return res.status(401).json({
+        NextResponse.status(400).json({
           success: false,
-          message: "User is not admin",
+          message: "Error adding new product",
         });
       }
-    })
-    .catch((error) => {
-      console.log(error);
-      return res.status(500).json({
+    } else {
+      NextResponse.status(401).json({
         success: false,
-        message: "Internal server error",
+        message: "Unauthorized",
       });
-    });
+    }
+  });
+
+  // if fail to connectToDB
+  if (error) {
+    console.log("Failed to connect to database");
+  }
 }

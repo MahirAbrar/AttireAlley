@@ -24,6 +24,8 @@ const login = () => {
     setUser,
     componentLoader,
     setComponentLoader,
+    pageLoader,
+    setPageLoader,
   } = useContext(GlobalContext);
 
   useEffect(() => {
@@ -138,13 +140,7 @@ const login = () => {
                     className="text-white-700 w-full rounded border border-accent  bg-transparent px-4 py-2 font-semibold transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent  hover:bg-primary hover:text-white"
                     onClick={(e) => handleLoginOnSubmit(e)}
                   >
-                    Login{" "}
-                    {componentLoader.loading && (
-                      <Loader
-                        loading={componentLoader.loading}
-                        id={componentLoader.id}
-                      />
-                    )}
+                    Login {componentLoader.loading && <Loader />}
                   </button>
                 ) : (
                   <button
@@ -152,13 +148,7 @@ const login = () => {
                     className="text-white-700  w-full rounded border border-accent bg-transparent px-4 py-2 font-semibold"
                     disabled={true}
                   >
-                    Login{" "}
-                    {componentLoader.loading && (
-                      <Loader
-                        loading={componentLoader.loading}
-                        id={componentLoader.id}
-                      />
-                    )}
+                    Login {componentLoader.loading && <Loader />}
                   </button>
                 )}
               </form>

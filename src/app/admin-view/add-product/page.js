@@ -10,11 +10,8 @@ import {
 } from "firebase/storage";
 import { GlobalContext } from "@/context/index";
 import { useRouter } from "next/navigation";
-import { addNewProduct } from "@/app/services/product";
-import Loader from "@/components/Loader";
-import { toast } from "react-toastify";
-import { set } from "mongoose";
 
+// This is saved in the env.local file FIREBASE_STORAGE_URL=gs://next-js-ecomm-478a2.appspot.com how do i access it?
 const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
 
 const addProduct = () => {
@@ -29,12 +26,6 @@ const addProduct = () => {
   //   if (!isAuthUser) router.push("/");
   // }, []);
 
-  //Store who is adding the data
-
-  const [componentLoader, setComponentLoader] = useState({
-    loading: false,
-    id: "",
-  });
   const [formData, setFormData] = useState({
     sizes: [],
     name: "",
@@ -72,9 +63,11 @@ const addProduct = () => {
 
   async function imageUploadHelper(file) {
     const getFileName = createUniqueFileName(file);
+
     // Create a storage reference from our storage service. ref(getStorage(app, {firebaseStorageURL}), {folder location})
     const storageReference = ref(storage, `ecommerce/${getFileName}`);
     const uploadImage = uploadBytesResumable(storageReference, file);
+
     return new Promise((resolve, reject) => {
       uploadImage.on(
         "state_changed",
@@ -109,48 +102,42 @@ const addProduct = () => {
   async function handleAddProduct(e) {
     e.preventDefault();
     setComponentLoader({ loading: true, id: "" });
-
-    try {
-      // First, upload the image if a file was selected
-      let imageUrl = formData.imageURL; // Default to existing URL if no new file selected
-      if (file) {
-        imageUrl = await imageUploadHelper(file); // Upload the new image and get the URL
-      }
-
-      // Include the image URL in the formData
-      const productData = { ...formData, imageURL: imageUrl };
-
-      // Then, submit the product data
-      const res = await addNewProduct(productData);
-      console.log(res);
-
-      if (res.success) {
-        toast.success(res.message);
-        setTimeout(() => {
-          router.push("/admin-view/all-products");
-        }, 1500);
-      } else {
-        toast.error(res.message);
-      }
-    } catch (error) {
-      console.error("Error adding product:", error);
-      toast.error("Failed to add product. Please try again.");
-    } finally {
-      setComponentLoader({ loading: false, id: "" });
-      // Reset form and file state
-      setFormData({
-        sizes: [],
-        name: "",
-        price: 0,
-        description: "",
-        category: "Men",
-        deliveryInfo: "",
-        onSale: "No",
-        imageURL: "",
-        priceDrop: 0,
+    const res = await addNewProduct(formData);
+    console.log(res);
+    setComponentLoader({ loading: false, id: "" });
+    if (res.success) {
+      toast.success(res.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
       });
-      setFile(null);
+      // set timeout for 1.5 seconds
+      setTimeout(() => {
+        router.push("/admin-view/all-products");
+      }, 1500);
+    } else {
+      toast.error(res.message, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      });
     }
+    // set to default
+    setFormData({
+      sizes: [],
+      name: "",
+      price: 0,
+      description: "",
+      category: "Men",
+      deliveryInfo: "",
+      onSale: "No",
+      imageURL: "",
+      priceDrop: 0,
+    });
   }
 
   return (
@@ -284,10 +271,7 @@ const addProduct = () => {
           }
         />
       </label>
-      <button className="btn mt-2 w-full" onClick={handleAddProduct}>
-        Add Product
-        <Loader loading={componentLoader.loading} id={componentLoader.id} />
-      </button>
+      <button className="btn mt-2 w-full">Add Product</button>
     </div>
   );
 };
