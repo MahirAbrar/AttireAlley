@@ -36,8 +36,8 @@ export default function handler(req, res, next) {
         console.log("Admin user. Add product");
 
         const data = req.body;
-        console.log(data);
 
+        console.log(data);
         const newDataCreated = Product.create(data);
         console.log(newDataCreated);
         if (newDataCreated) {

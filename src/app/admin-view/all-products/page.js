@@ -5,13 +5,6 @@ const allProducts = () => {
   return (
     <div className=" flex flex-wrap justify-center p-6">
       <CommonListing />
-      <CommonListing />
-      <CommonListing />
-      <CommonListing />
-      <CommonListing />
-      <CommonListing />
-      <CommonListing />
-      <CommonListing />
     </div>
   );
 };

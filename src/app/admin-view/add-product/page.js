@@ -47,6 +47,12 @@ const addProduct = () => {
     priceDrop: 0,
   });
 
+  const [file, setFile] = useState(null);
+
+  const handleImageSelect = (e) => {
+    setFile(e.target.files[0]);
+  };
+
   async function handleImage(event) {
     const extractImageUrl = await imageUploadHelper(event.target.files[0]);
 
@@ -103,42 +109,48 @@ const addProduct = () => {
   async function handleAddProduct(e) {
     e.preventDefault();
     setComponentLoader({ loading: true, id: "" });
-    const res = await addNewProduct(formData);
-    console.log(res);
-    setComponentLoader({ loading: false, id: "" });
-    if (res.success) {
-      toast.success(res.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
+
+    try {
+      // First, upload the image if a file was selected
+      let imageUrl = formData.imageURL; // Default to existing URL if no new file selected
+      if (file) {
+        imageUrl = await imageUploadHelper(file); // Upload the new image and get the URL
+      }
+
+      // Include the image URL in the formData
+      const productData = { ...formData, imageURL: imageUrl };
+
+      // Then, submit the product data
+      const res = await addNewProduct(productData);
+      console.log(res);
+
+      if (res.success) {
+        toast.success(res.message);
+        setTimeout(() => {
+          router.push("/admin-view/all-products");
+        }, 1500);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      console.error("Error adding product:", error);
+      toast.error("Failed to add product. Please try again.");
+    } finally {
+      setComponentLoader({ loading: false, id: "" });
+      // Reset form and file state
+      setFormData({
+        sizes: [],
+        name: "",
+        price: 0,
+        description: "",
+        category: "Men",
+        deliveryInfo: "",
+        onSale: "No",
+        imageURL: "",
+        priceDrop: 0,
       });
-      // set timeout for 1.5 seconds
-      setTimeout(() => {
-        router.push("/admin-view/all-products");
-      }, 1500);
-    } else {
-      toast.error(res.message, {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-      });
+      setFile(null);
     }
-    // set to default
-    setFormData({
-      sizes: [],
-      name: "",
-      price: 0,
-      description: "",
-      category: "Men",
-      deliveryInfo: "",
-      onSale: "No",
-      imageURL: "",
-      priceDrop: 0,
-    });
   }
 
   return (
@@ -148,7 +160,7 @@ const addProduct = () => {
           type="file"
           className="file-input w-full max-w-xs"
           accept="image/*"
-          onChange={handleImage}
+          onChange={handleImageSelect}
         />
       </label>
       <label className="form-control w-full">
