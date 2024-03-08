@@ -26,6 +26,7 @@ const addProduct = () => {
   //   if (!isAuthUser) router.push("/");
   // }, []);
 
+  const [imageUploading, setImageUploading] = useState(false);
   const [formData, setFormData] = useState({
     sizes: [],
     name: "",
@@ -38,13 +39,8 @@ const addProduct = () => {
     priceDrop: 0,
   });
 
-  const [file, setFile] = useState(null);
-
-  const handleImageSelect = (e) => {
-    setFile(e.target.files[0]);
-  };
-
   async function handleImage(event) {
+    setImageUploading(true);
     const extractImageUrl = await imageUploadHelper(event.target.files[0]);
 
     console.log(extractImageUrl);
@@ -52,6 +48,8 @@ const addProduct = () => {
     if (extractImageUrl) {
       setFormData({ ...formData, imageURL: extractImageUrl });
     }
+
+    setImageUploading(false);
   }
 
   // Creates a unique file name.
@@ -147,7 +145,7 @@ const addProduct = () => {
           type="file"
           className="file-input w-full max-w-xs"
           accept="image/*"
-          onChange={handleImageSelect}
+          onChange={handleImage}
         />
       </label>
       <label className="form-control w-full">
@@ -271,7 +269,13 @@ const addProduct = () => {
           }
         />
       </label>
-      <button className="btn mt-2 w-full">Add Product</button>
+      <button
+        className="btn mt-2 w-full"
+        onClick={handleAddProduct}
+        disabled={imageUploading}
+      >
+        Add Product
+      </button>
     </div>
   );
 };
