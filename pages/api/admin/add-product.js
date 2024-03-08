@@ -38,8 +38,8 @@ export default function handler(req, res, next) {
         const data = req.body;
 
         console.log(data);
+        // This is a promise
         const newDataCreated = Product.create(data);
-        console.log(newDataCreated);
         if (newDataCreated) {
           return res.status(200).json({
             success: true,
