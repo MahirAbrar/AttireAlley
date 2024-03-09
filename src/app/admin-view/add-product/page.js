@@ -10,6 +10,8 @@ import {
 } from "firebase/storage";
 import { GlobalContext } from "@/context/index";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
+import { addNewProduct } from "@/app/services/product";
 
 // This is saved in the env.local file FIREBASE_STORAGE_URL=gs://next-js-ecomm-478a2.appspot.com how do i access it?
 const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
@@ -19,8 +21,11 @@ const addProduct = () => {
   const storage = getStorage(app, firebaseStorageUrl);
 
   const router = useRouter();
-  const { isAuthUser, user } = useContext(GlobalContext);
 
+  const { componentLoader, setComponentLoader } = useContext(GlobalContext);
+  // const { isAuthUser, user } = useContext(GlobalContext);
+
+  // Add username on who is uploading?
   // toadd user
   // useEffect(() => {
   //   if (!isAuthUser) router.push("/");
@@ -100,6 +105,7 @@ const addProduct = () => {
   async function handleAddProduct(e) {
     e.preventDefault();
     setComponentLoader({ loading: true, id: "" });
+
     const res = await addNewProduct(formData);
     console.log(res);
     setComponentLoader({ loading: false, id: "" });
@@ -275,6 +281,7 @@ const addProduct = () => {
         disabled={imageUploading}
       >
         Add Product
+        {componentLoader.loading ? <Loader /> : null}
       </button>
     </div>
   );

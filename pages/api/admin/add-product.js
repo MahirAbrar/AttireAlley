@@ -35,31 +35,27 @@ export default function handler(req, res, next) {
     if (user === "admin") {
       console.log("Admin user. Add product");
 
-        const data = req.body;
-        console.log(data);
+      const data = req.body;
+      console.log(data);
 
-        const newDataCreated = Product.create(data);
-        console.log(newDataCreated);
-        if (newDataCreated) {
-          return res.status(200).json({
-            success: true,
-            message: "New product added",
-            data: newDataCreated,
-          });
-        } else {
-          return res.status(500).json({
-            success: false,
-            message: "Internal server error",
-          });
-        }
+      const newDataCreated = Product.create(data);
+      // newData Created is a promise
+      console.log(newDataCreated);
+
+      if (newDataCreated) {
+        return res.status(200).json({
+          success: true,
+          message: "New product added",
+          data: newDataCreated,
+        });
       } else {
-        NextResponse.status(400).json({
+        return res.status(500).json({
           success: false,
-          message: "Error adding new product",
+          message: "Internal server error",
         });
       }
     } else {
-      NextResponse.status(401).json({
+      return res.status(401).json({
         success: false,
         message: "Unauthorized",
       });
