@@ -1,5 +1,7 @@
 import Cookies from "js-cookie";
 
+// Frontend will send to Backend API
+
 export const addNewProduct = async (formData) => {
   try {
     console.log(

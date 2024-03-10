@@ -24,21 +24,23 @@ const addProduct = () => {
   const router = useRouter();
 
   const { componentLoader, setComponentLoader } = useContext(GlobalContext);
-  // const { isAuthUser, user } = useContext(GlobalContext);
+  const { isAuthUser, user } = useContext(GlobalContext);
 
-  // Add username on who is uploading?
-  // toadd user
-  // useEffect(() => {
-  //   if (!isAuthUser) router.push("/");
-  // }, []);
+  // Got user
+  useEffect(() => {
+    if (isAuthUser) {
+      setFormData({ ...formData, user: user.name });
+    }
+  }, [user]);
 
   const [imageUploading, setImageUploading] = useState(false);
   const [formData, setFormData] = useState({
-    sizes: [],
+    user: "",
     name: "",
-    price: 0,
     description: "",
+    price: 0,
     category: "Men",
+    sizes: [],
     deliveryInfo: "",
     onSale: "No",
     imageURL: "",
@@ -133,11 +135,12 @@ const addProduct = () => {
     }
     // set to default
     setFormData({
-      sizes: [],
+      user: "",
       name: "",
-      price: 0,
       description: "",
+      price: 0,
       category: "Men",
+      sizes: [],
       deliveryInfo: "",
       onSale: "No",
       imageURL: "",
@@ -274,6 +277,7 @@ const addProduct = () => {
           onChange={(e) =>
             setFormData({ ...formData, priceDrop: e.target.value })
           }
+          value={formData.priceDrop}
         />
       </label>
       <button

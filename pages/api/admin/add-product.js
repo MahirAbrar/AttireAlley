@@ -1,11 +1,11 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
 import Joi from "joi";
-import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 const addNewProductSchema = Joi.object({
+  user: Joi.string().required(),
   name: Joi.string().required(),
   description: Joi.string().required(),
   price: Joi.number().required(),
@@ -13,8 +13,8 @@ const addNewProductSchema = Joi.object({
   sizes: Joi.array().required(),
   deliveryInfo: Joi.string().required(),
   onSale: Joi.string().required(),
-  priceDrop: Joi.number().required(),
   imageURL: Joi.string().required(),
+  priceDrop: Joi.number().required(),
 });
 
 export default async function handler(req, res, next) {
