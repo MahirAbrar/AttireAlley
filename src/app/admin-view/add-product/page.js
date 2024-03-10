@@ -12,6 +12,7 @@ import { GlobalContext } from "@/context/index";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { addNewProduct } from "@/app/services/product";
+import { toast } from "react-toastify";
 
 // This is saved in the env.local file FIREBASE_STORAGE_URL=gs://next-js-ecomm-478a2.appspot.com how do i access it?
 const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;

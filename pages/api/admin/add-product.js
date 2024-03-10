@@ -17,7 +17,7 @@ const addNewProductSchema = Joi.object({
   imageURL: Joi.string().required(),
 });
 
-export default function handler(req, res, next) {
+export default async function handler(req, res, next) {
   // todo
   // const { error } = addNewProductSchema.validate(req.body);
 
@@ -27,10 +27,12 @@ export default function handler(req, res, next) {
   //     message: error.details[0].message,
   //   });
   // }
-  connectToDB().then(() => {
+  // Assuming connectToDB is an async function that returns a Promise when the connection is successful
+  try {
+    await connectToDB();
     console.log("Connected to database");
 
-    const user = "admin";
+    const user = "admin"; // This would typically come from your authentication logic
 
     if (user === "admin") {
       console.log("Admin user. Add product");
@@ -38,32 +40,38 @@ export default function handler(req, res, next) {
       const data = req.body;
       console.log(data);
 
-      const newDataCreated = Product.create(data);
-      // newData Created is a promise
-      console.log(newDataCreated);
+      try {
+        // Since Product.create returns a Promise, you should await it to get the resolved value
+        const newDataCreated = await Product.create(data);
+        console.log(newDataCreated);
 
-      if (newDataCreated) {
+        // If newDataCreated is truthy, the operation was successful
         return res.status(200).json({
           success: true,
           message: "New product added",
           data: newDataCreated,
         });
-      } else {
+      } catch (error) {
+        // Log and return error response if Product.create fails
+        console.error("Error creating new product:", error);
         return res.status(500).json({
           success: false,
           message: "Internal server error",
         });
       }
     } else {
+      // User is not admin
       return res.status(401).json({
         success: false,
         message: "Unauthorized",
       });
     }
-  });
-
-  // if fail to connectToDB
-  if (error) {
-    console.log("Failed to connect to database");
+  } catch (error) {
+    // Handle failed connection to DB
+    console.error("Failed to connect to database:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to connect to database",
+    });
   }
 }
