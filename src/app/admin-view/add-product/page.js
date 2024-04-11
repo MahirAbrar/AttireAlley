@@ -107,9 +107,35 @@ const addProduct = () => {
 
   async function handleAddProduct(e) {
     e.preventDefault();
+
+    if (!formData.name || formData.name.length < 5) {
+      toast.error("Name must be at least 5 characters long.");
+      return; // Stop the function if validation fails
+    } else if (!formData.sizes || formData.sizes.length === 0) {
+      toast.error("Select at least 1 style.");
+      return; // Stop the function if validation fails
+    } else if (!formData.price) {
+      toast.error("Price cannot be empty.");
+      return; // Stop the function if validation fails
+    } else {
+      toast.dismiss(); // Clear validation message if check passes
+    }
+
+    // Set default values for description and deliveryInfo if they are empty
+    const updatedFormData = {
+      ...formData,
+      description: formData.description || "No Description",
+      deliveryInfo: formData.deliveryInfo || "No Delivery Info",
+      price: Math.abs(formData.price),
+      imageURL:
+        formData.imageURL ||
+        "https://firebasestorage.googleapis.com/v0/b/next-js-ecomm-478a2.appspot.com/o/ecommerce%2Fshubham-dhage-WtolM5hsj14-unsplash.jpg-1712814003553-j2jyl6tuw6?alt=media&token=4801feaf-bb51-4710-ac66-618c1630ab46",
+    };
+
     setComponentLoader({ loading: true, id: "" });
 
-    const res = await addNewProduct(formData);
+    const res = await addNewProduct(updatedFormData);
+
     console.log(res);
     setComponentLoader({ loading: false, id: "" });
     if (res.success) {
