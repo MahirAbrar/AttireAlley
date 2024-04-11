@@ -38,12 +38,10 @@ export default async function handler(req, res, next) {
       console.log("Admin user. Add product");
 
       const data = req.body;
-      console.log(data);
 
       try {
         // Since Product.create returns a Promise, you should await it to get the resolved value
         const newDataCreated = await Product.create(data);
-        console.log(newDataCreated);
 
         // If newDataCreated is truthy, the operation was successful
         return res.status(200).json({

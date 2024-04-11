@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { useContext } from "react";
 import { GlobalContext } from "@/context/index";
+import { deleteProduct } from "@/app/services/deleteProduct";
 
 const AllProducts = () => {
   const router = useRouter();
@@ -37,6 +38,11 @@ const AllProducts = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    await deleteProduct(id);
+    fetchProducts(); // Fetch the products again after deleting one
+  };
+
   if (loading) {
     return <Loader />; // Show loading state while checking authentication and role
   }
@@ -45,7 +51,11 @@ const AllProducts = () => {
     <div className="flex flex-wrap justify-center p-6">
       {products.length > 0 &&
         products.map((product) => (
-          <AdminCommonListing key={product._id} user={product} />
+          <AdminCommonListing
+            key={product._id}
+            user={product}
+            onDelete={handleDelete}
+          />
         ))}
     </div>
   );

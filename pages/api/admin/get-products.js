@@ -24,7 +24,6 @@ export default async function handler(req, res, next) {
       try {
         // Use Product.find() without a filter to retrieve all documents from the collection
         const products = await Product.find({});
-        console.log(products);
 
         // If products array is returned, the operation was successful
         return res.status(200).json({

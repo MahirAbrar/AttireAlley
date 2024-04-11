@@ -53,8 +53,7 @@ const addProduct = () => {
   async function handleImage(event) {
     setImageUploading(true);
     const extractImageUrl = await imageUploadHelper(event.target.files[0]);
-
-    console.log("Image uploaded successfully.");
+    toast.success("Image uploaded successfully.");
 
     if (extractImageUrl) {
       setFormData({ ...formData, imageURL: extractImageUrl });

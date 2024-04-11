@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
 
-const AdminCommonListing = ({ user }) => {
+const AdminCommonListing = ({ user, onDelete }) => {
   const handleUpdate = (item) => {
     console.log("Update", item);
   };
 
   const handleDelete = (item) => {
-    console.log("Delete", item);
+    onDelete(item._id);
   };
 
   return (
