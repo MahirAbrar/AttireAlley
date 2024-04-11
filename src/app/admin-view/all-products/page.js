@@ -1,24 +1,27 @@
-import React from "react";
-import CommonListing from "@/components/CommonListing";
-// {
-// user: "",
-//       name: "",
-//       description: "",
-//       price: 0,
-//       category: "Men",
-//       sizes: [],
-//       deliveryInfo: "",
-//       onSale: "No",
-//       imageURL: "",
-//       priceDrop: 0,
-// }
+"use client";
+import React, { useEffect, useState } from "react";
+import AdminCommonListing from "@/components/CommonListingAdmin";
+import { getProducts } from "@/app/services/getProducts";
 
-const allProducts = () => {
+const AllProducts = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await getProducts();
+      setProducts(res.data.data);
+    };
+    fetchProducts();
+  }, []);
+
   return (
-    <div className=" flex flex-wrap justify-center p-6">
-      <CommonListing />
+    <div className="flex flex-wrap justify-center p-6">
+      {products.length > 0 &&
+        products.map((product) => (
+          <AdminCommonListing key={product._id} user={product} />
+        ))}
     </div>
   );
 };
 
-export default allProducts;
+export default AllProducts;
