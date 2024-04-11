@@ -17,6 +17,7 @@ export default function GlobalState({ children }) {
     id: "",
   });
   const [pageLoader, setPageLoader] = useState(false);
+  const [updateItem, setUpdateItem] = useState(null);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -43,6 +44,8 @@ export default function GlobalState({ children }) {
         setComponentLoader,
         pageLoader,
         setPageLoader,
+        updateItem,
+        setUpdateItem,
       }}
     >
       {children}

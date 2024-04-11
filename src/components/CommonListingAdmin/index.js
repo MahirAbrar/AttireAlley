@@ -1,9 +1,17 @@
 "use client";
 import React from "react";
+import { useRouter } from "next/navigation";
+import { GlobalContext } from "@/context/index";
+import { useContext } from "react";
 
 const AdminCommonListing = ({ user, onDelete }) => {
+  const { updateItem, setUpdateItem } = useContext(GlobalContext);
+  const router = useRouter();
+
   const handleUpdate = (item) => {
     console.log("Update", item);
+    setUpdateItem(item);
+    router.push(`/admin-view/update-product`);
   };
 
   const handleDelete = (item) => {
