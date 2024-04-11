@@ -23,15 +23,18 @@ const addProduct = () => {
 
   const router = useRouter();
 
-  const { componentLoader, setComponentLoader } = useContext(GlobalContext);
-  const { isAuthUser, user } = useContext(GlobalContext);
+  const { componentLoader, setComponentLoader, isAuthUser, user } =
+    useContext(GlobalContext);
 
   // Got user
   useEffect(() => {
-    if (isAuthUser) {
-      setFormData({ ...formData, user: user.name });
+    // Redirect if not authenticated or not an admin
+    if (isAuthUser === false || user?.role !== "admin") {
+      router.push("/some-other-site");
+    } else {
+      setFormData({ ...formData, user: user?.name });
     }
-  }, [user]);
+  }, [isAuthUser, user, router]);
 
   const [imageUploading, setImageUploading] = useState(false);
   const [formData, setFormData] = useState({
@@ -39,7 +42,7 @@ const addProduct = () => {
     name: "",
     description: "",
     price: 0,
-    category: "Men",
+    category: "Everyone",
     sizes: [],
     deliveryInfo: "",
     onSale: "No",
@@ -51,7 +54,7 @@ const addProduct = () => {
     setImageUploading(true);
     const extractImageUrl = await imageUploadHelper(event.target.files[0]);
 
-    console.log(extractImageUrl);
+    console.log("Image uploaded successfully.");
 
     if (extractImageUrl) {
       setFormData({ ...formData, imageURL: extractImageUrl });
@@ -79,7 +82,6 @@ const addProduct = () => {
         "state_changed",
         (snapshot) => {},
         (error) => {
-          console.log(error);
           reject(error);
         },
         () => {
@@ -136,7 +138,6 @@ const addProduct = () => {
 
     const res = await addNewProduct(updatedFormData);
 
-    console.log(res);
     setComponentLoader({ loading: false, id: "" });
     if (res.success) {
       toast.success(res.message, {
@@ -165,13 +166,16 @@ const addProduct = () => {
       name: "",
       description: "",
       price: 0,
-      category: "Men",
+      category: "Everyone",
       sizes: [],
       deliveryInfo: "",
       onSale: "No",
       imageURL: "",
       priceDrop: 0,
     });
+  }
+  if (!isAuthUser || user?.role !== "admin") {
+    return <Loader />;
   }
 
   return (
@@ -186,7 +190,9 @@ const addProduct = () => {
       </label>
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text">Available Sizes</span>
+          <span className="label-text">
+            Available Sizes <span className="text-red-500">*</span>
+          </span>
         </div>
         <ul className="menu  menu-horizontal rounded-box bg-base-200">
           <li>
@@ -217,7 +223,9 @@ const addProduct = () => {
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">Name of Product</span>
+          <span className="label-text">
+            Name of Product <span className="text-red-500">*</span>
+          </span>
         </div>
         <input
           type="text"
@@ -228,7 +236,9 @@ const addProduct = () => {
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">Price of Product</span>
+          <span className="label-text">
+            Price of Product <span className="text-red-500">*</span>
+          </span>
         </div>
         <input
           type="number"
@@ -261,6 +271,7 @@ const addProduct = () => {
           }
           className="select select-bordered"
         >
+          <option value="Kids">Everyone</option>
           <option value="Men">Men</option>
           <option value="Women">Women</option>
           <option value="Kids">Kids</option>

@@ -76,7 +76,6 @@ const login = () => {
       Cookies.set("token", res?.data?.token);
       localStorage.setItem("user", JSON.stringify(res?.data?.user));
     } else {
-      console.log("not success");
       toast.error(res.message, {
         position: "top-right",
         autoClose: 3000,

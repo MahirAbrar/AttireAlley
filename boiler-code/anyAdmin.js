@@ -27,6 +27,10 @@ const AdminView = () => {
     return <Loader />; // Show loading state while checking
   }
 
+  if (!isAuthUser || user?.role !== "admin") {
+    return <Loader />;
+  }
+
   return <div>Admin Page</div>;
 };
 
