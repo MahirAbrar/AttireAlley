@@ -7,22 +7,22 @@ export const navOptions = [
   {
     id: 2,
     label: "All Products",
-    path: "/product/listing/all-products",
+    path: "/products/",
   },
   {
     id: 3,
     label: "Men",
-    path: "/product/listing/men",
+    path: "/products/men",
   },
   {
     id: 4,
     label: "Women",
-    path: "/product/listing/women",
+    path: "/products/women",
   },
   {
     id: 5,
     label: "kids",
-    path: "/product/listing/kids",
+    path: "/products/kids",
   },
 ];
 
@@ -113,16 +113,14 @@ export const AvailableSizes = [
 ];
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyD_gASE-WKqBlLKUxot2rMY9IQquLl2dAg",
-  authDomain: "next-js-ecomm-478a2.firebaseapp.com",
-  projectId: "next-js-ecomm-478a2",
-  storageBucket: "next-js-ecomm-478a2.appspot.com",
-  messagingSenderId: "932661246000",
-  appId: "1:932661246000:web:b4c81133fce8fa5b7b95f5",
-  measurementId: "G-LSS95FYY01",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
-
-export const firebaseStroageURL = "gs://next-js-ecomm-478a2.appspot.com";
 
 export const addNewAddressFormControls = [
   {
