@@ -1,10 +1,13 @@
 "use client";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const ClientCommonListing = ({ user }) => {
+  const router = useRouter();
+
   return (
     <div className="mx-3 my-4 min-w-[360px] max-w-sm bg-base-100 shadow-xl  ">
-      <figure>
+      <figure onClick={() => router.push(`products/${user._id}`)}>
         <img
           src={user.imageURL}
           alt={user.name}
