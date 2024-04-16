@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   const { category } = req.query; // Extract category from request parameters
 
   // Check if the category is valid
-  if (!["kids", "men", "women"].includes(category.toLowerCase())) {
+  if (!["kids", "men", "women", "all"].includes(category.toLowerCase())) {
     return res.status(400).json({
       success: false,
       message: "Invalid category specified",
@@ -24,10 +24,17 @@ export default async function handler(req, res) {
     await connectToDB();
     console.log("Connected to database");
 
-    // Fetch products by category
-    const products = await Product.find({
-      category: capitalizeFirstLetter(category),
-    });
+    let products;
+
+    if (category.toLowerCase() === "all") {
+      // Fetch all products
+      products = await Product.find({});
+    } else {
+      // Fetch products by category
+      products = await Product.find({
+        category: capitalizeFirstLetter(category),
+      });
+    }
 
     if (products.length === 0) {
       // No products found under this category

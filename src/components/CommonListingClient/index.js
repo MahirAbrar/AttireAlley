@@ -1,22 +1,7 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
-import { GlobalContext } from "@/context/index";
-import { useContext } from "react";
 
-const AdminCommonListing = ({ user, onDelete }) => {
-  const { updateItem, setUpdateItem } = useContext(GlobalContext);
-  const router = useRouter();
-
-  const handleUpdate = (item) => {
-    setUpdateItem(item);
-    router.push(`/admin-view/update-product`);
-  };
-
-  const handleDelete = (item) => {
-    onDelete(item._id);
-  };
-
+const ClientCommonListing = ({ user }) => {
   return (
     <div className="mx-3 my-4 min-w-[360px] max-w-sm bg-base-100 shadow-xl  ">
       <figure>
@@ -40,22 +25,11 @@ const AdminCommonListing = ({ user, onDelete }) => {
           <div className="badge badge-outline">Category: {user.category}</div>
         </div>
         <div className="mt-4 flex justify-between gap-2">
-          <button
-            className="btn btn-accent flex-grow"
-            onClick={() => handleUpdate(user)}
-          >
-            Update
-          </button>
-          <button
-            className="btn btn-warning flex-grow"
-            onClick={() => handleDelete(user)}
-          >
-            Delete
-          </button>
+          <button className="btn btn-warning flex-grow">Add to Cart</button>
         </div>
       </div>
     </div>
   );
 };
 
-export default AdminCommonListing;
+export default ClientCommonListing;
