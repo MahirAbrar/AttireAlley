@@ -13,7 +13,7 @@ const addNewProductSchema = Joi.object({
   sizes: Joi.array().required(),
   deliveryInfo: Joi.string().required(),
   onSale: Joi.string().required(),
-  imageURL: Joi.string().required(),
+  imageURL: Joi.array().required(),
   priceDrop: Joi.number().required(),
 });
 

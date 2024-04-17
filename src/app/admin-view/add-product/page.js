@@ -20,6 +20,7 @@ const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
 const addProduct = () => {
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app, firebaseStorageUrl);
+  const [uploadedCount, setUploadedCount] = useState(0);
 
   const router = useRouter();
 
@@ -46,20 +47,40 @@ const addProduct = () => {
     sizes: [],
     deliveryInfo: "",
     onSale: "No",
-    imageURL: "",
+    imageURL: [],
     priceDrop: 0,
   });
 
   async function handleImage(event) {
     setImageUploading(true);
-    const extractImageUrl = await imageUploadHelper(event.target.files[0]);
-    toast.success("Image uploaded successfully.");
+    const files = event.target.files;
+    const urls = [];
+    let count = 0;
 
-    if (extractImageUrl) {
-      setFormData({ ...formData, imageURL: extractImageUrl });
+    for (const file of files) {
+      try {
+        const imageUrl = await imageUploadHelper(file);
+        if (imageUrl) {
+          urls.push(imageUrl);
+          count++;
+          setUploadedCount((prevCount) => prevCount + 1); // Increment the uploaded count
+        }
+      } catch (error) {
+        toast.error("Failed to upload image: " + error.message);
+      }
     }
 
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      imageURL: [...prevFormData.imageURL, ...urls],
+    }));
+
     setImageUploading(false);
+    toast.success(
+      `${count} ${
+        count === 1 ? "image has" : "images have"
+      } been uploaded successfully.`,
+    );
   }
 
   // Creates a unique file name.
@@ -71,8 +92,6 @@ const addProduct = () => {
 
   async function imageUploadHelper(file) {
     const getFileName = createUniqueFileName(file);
-
-    // Create a storage reference from our storage service. ref(getStorage(app, {firebaseStorageURL}), {folder location})
     const storageReference = ref(storage, `ecommerce/${getFileName}`);
     const uploadImage = uploadBytesResumable(storageReference, file);
 
@@ -146,6 +165,20 @@ const addProduct = () => {
         closeOnClick: true,
         pauseOnHover: true,
       });
+      // set to default
+      setFormData({
+        user: "",
+        name: "",
+        description: "",
+        price: 0,
+        category: "Everyone",
+        sizes: [],
+        deliveryInfo: "",
+        onSale: "No",
+        imageURL: "",
+        priceDrop: 0,
+      });
+
       // set timeout for 1.5 seconds
       setTimeout(() => {
         router.push("/admin-view/all-products");
@@ -159,19 +192,6 @@ const addProduct = () => {
         pauseOnHover: true,
       });
     }
-    // set to default
-    setFormData({
-      user: "",
-      name: "",
-      description: "",
-      price: 0,
-      category: "Everyone",
-      sizes: [],
-      deliveryInfo: "",
-      onSale: "No",
-      imageURL: "",
-      priceDrop: 0,
-    });
   }
   if (!isAuthUser || user?.role !== "admin") {
     return <Loader />;
@@ -179,14 +199,20 @@ const addProduct = () => {
 
   return (
     <div className="card w-full max-w-sm shrink-0 bg-base-100 p-4 shadow-2xl">
+      <div className="bg-base-200 p-2 text-base-content">
+        {uploadedCount} Image{uploadedCount !== 1 ? "s" : ""} Uploaded
+      </div>
+
       <label className="form-control w-full">
         <input
           type="file"
+          multiple
           className="file-input w-full max-w-xs"
           accept="image/*"
           onChange={handleImage}
         />
       </label>
+
       <label className="form-control w-full">
         <div className="label">
           <span className="label-text">

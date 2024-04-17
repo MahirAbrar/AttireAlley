@@ -34,6 +34,8 @@ const kids = () => {
         products.map((product) => (
           <ClientCommonListing key={product._id} user={product} />
         ))}
+
+      {products.length == 0 && <h1>No products found</h1>}
     </div>
   );
 };

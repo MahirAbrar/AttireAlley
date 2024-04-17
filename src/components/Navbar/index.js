@@ -2,7 +2,7 @@
 
 import { GlobalContext } from "@/context";
 import { adminNavOptions, navOptions } from "@/utils";
-import { Fragment, useContext, useEffect, useRef, useCallback } from "react";
+import { useContext, useRef, useCallback } from "react";
 import CommonModal from "../CommonModal";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -56,34 +56,38 @@ function Navbar() {
             onClick={handleLinkClick("/")}
           >
             <span className=" whitespace-nowrap text-sm font-semibold dark:text-white sm:text-xl lg:text-2xl">
-              eComms
+              AttireAlley
             </span>
           </Link>
           <div />
         </div>
 
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-vertical rounded-box lg:menu-horizontal">
+          <ul className="menu menu-vertical m-0 list-none rounded p-0 text-right lg:menu-horizontal">
             {isAdminView
               ? adminNavOptions.map((item) => (
-                  <li key={item.id}>
+                  <li key={item.id} className="ml-2 inline-block">
                     <Link
                       href={item.path}
-                      className="dark:bg-primary-dark dark:text-white-dark bg-primary text-white"
+                      className={`text-sm uppercase text-white transition-colors duration-300 ease-in-out hover:text-red-500 dark:text-white ${
+                        item.active ? "text-red-500" : ""
+                      }`}
                       aria-current="page"
-                      onClick={handleLinkClick(`${item.path}`)}
+                      onClick={() => handleLinkClick(item.path)}
                     >
                       {item.label}
                     </Link>
                   </li>
                 ))
               : navOptions.map((item) => (
-                  <li key={item.id}>
+                  <li key={item.id} className="ml-2 inline-block">
                     <Link
                       href={item.path}
-                      className="dark:bg-primary-dark dark:text-white-dark bg-primary text-white"
+                      className={`text-sm uppercase text-white transition-colors duration-300 ease-in-out hover:text-red-500 dark:text-white ${
+                        item.active ? "text-red-500" : ""
+                      }`}
                       aria-current="page"
-                      onClick={handleLinkClick(`${item.path}`)}
+                      onClick={() => handleLinkClick(item.path)}
                     >
                       {item.label}
                     </Link>
@@ -91,45 +95,10 @@ function Navbar() {
                 ))}
           </ul>
         </div>
+
         <div className="navbar-end">
           {!isAdminView && isAuthUser ? (
             <>
-              <div className="dropdown dropdown-end">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="avatar btn btn-circle btn-ghost"
-                >
-                  <div className="w-10 rounded-full">
-                    {isAuthUser ? (
-                      <img
-                        alt="Tailwind CSS Navbar component"
-                        src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                      />
-                    ) : (
-                      <img alt="Not logged in" src="" />
-                    )}
-                  </div>
-                </div>
-                <ul
-                  tabIndex={0}
-                  className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
-                >
-                  <li>
-                    <a className="justify-between">
-                      Profile
-                      <span className="badge">New</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a>Settings</a>
-                  </li>
-                  <li>
-                    <a>Logout</a>
-                  </li>
-                </ul>
-              </div>
-
               <div className="dropdown dropdown-bottom">
                 <div
                   tabIndex={0}
@@ -176,14 +145,14 @@ function Navbar() {
             isAdminView ? (
               <button
                 onClick={handleLinkClick("/")}
-                className="btn btn-md mx-1  md:btn-md lg:btn-lg "
+                className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
               >
                 Client view
               </button>
             ) : (
               <button
                 onClick={handleLinkClick("/admin-view")}
-                className="btn btn-md mx-1  bg-primary md:btn-md lg:btn-lg dark:bg-primaryDark "
+                className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
               >
                 Admin View
               </button>
@@ -192,13 +161,13 @@ function Navbar() {
           {isAuthUser ? (
             <button
               onClick={handleLogout}
-              className="btn btn-md mx-1 bg-primary md:btn-md  lg:btn-lg dark:bg-primaryDark "
+              className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
             >
               Logout
             </button>
           ) : (
             <button
-              className="btn btn-md mx-1 bg-primary md:btn-md lg:btn-lg dark:bg-primaryDark "
+              className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
               onClick={handleLinkClick("/login")}
             >
               Login
