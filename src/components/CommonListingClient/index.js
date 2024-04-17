@@ -1,13 +1,19 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import React from "react";
 
-const ClientCommonListing = ({ user }) => {
+const ClientCommonListing = ({ user, params }) => {
   const router = useRouter();
-
+  const pathname = usePathname();
+  let redirectLink = "";
+  if (pathname == "/products") {
+    redirectLink = `products/${user._id}`;
+  } else {
+    redirectLink = `${user._id}`;
+  }
   return (
     <div className="mx-3 my-4 min-w-[360px] max-w-sm bg-base-100 shadow-xl  ">
-      <figure onClick={() => router.push(`products/${user._id}`)}>
+      <figure onClick={() => router.push(redirectLink)}>
         <img
           src={user.imageURL}
           alt={user.name}

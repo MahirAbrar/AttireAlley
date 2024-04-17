@@ -88,85 +88,79 @@ const login = () => {
   }
 
   return (
-    <>
-      <section className="container mx-auto max-w-screen-xl bg-background dark:bg-backgroundDark">
-        <div className=" mx-auto flex h-screen flex-col items-center justify-center px-6 py-8 lg:py-0">
-          <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
-            <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-              <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-                Login to your account
-              </h1>
+    <div className="mx-auto flex w-full flex-col items-center justify-center rounded-lg bg-background py-20 shadow dark:border dark:border-gray-700  dark:bg-gray-800 sm:max-w-md md:mt-0">
+      <div className="w-96 space-y-4 p-6 sm:p-8 md:space-y-6">
+        <h1 className="text-center text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+          Login to your account
+        </h1>
 
-              <form className="space-y-4 md:space-y-6">
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    onChange={handleChange}
-                    id="email"
-                    className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
-                    placeholder="name@company.com"
-                    required=""
-                  />
-                </div>
-                <div className="relative mt-4">
-                  <label
-                    htmlFor="password"
-                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    onChange={handleChange}
-                    required=""
-                    className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    placeholder="Password"
-                  />
-                </div>
-
-                {isFormValid() ? (
-                  <button
-                    type="submit"
-                    className="text-white-700 w-full rounded border border-accent  bg-transparent px-4 py-2 font-semibold transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent  hover:bg-primary hover:text-white"
-                    onClick={(e) => handleLoginOnSubmit(e)}
-                  >
-                    Login {componentLoader.loading && <Loader />}
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    className="text-white-700  w-full rounded border border-accent bg-transparent px-4 py-2 font-semibold"
-                    disabled={true}
-                  >
-                    Login {componentLoader.loading && <Loader />}
-                  </button>
-                )}
-              </form>
-
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Not have an Account?
-              </p>
-              <button
-                type="submit"
-                className="text-white-700 w-full rounded border border-accent  bg-transparent px-4 py-2 font-semibold transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent  hover:bg-primary hover:text-white"
-                onClick={() => router.push("/register")}
-              >
-                Register
-              </button>
-            </div>
+        <form className="space-y-4 md:space-y-6">
+          <div>
+            <label
+              htmlFor="email"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              onChange={handleChange}
+              id="email"
+              className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+              placeholder="name@company.com"
+              required=""
+            />
           </div>
-        </div>
-      </section>
-    </>
+          <div>
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              onChange={handleChange}
+              id="password"
+              placeholder="Password"
+              className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+              required=""
+            />
+          </div>
+
+          {isFormValid() ? (
+            <button
+              type="submit"
+              className="text-white-700 w-full rounded border border-accent  bg-transparent px-4 py-2 font-semibold transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent  hover:bg-primary hover:text-white"
+              onClick={(e) => handleLoginOnSubmit(e)}
+            >
+              Login {componentLoader.loading && <Loader />}
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="text-white-700  w-full rounded border border-accent bg-transparent px-4 py-2 font-semibold"
+              disabled={true}
+            >
+              Login {componentLoader.loading && <Loader />}
+            </button>
+          )}
+        </form>
+
+        <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+          Don't have an Account?
+        </p>
+        <button
+          type="submit"
+          className="text-white-700 w-full rounded border border-accent  bg-transparent px-4 py-2 font-semibold transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent  hover:bg-primary hover:text-white"
+          onClick={() => router.push("/register")}
+        >
+          Register
+        </button>
+      </div>
+    </div>
   );
 };
 
