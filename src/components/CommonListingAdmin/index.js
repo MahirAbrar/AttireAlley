@@ -3,6 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
+import { StarIcon } from "@heroicons/react/20/solid";
 
 const AdminCommonListing = ({ user, onDelete }) => {
   const { updateItem, setUpdateItem } = useContext(GlobalContext);
@@ -29,13 +30,22 @@ const AdminCommonListing = ({ user, onDelete }) => {
       <div className="card-body">
         <h2 className="card-title">
           {user.name}
-          {user.sale == "Yes" ? (
+          {user.onSale == "Yes" ? (
             <div className="badge badge-secondary">Sale</div>
           ) : (
             ""
           )}
         </h2>
-        <h3>{user.price}</h3>
+        {user.onSale == "Yes" ? (
+          <>
+            <strike>
+              <h3>{user.price} AUD </h3>
+            </strike>
+            <h3>{user.price - user.priceDrop} AUD</h3>
+          </>
+        ) : (
+          <h3>{user.price}</h3>
+        )}
         <div className="card-actions justify-end">
           <div className="badge badge-outline">Category: {user.category}</div>
         </div>

@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 
-const configOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
-
 let user = process.env.DB_HOST;
 let pass = process.env.DB_PASS;
 
