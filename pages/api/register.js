@@ -16,11 +16,9 @@ const schema = Joi.object({
 export const dynamic = "force-dynamic";
 
 export default async function handler(req, res) {
-  console.log("running api/register");
   await connectToDB();
   const { name, email, password, role } = req.body;
   //validate the schema
-  console.log(name, email, password, role);
   let correctName = name
     .split(" ")
     .map((word) => word[0].toUpperCase() + word.slice(1))
@@ -31,16 +29,13 @@ export default async function handler(req, res) {
   const { error } = schema.validate({ name, email, password, role });
 
   if (error) {
-    console.log(error);
     return res.status(400).json({
       success: false,
       message: error.details[0].message,
     });
   }
-  console.log("Schema validated");
   try {
     const isUserAlreadyExists = await User.findOne({ email: correctEmail });
-    console.log(isUserAlreadyExists);
 
     if (isUserAlreadyExists) {
       return res.status(400).json({
@@ -65,11 +60,9 @@ export default async function handler(req, res) {
       }
     }
   } catch (error) {
-    console.log("Error while new user registration. Please try again");
-
     return res.status(500).json({
       success: false,
-      message: "Something went wrong ! Please try again later",
+      message: "Something went wrong at the backend! Please try again later",
     });
   }
 }

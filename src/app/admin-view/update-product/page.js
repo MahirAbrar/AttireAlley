@@ -50,6 +50,7 @@ const UpdateProduct = () => {
     imageURL: updateItem.imageURL,
   });
 
+  console.log(formData);
   async function handleImage(event) {
     setImageUploading(true);
     const extractImageUrl = await imageUploadHelper(event.target.files[0]);
@@ -219,7 +220,7 @@ const UpdateProduct = () => {
           className="select select-bordered"
           value={formData.category}
         >
-          <option value="Kids">Everyone</option>
+          <option value="Everyone">Everyone</option>
           <option value="Men">Men</option>
           <option value="Women">Women</option>
           <option value="Kids">Kids</option>

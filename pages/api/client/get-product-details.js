@@ -2,7 +2,6 @@ import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
 
 export default async function handler(req, res) {
-  console.log("Fetching a single product from backend");
   if (req.method !== "GET") {
     return res.status(405).json({
       success: false,
@@ -21,7 +20,6 @@ export default async function handler(req, res) {
 
   try {
     await connectToDB();
-    console.log("Connected to database");
 
     const product = await Product.findById(productId);
 

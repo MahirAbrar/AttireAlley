@@ -132,7 +132,7 @@ const addProduct = () => {
       toast.error("Name must be at least 5 characters long.");
       return; // Stop the function if validation fails
     } else if (!formData.sizes || formData.sizes.length === 0) {
-      toast.error("Select at least 1 style.");
+      toast.error("Select at least 1 size.");
       return; // Stop the function if validation fails
     } else if (!formData.price) {
       toast.error("Price cannot be empty.");
@@ -323,25 +323,27 @@ const addProduct = () => {
           onChange={(e) => setFormData({ ...formData, onSale: e.target.value })}
           className="select select-bordered"
         >
-          <option value="Yes">Yes</option>
           <option value="No">No</option>
+          <option value="Yes">Yes</option>
         </select>
       </label>
 
-      <label className="form-control w-full ">
-        <div className="label">
-          <span className="label-text">Price Drop</span>
-        </div>
-        <input
-          type="number"
-          placeholder="Enter Price Drop"
-          className="input input-bordered w-full "
-          onChange={(e) =>
-            setFormData({ ...formData, priceDrop: e.target.value })
-          }
-          value={formData.priceDrop}
-        />
-      </label>
+      {formData.onSale === "Yes" && (
+        <label className="form-control w-full ">
+          <div className="label">
+            <span className="label-text">Price Drop</span>
+          </div>
+          <input
+            type="number"
+            placeholder="Enter Price Drop"
+            className="input input-bordered w-full "
+            onChange={(e) =>
+              setFormData({ ...formData, priceDrop: e.target.value })
+            }
+            value={formData.priceDrop}
+          />
+        </label>
+      )}
       <button
         className="btn mt-2 w-full"
         onClick={handleAddProduct}

@@ -1,6 +1,5 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
-import Joi from "joi";
 
 export const dynamic = "force-dynamic";
 
@@ -14,13 +13,10 @@ export default async function handler(req, res, next) {
 
   try {
     await connectToDB();
-    console.log("Connected to database");
 
     const user = "admin"; // This would typically come from your authentication logic
 
     if (user === "admin") {
-      console.log("Correct admin user. Fetching products now");
-
       try {
         // Use Product.find() without a filter to retrieve all documents from the collection
         const products = await Product.find({});
@@ -48,10 +44,9 @@ export default async function handler(req, res, next) {
     }
   } catch (error) {
     // Handle failed connection to DB
-    console.error("Failed to connect to database:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to connect to database",
+      message: "Failed to connect to database" + error.message,
     });
   }
 }

@@ -2,7 +2,6 @@ import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
 
 export default async function handler(req, res) {
-  console.log("deleting from backend");
   if (req.method !== "DELETE") {
     return res.status(405).json({
       success: false,
@@ -12,7 +11,6 @@ export default async function handler(req, res) {
 
   try {
     await connectToDB();
-    console.log("Connected to database");
 
     const { id } = req.query;
 
@@ -27,8 +25,6 @@ export default async function handler(req, res) {
     const user = "admin"; // This would typically come from your actual authentication logic
 
     if (user === "admin") {
-      console.log("Admin user. Deleting product now");
-
       const deletedProduct = await Product.findByIdAndDelete(id);
 
       if (!deletedProduct) {
@@ -52,10 +48,10 @@ export default async function handler(req, res) {
       });
     }
   } catch (error) {
-    console.error("Failed to connect to database or delete product:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to connect to database or delete product",
+      message:
+        "Failed to connect to database or delete product" + error.message,
     });
   }
 }

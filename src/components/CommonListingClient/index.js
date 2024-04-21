@@ -29,7 +29,7 @@ const ClientCommonListing = ({ user, params }) => {
             ""
           )}
         </h2>
-        <h3>{user.price}</h3>
+        <h3>{user.price} AUD</h3>
         <div className="card-actions justify-end">
           <div className="badge badge-outline">Category: {user.category}</div>
         </div>

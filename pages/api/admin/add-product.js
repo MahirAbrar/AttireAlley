@@ -30,7 +30,6 @@ export default async function handler(req, res, next) {
   // Assuming connectToDB is an async function that returns a Promise when the connection is successful
   try {
     await connectToDB();
-    console.log("Connected to database");
 
     const user = "admin"; // This would typically come from your authentication logic
 
@@ -66,10 +65,9 @@ export default async function handler(req, res, next) {
     }
   } catch (error) {
     // Handle failed connection to DB
-    console.error("Failed to connect to database:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to connect to database",
+      message: "Failed to connect to database" + error.message,
     });
   }
 }
