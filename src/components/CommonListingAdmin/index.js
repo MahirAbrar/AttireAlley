@@ -19,37 +19,42 @@ const AdminCommonListing = ({ user, onDelete }) => {
   };
 
   return (
-    <div className="mx-3 my-4 min-w-[360px] max-w-sm bg-base-100 shadow-xl  ">
+    <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
       <figure>
         <img
           src={user.imageURL}
           alt={user.name}
-          className="h-60 w-full rounded-xl object-cover"
+          className="h-60 w-full cursor-pointer rounded-xl object-cover"
         />
       </figure>
-      <div className="card-body">
+      <div className="card-body flex-grow">
         <h2 className="card-title">
           {user.name}
-          {user.onSale == "Yes" ? (
+          {user.onSale === "Yes" && (
             <div className="badge badge-secondary">Sale</div>
-          ) : (
-            ""
           )}
         </h2>
-        {user.onSale == "Yes" ? (
+        {user.onSale === "Yes" ? (
           <>
-            <strike>
-              <h3>{user.price} AUD </h3>
-            </strike>
-            <h3>{user.price - user.priceDrop} AUD</h3>
+            <div className="flex items-center">
+              <strike>
+                <h3 className="mr-2">{user.price} AUD </h3>
+              </strike>
+              <h3>{user.price - user.priceDrop} AUD</h3>
+              <div className="badge badge-outline ml-auto">
+                Category: {user.category}
+              </div>
+            </div>
           </>
         ) : (
-          <h3>{user.price}</h3>
+          <div className="flex items-center">
+            <h3>{user.price} AUD</h3>
+            <div className="badge badge-outline ml-auto">
+              Category: {user.category}
+            </div>
+          </div>
         )}
-        <div className="card-actions justify-end">
-          <div className="badge badge-outline">Category: {user.category}</div>
-        </div>
-        <div className="mt-4 flex justify-between gap-2">
+        <div className="mt-auto flex justify-between gap-2">
           <button
             className="btn btn-accent flex-grow"
             onClick={() => handleUpdate(user)}

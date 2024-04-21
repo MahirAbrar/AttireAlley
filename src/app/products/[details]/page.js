@@ -34,22 +34,48 @@ const Page = ({ params }) => {
   if (!productDetails) {
     return <p>No product details available</p>; // Handling case when no product details are loaded
   }
+  console.log(productDetails);
 
   return (
     <div className=" min-h-screen w-full bg-base-200">
-      <div className="hero-content flex-col lg:flex-row">
+      {/* left side */}
+      <div className="hero-content  flex-col lg:flex-row">
         <img
-          src={productDetails.imageURL}
+          src={productDetails.imageURL[0]}
           alt="Product Image"
-          className="max-w-sm rounded-lg shadow-2xl"
+          className="mb-auto max-w-sm rounded-lg shadow-2xl"
         />
+
+        {/* right side */}
         <div>
           <div className="flex flex-wrap gap-6">
             <h1 className="text-5xl font-bold">{productDetails.name}</h1>
-            <button className="btn btn-primary btn-wide">
-              <FontAwesomeIcon icon={faShoppingCart} />
-              Add to cart
-            </button>
+
+            <div className="flex w-full flex-row flex-wrap gap-4">
+              <button className="btn btn-primary btn-wide mr-4">
+                <FontAwesomeIcon icon={faShoppingCart} />
+                Add to cart
+              </button>
+              {productDetails.onSale == "Yes" ? (
+                <>
+                  <div className="flex items-center">
+                    <strike>
+                      <h3 className="mr-2">{productDetails.price} AUD </h3>
+                    </strike>
+                    <h3>
+                      {productDetails.price - productDetails.priceDrop} AUD
+                    </h3>
+                  </div>
+                  <div className="badge badge-accent badge-outline ml-auto h-full">
+                    Category: {productDetails.category}
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-center">
+                  <h3>{productDetails.price}</h3>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="divider"></div>
