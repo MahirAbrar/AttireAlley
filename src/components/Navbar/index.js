@@ -69,8 +69,10 @@ function Navbar() {
                   <li key={item.id} className="ml-2 inline-block">
                     <Link
                       href={item.path}
-                      className={`text-sm uppercase text-white transition-colors duration-300 ease-in-out hover:text-red-500 dark:text-white ${
-                        item.active ? "text-red-500" : ""
+                      className={`text-sm uppercase transition-colors duration-300 ease-in-out hover:text-red-500 ${
+                        item.active
+                          ? "text-red-500"
+                          : "text-gray-800 dark:text-white"
                       }`}
                       aria-current="page"
                       onClick={() => handleLinkClick(item.path)}
@@ -83,8 +85,10 @@ function Navbar() {
                   <li key={item.id} className="ml-2 inline-block">
                     <Link
                       href={item.path}
-                      className={`text-sm uppercase text-white transition-colors duration-300 ease-in-out hover:text-red-500 dark:text-white ${
-                        item.active ? "text-red-500" : ""
+                      className={`text-sm uppercase transition-colors duration-300 ease-in-out hover:text-red-500 ${
+                        item.active
+                          ? "text-red-500"
+                          : "text-gray-800 dark:text-white"
                       }`}
                       aria-current="page"
                       onClick={() => handleLinkClick(item.path)}

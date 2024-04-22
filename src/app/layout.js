@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import GlobalState from "../context";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,9 +20,10 @@ export default function RootLayout({ children }) {
         <GlobalState>
           <Navbar />
           <ToastContainer />
-          <main className="flex h-full w-full flex-col items-center justify-center bg-background p-6 dark:bg-backgroundDark">
+          <main className="flex h-full w-full flex-col items-center justify-center bg-background p-6 pb-0 dark:bg-backgroundDark">
             {children}
           </main>
+          <Footer />
         </GlobalState>
       </body>
     </html>

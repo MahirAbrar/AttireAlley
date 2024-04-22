@@ -34,7 +34,7 @@ const ClientCommonListing = ({ user, params }) => {
             <strike>
               <h3 className="mr-2">{user.price} AUD </h3>
             </strike>
-            <h3>{user.price - user.priceDrop} AUD</h3>
+            <h3 className="text-red-600">{user.price - user.priceDrop} AUD</h3>
             <div className="badge badge-outline ml-auto">
               Category: {user.category}
             </div>

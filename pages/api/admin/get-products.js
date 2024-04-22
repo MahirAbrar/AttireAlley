@@ -14,9 +14,9 @@ export default async function handler(req, res, next) {
   try {
     await connectToDB();
 
-    const user = "admin"; // This would typically come from your authentication logic
+    const isAuthUser = await AuthUser(req);
 
-    if (user === "admin") {
+    if (isAuthUser.role === "admin") {
       try {
         // Use Product.find() without a filter to retrieve all documents from the collection
         const products = await Product.find({});

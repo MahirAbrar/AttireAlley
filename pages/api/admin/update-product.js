@@ -16,9 +16,9 @@ export default async function handler(req, res) {
     const productUpdates = req.body;
 
     // Authentication and authorization logic here
-    const user = "admin"; // This would typically come from your actual authentication logic
+    const isAuthUser = await AuthUser(req);
 
-    if (user !== "admin") {
+    if (isAuthUser.role === "admin") {
       // If the user is not recognized as an admin
       return res.status(401).json({
         success: false,

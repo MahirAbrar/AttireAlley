@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 let user = process.env.DB_HOST;
 let pass = process.env.DB_PASS;
 
+const configOptions = {};
+
 // Connecting to MongoDB function
 const connectToDB = async () => {
   // Check if already connected or in the process of connecting

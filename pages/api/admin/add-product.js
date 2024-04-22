@@ -1,5 +1,6 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
+import AuthUser from "@/middleware/AuthUser";
 import Joi from "joi";
 
 export const dynamic = "force-dynamic";
@@ -30,10 +31,9 @@ export default async function handler(req, res, next) {
   // Assuming connectToDB is an async function that returns a Promise when the connection is successful
   try {
     await connectToDB();
+    const isAuthUser = await AuthUser(req);
 
-    const user = "admin"; // This would typically come from your authentication logic
-
-    if (user === "admin") {
+    if (isAuthUser.role === "admin") {
       console.log("Admin user. Add product");
 
       const data = req.body;

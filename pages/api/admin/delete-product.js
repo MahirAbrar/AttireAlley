@@ -1,5 +1,6 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
+import AuthUser from "@/middleware/AuthUser";
 
 export default async function handler(req, res) {
   if (req.method !== "DELETE") {
@@ -21,10 +22,10 @@ export default async function handler(req, res) {
       });
     }
 
-    // Authentication and authorization logic here
-    const user = "admin"; // This would typically come from your actual authentication logic
+    const isAuthUser = await AuthUser(req);
 
-    if (user === "admin") {
+    // Authentication and authorization logic here
+    if (isAuthUser.role === "admin") {
       const deletedProduct = await Product.findByIdAndDelete(id);
 
       if (!deletedProduct) {
