@@ -1,17 +1,13 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
 import AuthUser from "@/middleware/AuthUser";
-import { NextResponse } from "next/server";
 
 export default async function handler(req, res) {
   if (req.method !== "DELETE") {
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Method not allowed",
-      },
-      { status: 405 },
-    );
+    return res.status(405).json({
+      success: false,
+      message: "Method not allowed",
+    });
   }
 
   try {
@@ -20,13 +16,10 @@ export default async function handler(req, res) {
     const { id } = req.query;
 
     if (!id) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Product ID is required",
-        },
-        { status: 400 },
-      );
+      return res.status(400).json({
+        success: false,
+        message: "Product ID is required",
+      });
     }
 
     const isAuthUser = await AuthUser(req);
@@ -36,42 +29,30 @@ export default async function handler(req, res) {
       const deletedProduct = await Product.findByIdAndDelete(id);
 
       if (!deletedProduct) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Product not found",
-          },
-          { status: 404 },
-        );
+        return res.status(404).json({
+          success: false,
+          message: "Product not found",
+        });
       }
 
       // If the deletion was successful
-      return NextResponse.json(
-        {
-          success: true,
-          message: "Product deleted successfully",
-          data: deletedProduct, // Optionally return the deleted product's data
-        },
-        { status: 200 },
-      );
+      return res.status(200).json({
+        success: true,
+        message: "Product deleted successfully",
+        data: deletedProduct, // Optionally return the deleted product's data
+      });
     } else {
       // If the user is not recognized as an admin
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Unauthorized",
-        },
-        { status: 401 },
-      );
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
     }
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message:
-          "Failed to connect to database or delete product" + error.message,
-      },
-      { status: 500 },
-    );
+    return res.status(500).json({
+      success: false,
+      message:
+        "Failed to connect to database or delete product" + error.message,
+    });
   }
 }
