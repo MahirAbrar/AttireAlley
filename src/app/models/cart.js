@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 const CartSchema = new mongoose.Schema(
   {
     userID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+      ref: "users",
     },
 
     productID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Products",
+      type: String,
+      ref: "products",
     },
     quantity: {
       type: Number,

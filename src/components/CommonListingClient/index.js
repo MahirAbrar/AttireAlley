@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
 import React from "react";
+import { addToCart } from "@/app/services/addToCart";
 
 const ClientCommonListing = ({ user, params }) => {
   const router = useRouter();
@@ -10,6 +11,15 @@ const ClientCommonListing = ({ user, params }) => {
     redirectLink = `products/${user._id}`;
   } else {
     redirectLink = `${user._id}`;
+  }
+
+  async function addItemToCart(user) {
+    const formData = {
+      productID: user._id,
+      quantity: 1,
+    };
+
+    const res = await addToCart(formData);
   }
   return (
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
@@ -48,7 +58,10 @@ const ClientCommonListing = ({ user, params }) => {
           </div>
         )}
         <div className="mt-auto flex justify-between gap-2">
-          <button className="btn btn-warning mt-auto flex-grow">
+          <button
+            className="btn btn-warning mt-auto flex-grow"
+            onClick={() => addItemToCart(user)}
+          >
             Add to Cart
           </button>
         </div>
