@@ -44,3 +44,5 @@ Display on all product page
 Image only uploaded when submit button is pressed in Add new Product from Admin view
 
 Only admins can access the APIs.
+
+NEED TO FIX MIDDLEWARE AUTH

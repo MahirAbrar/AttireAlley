@@ -2,14 +2,13 @@ import connectToDB from "@/app/database";
 import Cart from "@/app/models/cart";
 import AuthUser from "@/middleware/AuthUser";
 import Joi from "joi";
-import { addToCart } from "@/app/services/addToCart";
 
 export const dynamic = "force-dynamic";
 
-const AddToCart = Joi.object({
-  productID: Joi.string().required(),
-  userID: Joi.string().required(),
-});
+// const AddToCart = Joi.object({
+//   productID: Joi.string().required(),
+//   userID: Joi.string().required(),
+// });
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -23,9 +22,11 @@ export default async function handler(req, res) {
     await connectToDB().then(() => {
       console.log("Database connected in add-to-cart.js");
     });
+
     const isAuthUser = await AuthUser(req);
     console.log(isAuthUser);
-    if (true || isAuthUser) {
+    // need to change
+    if (isAuthUser) {
       const data = req.body;
       const { productID, userID } = req.body;
 

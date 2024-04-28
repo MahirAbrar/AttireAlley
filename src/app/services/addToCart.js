@@ -1,17 +1,11 @@
 import Cookies from "js-cookie";
-import { AuthUser } from "@/middleware/AuthUser";
+
+// requires product ID
+// requires user ID
+// requires quantity
 
 // Frontend service function to add a product to the cart
 export const addToCart = async (productID, userID, quantity) => {
-  const isAuthUser = await AuthUser(`Bearer ${Cookies.get("token")}`);
-
-  if (!isAuthUser) {
-    return {
-      success: false,
-      message: "User is not authenticated",
-    };
-  }
-
   try {
     const formData = {
       productID: productID,

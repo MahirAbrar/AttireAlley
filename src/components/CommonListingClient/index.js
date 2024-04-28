@@ -2,6 +2,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import React from "react";
 import { addToCart } from "@/app/services/addToCart";
+import AuthUser from "@/middleware/AuthUser";
 
 const ClientCommonListing = ({ user, params }) => {
   const router = useRouter();
@@ -20,6 +21,7 @@ const ClientCommonListing = ({ user, params }) => {
     };
 
     const res = await addToCart(formData);
+    console.log("res is ", res);
   }
   return (
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
