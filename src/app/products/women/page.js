@@ -66,7 +66,7 @@ const women = () => {
       <div className="flex flex-wrap justify-center p-6">
         {currentProducts.length > 0 &&
           currentProducts.map((product) => (
-            <ClientCommonListing key={product._id} user={product} />
+            <ClientCommonListing key={product._id} product={product} />
           ))}
 
         {currentProducts.length == 0 && <h1>No products found</h1>}

@@ -5,16 +5,15 @@ import Cookies from "js-cookie";
 // requires quantity
 
 // Frontend service function to add a product to the cart
-export const addToCart = async (productID, userID, quantity) => {
+export const addToCart = async (data) => {
+  const formData = {
+    productID: data.productID,
+    userID: data.userID,
+    quantity: data.quantity,
+  };
+
+  console.log("formData is ", formData);
   try {
-    const formData = {
-      productID: productID,
-      userID: userID,
-      quantity: quantity,
-    };
-
-    console.log("Adding item to cart", JSON.stringify(formData));
-
     const response = await fetch("/api/cart/add-to-cart", {
       method: "POST",
       headers: {
@@ -25,7 +24,6 @@ export const addToCart = async (productID, userID, quantity) => {
     });
 
     const data = await response.json();
-    console.log("Response from add to cart", data);
 
     if (!response.ok) {
       return {
@@ -38,7 +36,7 @@ export const addToCart = async (productID, userID, quantity) => {
 
     return { success: true, data };
   } catch (e) {
-    console.log("Error in add to cart service", e);
+    console.log("Error in add to cart services", e);
     return { success: false, message: e.message };
   }
 };

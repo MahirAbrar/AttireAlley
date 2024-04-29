@@ -2,21 +2,31 @@
 import { useRouter, usePathname } from "next/navigation";
 import React from "react";
 import { addToCart } from "@/app/services/addToCart";
-import AuthUser from "@/middleware/AuthUser";
+import { GlobalContext } from "@/context";
+import { toast } from "react-toastify";
+import { useContext } from "react";
 
-const ClientCommonListing = ({ user, params }) => {
+const ClientCommonListing = ({ product, params }) => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const { isAuthUser, user } = useContext(GlobalContext);
+
   let redirectLink = "";
   if (pathname == "/products") {
-    redirectLink = `products/${user._id}`;
+    redirectLink = `products/${product._id}`;
   } else {
-    redirectLink = `${user._id}`;
+    redirectLink = `${product._id}`;
   }
 
-  async function addItemToCart(user) {
+  async function addItemToCart(product) {
+    if (!isAuthUser || !user) {
+      toast.error("Please login to add items to cart");
+      return;
+    }
     const formData = {
-      productID: user._id,
+      productID: product._id,
+      userID: user._id,
       quantity: 1,
     };
 
@@ -27,42 +37,44 @@ const ClientCommonListing = ({ user, params }) => {
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
       <figure onClick={() => router.push(redirectLink)}>
         <img
-          src={user.imageURL}
-          alt={user.name}
+          src={product.imageURL}
+          alt={product.name}
           className="h-60 w-full cursor-pointer rounded-xl object-cover"
         />
       </figure>
       <div className="card-body flex-grow">
         <h2 className="card-title">
-          {user.name}
-          {user.onSale == "Yes" ? (
+          {product.name}
+          {product.onSale == "Yes" ? (
             <div className="badge badge-secondary">Sale</div>
           ) : (
             ""
           )}
         </h2>
-        {user.onSale == "Yes" ? (
+        {product.onSale == "Yes" ? (
           <div className="flex items-center">
             <strike>
-              <h3 className="mr-2">{user.price} AUD </h3>
+              <h3 className="mr-2">{product.price} AUD </h3>
             </strike>
-            <h3 className="text-red-600">{user.price - user.priceDrop} AUD</h3>
+            <h3 className="text-red-600">
+              {product.price - product.priceDrop} AUD
+            </h3>
             <div className="badge badge-outline ml-auto">
-              Category: {user.category}
+              Category: {product.category}
             </div>
           </div>
         ) : (
           <div className="flex items-center">
-            <h3>{user.price}</h3>
+            <h3>{product.price}</h3>
             <div className="badge badge-outline ml-auto">
-              Category: {user.category}
+              Category: {product.category}
             </div>
           </div>
         )}
         <div className="mt-auto flex justify-between gap-2">
           <button
             className="btn btn-warning mt-auto flex-grow"
-            onClick={() => addItemToCart(user)}
+            onClick={() => addItemToCart(product)}
           >
             Add to Cart
           </button>

@@ -64,7 +64,7 @@ const products = () => {
 
       <div className="flex flex-wrap justify-center p-6">
         {currentProducts.map((product) => (
-          <ClientCommonListing key={product._id} user={product} />
+          <ClientCommonListing key={product._id} product={product} />
         ))}
       </div>
     </>
