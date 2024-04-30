@@ -13,14 +13,10 @@ export default async function handler(req, res) {
 
   try {
     await connectToDB();
-    const isAuthUser = await AuthUser(req);
 
-    if (!isAuthUser) {
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized, you need to be logged in first.",
-      });
-    }
+    // get the params fro the req
+    userID = req.query.userID;
+    clg(userID);
 
     const cartItems = await Cart.find({ userID: isAuthUser.id });
 
