@@ -1,5 +1,5 @@
 import connectToDB from "@/app/database";
-import Cart from "@/app/models/cart";
+import User from "@/app/models/user";
 import mongoose from "mongoose";
 
 export default async function handler(req, res) {
@@ -13,16 +13,22 @@ export default async function handler(req, res) {
   try {
     await connectToDB();
     console.log("Database connected successfully");
-
     console.log("req.body is ", req.body);
-    const { productID, userID, quantity } = req.body;
 
+    const { productID, userID, quantity } = req.body;
     console.log("Adding to cart:", { productID, userID, quantity });
 
-    const itemExistInCart = await Cart.findOne({
-      productID: new mongoose.Types.ObjectId(productID),
-      userID: new mongoose.Types.ObjectId(userID),
-    });
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const itemExistInCart = user.cart.find(
+      (item) => item.productID.toString() === productID,
+    );
 
     if (itemExistInCart) {
       console.log("Item already exists in cart:", itemExistInCart);
@@ -33,29 +39,20 @@ export default async function handler(req, res) {
       });
     }
 
-    const newCartItem = {
+    user.cart.push({
       productID: new mongoose.Types.ObjectId(productID),
-      userID: new mongoose.Types.ObjectId(userID),
       quantity,
-    };
+    });
 
-    console.log("Creating new cart item:", newCartItem);
-    const addProductToCart = await Cart.create(newCartItem);
-    console.log("New cart item added:", addProductToCart);
+    await user.save();
 
-    if (addProductToCart) {
-      return res.status(200).json({
-        success: true,
-        message: "Product added to cart successfully",
-        data: addProductToCart,
-      });
-    } else {
-      console.log("Failed to add product to cart after creation attempt.");
-      return res.status(500).json({
-        success: false,
-        message: "Failed adding to cart. Please try again.",
-      });
-    }
+    console.log("Product added to user's cart:", user.cart);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product added to cart successfully",
+      data: user.cart,
+    });
   } catch (e) {
     console.error("Error in add-to-cart process:", e);
     return res.status(500).json({

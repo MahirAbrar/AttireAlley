@@ -88,9 +88,9 @@ const login = () => {
   }
 
   return (
-    <div className="mx-auto flex w-full flex-col items-center justify-center rounded-lg bg-background py-20 shadow dark:border dark:border-gray-700  dark:bg-gray-800 sm:max-w-md md:mt-0">
-      <div className="w-96 space-y-4 p-6 sm:p-8 md:space-y-6">
-        <h1 className="text-center text-2xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+    <div className="mt-10 w-full rounded-lg bg-white shadow-lg sm:max-w-md md:mt-0 xl:p-0 dark:bg-gray-800">
+      <div className="w-auto space-y-4 p-6 sm:p-8 md:space-y-6">
+        <h1 className="text-center text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
           Login to your account
         </h1>
 
@@ -107,7 +107,7 @@ const login = () => {
               name="email"
               onChange={handleChange}
               id="email"
-              className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+              className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="name@company.com"
               required=""
             />
@@ -125,7 +125,7 @@ const login = () => {
               onChange={handleChange}
               id="password"
               placeholder="Password"
-              className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+              className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 sm:text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               required=""
             />
           </div>

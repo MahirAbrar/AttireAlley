@@ -48,8 +48,10 @@ const RegisterForm = () => {
   async function handleRegisterOnSubmit() {
     // calls database and save the data
     console.log("submitting form");
+    // code after will not run until the await promise is resolved
     const data = await registerNewUser(formState);
     console.log(data);
+    router.push("/");
   }
 
   return (
@@ -57,7 +59,7 @@ const RegisterForm = () => {
       <div>
         <label
           htmlFor="name"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
         >
           Name
         </label>
@@ -66,7 +68,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           name="name"
           id="name"
-          className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
           placeholder="John Doe"
           required=""
         />
@@ -77,7 +79,7 @@ const RegisterForm = () => {
       <div>
         <label
           htmlFor="email"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
         >
           Email
         </label>
@@ -86,7 +88,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           name="email"
           id="email"
-          className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
           placeholder="name@company.com"
           required=""
         />
@@ -97,7 +99,7 @@ const RegisterForm = () => {
       <div>
         <label
           htmlFor="password"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
         >
           Password
         </label>
@@ -107,7 +109,7 @@ const RegisterForm = () => {
           name="password"
           id="password"
           placeholder="••••••••"
-          className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
           required=""
         />
       </div>
@@ -115,7 +117,7 @@ const RegisterForm = () => {
       <div>
         <label
           htmlFor="confirm-password"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
         >
           Confirm password
         </label>
@@ -125,7 +127,7 @@ const RegisterForm = () => {
           name="confirm-password"
           id="confirm-password"
           placeholder="••••••••"
-          className="focus:ring-primary-600 focus:border-primary-600 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 sm:text-sm"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
           required=""
         />
         {formState.password &&
@@ -137,7 +139,7 @@ const RegisterForm = () => {
       <div>
         <label
           htmlFor="countries"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+          className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
         >
           Select an option
         </label>
@@ -145,7 +147,7 @@ const RegisterForm = () => {
           id="role"
           name="role"
           onChange={handleChange}
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
         >
           <option value="client">Customer</option>
           <option value="admin">Admin</option>
@@ -157,18 +159,18 @@ const RegisterForm = () => {
             id="terms"
             aria-describedby="terms"
             type="checkbox"
-            className="checked={formState.terms} h-4 w-4 rounded border border-gray-300 bg-gray-50"
+            className="checked={formState.terms} h-4 w-4 rounded border border-gray-300 bg-white"
           />
         </div>
         <div className="ml-3 text-sm">
           <label
             htmlFor="terms"
-            className="font-light text-gray-500 dark:text-gray-300"
+            className="font-light text-gray-500 dark:text-textDark"
           >
             I accept the{" "}
             <label
               htmlFor="my_modal_7"
-              className="cursor-pointer text-text underline dark:text-textDark"
+              className="cursor-pointer text-primary underline dark:text-textDark"
             >
               Terms and conditions
             </label>
@@ -178,7 +180,7 @@ const RegisterForm = () => {
                 <h3 className="text-center text-lg font-bold text-text dark:text-textDark">
                   Terms and Conditions
                 </h3>
-                <div className="overflow-auto  text-center">
+                <div className="overflow-auto text-center">
                   <p className="text-text dark:text-textDark">
                     <strong>Last Updated:</strong> [Date]
                   </p>
@@ -234,7 +236,7 @@ const RegisterForm = () => {
       {isFormValid() ? (
         <button
           type="submit"
-          className="text-white-700 m-3 w-full rounded border border-accent  bg-transparent px-4 py-2 font-semibold transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent  hover:bg-primary hover:text-white"
+          className="hover:bg-primary-600 w-full rounded border border-accent bg-primary px-4 py-2 font-semibold text-white transition delay-150 duration-300 ease-in-out hover:scale-110 hover:cursor-pointer hover:border-transparent hover:text-white"
           onClick={() => handleRegisterOnSubmit()}
         >
           Create an account
@@ -242,17 +244,17 @@ const RegisterForm = () => {
       ) : (
         <button
           type="submit"
-          className="text-white-700 m-3 w-full rounded border border-accent bg-transparent px-4 py-2 font-semibold"
+          className="w-full rounded border border-accent bg-gray-300 px-4 py-2 font-semibold text-white"
           disabled={true}
         >
           Create an account
         </button>
       )}
 
-      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+      <p className="text-sm font-light text-gray-500 dark:text-textDark">
         Already have an account?{" "}
         <span
-          className="text-decoration-line:	underline hover:cursor-pointer"
+          className="text-decoration-line: text-primary underline hover:cursor-pointer"
           onClick={() => router.push("/login")}
         >
           Login here

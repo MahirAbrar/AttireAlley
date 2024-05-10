@@ -4,7 +4,6 @@ import connectToDB from "@/app/database";
 import User from "@/app/models/user";
 import { hash } from "bcryptjs";
 import Joi from "joi";
-import { NextResponse } from "next/server";
 
 const schema = Joi.object({
   name: Joi.string().required(),
