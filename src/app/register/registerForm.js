@@ -68,7 +68,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           name="name"
           id="name"
-          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
+          className="dark:placeholder-gray-text block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder:text-text dark:focus:border-primary dark:focus:ring-primary"
           placeholder="John Doe"
           required=""
         />
@@ -88,7 +88,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           name="email"
           id="email"
-          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
           placeholder="name@company.com"
           required=""
         />
@@ -109,7 +109,7 @@ const RegisterForm = () => {
           name="password"
           id="password"
           placeholder="••••••••"
-          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
           required=""
         />
       </div>
@@ -127,7 +127,7 @@ const RegisterForm = () => {
           name="confirm-password"
           id="confirm-password"
           placeholder="••••••••"
-          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
           required=""
         />
         {formState.password &&
@@ -147,7 +147,7 @@ const RegisterForm = () => {
           id="role"
           name="role"
           onChange={handleChange}
-          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-backgroundDark dark:text-textDark dark:placeholder-gray-400 dark:focus:border-primary dark:focus:ring-primary"
+          className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
         >
           <option value="client">Customer</option>
           <option value="admin">Admin</option>

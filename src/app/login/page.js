@@ -111,6 +111,19 @@ const login = () => {
               placeholder="name@company.com"
               required=""
             />
+
+            {/*       colors: {
+        text: "#0a1414",
+        background: "#f8fbfc",
+        primary: "#57a7a8",
+        secondary: "#aab9d3",
+        accent: "#858ec0",
+        textDark: "#ebf5f5",
+        backgroundDark: "#030607",
+        primaryDark: "#57a7a8",
+        secondaryDark: "#2b3a54",
+        accentDark: "#3e4779",
+      }, */}
           </div>
           <div>
             <label

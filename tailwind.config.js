@@ -19,7 +19,7 @@ module.exports = {
         backgroundDark: "#030607",
         primaryDark: "#57a7a8",
         secondaryDark: "#2b3a54",
-        accentDark: "#3e4779",
+        accentDark: "#4a5568",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
