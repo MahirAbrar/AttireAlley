@@ -31,6 +31,11 @@ const ClientCommonListing = ({ product, params }) => {
     };
 
     const res = await addToCart(formData);
+    if (res.success) {
+      toast.success("Item added to cart");
+    } else {
+      toast.error(res.message || "Error adding item to cart");
+    }
     console.log("res is ", res);
   }
   return (

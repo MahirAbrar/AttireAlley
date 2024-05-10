@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
     {
       productID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        ref: "Products",
       },
       quantity: Number,
     },

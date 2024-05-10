@@ -108,7 +108,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           name="password"
           id="password"
-          placeholder="••••••••"
+          placeholder="Enter your Password"
           className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
           required=""
         />
@@ -126,7 +126,7 @@ const RegisterForm = () => {
           onChange={handleChange}
           name="confirm-password"
           id="confirm-password"
-          placeholder="••••••••"
+          placeholder="Confirm your Password"
           className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
           required=""
         />

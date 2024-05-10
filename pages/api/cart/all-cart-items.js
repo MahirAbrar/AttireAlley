@@ -1,8 +1,8 @@
 import connectToDB from "@/app/database";
-import Cart from "@/app/models/cart";
+import User from "@/app/models/user";
+import Products from "@/app/models/products";
 import AuthUser from "@/middleware/AuthUser";
 
-// !NEED TO FIX
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({
@@ -11,25 +11,46 @@ export default async function handler(req, res) {
     });
   }
 
+  const user = await AuthUser(req);
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+  }
+
   try {
     await connectToDB();
+    console.log("Database connected successfully");
 
-    // get the params fro the req
-    userID = req.query.userID;
-    clg(userID);
+    const { userID } = req.query;
+    console.log("Retrieving cart items for user:", userID);
 
-    const cartItems = await Cart.find({ userID: isAuthUser.id });
+    const dbUser = await User.findById(userID).populate({
+      path: "cart.productID",
+      model: Products,
+    });
+    if (!dbUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const cartItems = dbUser.cart;
+    console.log("Cart items retrieved:", cartItems);
 
     return res.status(200).json({
       success: true,
-      message: "Cart items fetched successfully",
+      message: "Cart items retrieved successfully",
       data: cartItems,
     });
   } catch (e) {
-    console.error("Error fetching cart items:", e);
+    console.error("Error in retrieving cart items:", e);
     return res.status(500).json({
       success: false,
-      message: "Failed to connect to database or fetch cart items",
+      message: "Failed to connect to database or other internal error",
+      error: e.message,
     });
   }
 }
