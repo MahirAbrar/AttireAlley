@@ -1,13 +1,16 @@
 import Cookies from "js-cookie";
-import { isAuthUser } from "@/middleware/AuthUser";
+// import { GlobalContext } from "@/context/index";
+import { useContext } from "react";
 
 export const getCartItems = async (userID) => {
-  if (!isAuthUser()) {
-    return {
-      success: false,
-      message: "User is not authenticated",
-    };
-  }
+  // const { isAuthUser } = useContext(GlobalContext);
+
+  // if (!isAuthUser()) {
+  //   return {
+  //     success: false,
+  //     message: "User is not authenticated",
+  //   };
+  // }
 
   try {
     const response = await fetch(`/api/cart/all-cart-items?userID=${userID}`, {

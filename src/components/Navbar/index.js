@@ -2,12 +2,13 @@
 
 import { GlobalContext } from "@/context";
 import { adminNavOptions, navOptions } from "@/utils";
-import { useContext, useRef, useCallback } from "react";
+import { useContext, useRef, useCallback, useEffect, useState } from "react";
 import CommonModal from "../CommonModal";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { getCartItems } from "@/app/services/getCartItems";
 
 function Navbar() {
   const {
@@ -17,11 +18,27 @@ function Navbar() {
     user,
     setIsAuthUser,
     setUser,
+    cartItemsCount,
   } = useContext(GlobalContext);
+
+  const [cartDisplay, setCartDisplay] = useState(0);
 
   const router = useRouter();
   const pathName = usePathname();
   const isAdminView = pathName.includes("admin-view");
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      if (isAuthUser && user) {
+        const { success, data } = await getCartItems(user._id);
+        if (success) {
+          setCartDisplay(data.length);
+        }
+      }
+    };
+
+    fetchCartItems();
+  }, [isAuthUser, user, cartItemsCount]);
 
   const handleLogout = useCallback(() => {
     setIsAuthUser(false);
@@ -55,7 +72,7 @@ function Navbar() {
             className="flex items-center space-x-3 rtl:space-x-reverse"
             onClick={handleLinkClick("/")}
           >
-            <span className=" whitespace-nowrap text-sm font-semibold dark:text-white sm:text-xl lg:text-2xl">
+            <span className=" whitespace-nowrap text-sm font-semibold sm:text-xl lg:text-2xl dark:text-white">
               AttireAlley
             </span>
           </Link>
@@ -124,17 +141,24 @@ function Navbar() {
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    <span className="badge indicator-item badge-sm">8</span>
+                    <span className="badge indicator-item badge-sm">
+                      {cartDisplay}
+                    </span>
                   </div>
                   <div
                     tabIndex={0}
                     className="card dropdown-content card-compact z-[1] w-52 bg-base-100 shadow"
                   >
                     <div className="card-body">
-                      <span className="text-lg font-bold">8 Items</span>
+                      <span className="text-lg font-bold">
+                        {cartDisplay} Items
+                      </span>
                       <span className="text-info">Subtotal: $999</span>
                       <div className="card-actions">
-                        <button className="btn btn-primary btn-block">
+                        <button
+                          className="btn btn-primary btn-block"
+                          onClick={() => router.push("/cart")}
+                        >
                           View cart
                         </button>
                       </div>

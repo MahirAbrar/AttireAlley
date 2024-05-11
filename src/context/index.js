@@ -18,6 +18,7 @@ export default function GlobalState({ children }) {
   });
   const [pageLoader, setPageLoader] = useState(false);
   const [updateItem, setUpdateItem] = useState(null);
+  const [cartitemsCount, setCartItemsCount] = useState(0);
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -46,6 +47,8 @@ export default function GlobalState({ children }) {
         setPageLoader,
         updateItem,
         setUpdateItem,
+        cartitemsCount,
+        setCartItemsCount,
       }}
     >
       {children}

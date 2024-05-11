@@ -5,12 +5,13 @@ import { addToCart } from "@/app/services/addToCart";
 import { GlobalContext } from "@/context";
 import { toast } from "react-toastify";
 import { useContext } from "react";
+import { getCartItems } from "@/app/services/getCartItems";
 
 const ClientCommonListing = ({ product, params }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { isAuthUser, user } = useContext(GlobalContext);
+  const { isAuthUser, user, setCartItemsCount } = useContext(GlobalContext);
 
   let redirectLink = "";
   if (pathname == "/products") {
@@ -24,6 +25,7 @@ const ClientCommonListing = ({ product, params }) => {
       toast.error("Please login to add items to cart");
       return;
     }
+
     const formData = {
       productID: product._id,
       userID: user._id,
@@ -33,6 +35,8 @@ const ClientCommonListing = ({ product, params }) => {
     const res = await addToCart(formData);
     if (res.success) {
       toast.success("Item added to cart");
+      const { data } = await getCartItems(user._id);
+      setCartItemsCount(data.length);
     } else {
       toast.error(res.message || "Error adding item to cart");
     }
