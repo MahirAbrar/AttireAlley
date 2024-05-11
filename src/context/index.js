@@ -19,6 +19,11 @@ export default function GlobalState({ children }) {
   const [pageLoader, setPageLoader] = useState(false);
   const [updateItem, setUpdateItem] = useState(null);
   const [cartitemsCount, setCartItemsCount] = useState(0);
+  const [navbarUpdateTrigger, setNavbarUpdateTrigger] = useState(0);
+
+  const triggerNavbarUpdate = () => {
+    setNavbarUpdateTrigger((prevTrigger) => (prevTrigger + 1) % 11);
+  };
 
   useEffect(() => {
     const token = Cookies.get("token");
@@ -49,6 +54,8 @@ export default function GlobalState({ children }) {
         setUpdateItem,
         cartitemsCount,
         setCartItemsCount,
+        navbarUpdateTrigger,
+        triggerNavbarUpdate,
       }}
     >
       {children}

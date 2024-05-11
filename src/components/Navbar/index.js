@@ -19,6 +19,7 @@ function Navbar() {
     setIsAuthUser,
     setUser,
     cartItemsCount,
+    navbarUpdateTrigger,
   } = useContext(GlobalContext);
 
   const [cartDisplay, setCartDisplay] = useState(0);
@@ -38,7 +39,7 @@ function Navbar() {
     };
 
     fetchCartItems();
-  }, [isAuthUser, user, cartItemsCount]);
+  }, [isAuthUser, user, navbarUpdateTrigger]); // Include navbarUpdateTrigger in the dependency array
 
   const handleLogout = useCallback(() => {
     setIsAuthUser(false);

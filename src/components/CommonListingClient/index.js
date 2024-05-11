@@ -11,7 +11,8 @@ const ClientCommonListing = ({ product, params }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { isAuthUser, user, setCartItemsCount } = useContext(GlobalContext);
+  const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
+    useContext(GlobalContext);
 
   let redirectLink = "";
   if (pathname == "/products") {
@@ -35,8 +36,11 @@ const ClientCommonListing = ({ product, params }) => {
     const res = await addToCart(formData);
     if (res.success) {
       toast.success("Item added to cart");
-      const { data } = await getCartItems(user._id);
-      setCartItemsCount(data.length);
+      const { success, data } = await getCartItems(user._id);
+      if (success) {
+        setCartItemsCount(data.length);
+        triggerNavbarUpdate(); // Trigger the navbar update
+      }
     } else {
       toast.error(res.message || "Error adding item to cart");
     }
