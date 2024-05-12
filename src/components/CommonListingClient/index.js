@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { addToCart } from "@/app/services/addToCart";
 import { GlobalContext } from "@/context";
 import { toast } from "react-toastify";
@@ -10,9 +10,9 @@ import { getCartItems } from "@/app/services/getCartItems";
 const ClientCommonListing = ({ product, params }) => {
   const router = useRouter();
   const pathname = usePathname();
-
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
     useContext(GlobalContext);
+  const [expandedItems, setExpandedItems] = useState([]);
 
   let redirectLink = "";
   if (pathname == "/products") {
@@ -46,6 +46,15 @@ const ClientCommonListing = ({ product, params }) => {
     }
     console.log("res is ", res);
   }
+
+  const toggleDescription = (itemId) => {
+    if (expandedItems.includes(itemId)) {
+      setExpandedItems(expandedItems.filter((id) => id !== itemId));
+    } else {
+      setExpandedItems([...expandedItems, itemId]);
+    }
+  };
+
   return (
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
       <figure onClick={() => router.push(redirectLink)}>
@@ -64,6 +73,19 @@ const ClientCommonListing = ({ product, params }) => {
             ""
           )}
         </h2>
+        <p className="mb-4 text-sm">
+          {expandedItems.includes(product._id)
+            ? product.description
+            : `${product.description.slice(0, 100)}...`}
+          {product.description.length > 100 && (
+            <span
+              className="ml-1 cursor-pointer text-blue-500"
+              onClick={() => toggleDescription(product._id)}
+            >
+              {expandedItems.includes(product._id) ? "Less" : "More"}
+            </span>
+          )}
+        </p>
         {product.onSale == "Yes" ? (
           <div className="flex items-center">
             <strike>

@@ -5,7 +5,7 @@ import { getClientProducts } from "@/app/services/getClientProducts";
 import { useState, useEffect } from "react";
 import ClientCommonListing from "@/components/CommonListingClient";
 
-const PRODUCTS_PER_PAGE = 5;
+const PRODUCTS_PER_PAGE = 10;
 
 const products = () => {
   const [loading, setLoading] = useState(true);
