@@ -21,7 +21,6 @@ export default async function handler(req, res) {
 
   try {
     await connectToDB();
-    console.log("Database connected successfully");
 
     const { userID } = req.query;
     console.log("Retrieving cart items for user:", userID);
@@ -38,7 +37,6 @@ export default async function handler(req, res) {
     }
 
     const cartItems = dbUser.cart;
-    console.log("Cart items retrieved:", cartItems);
 
     return res.status(200).json({
       success: true,

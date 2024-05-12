@@ -31,15 +31,21 @@ function Navbar() {
   useEffect(() => {
     const fetchCartItems = async () => {
       if (isAuthUser && user) {
-        const { success, data } = await getCartItems(user._id);
-        if (success) {
+        const { success, data, isExpired } = await getCartItems(user._id);
+        if (isExpired) {
+          // Token has expired, update state variables
+          setIsAuthUser(false);
+          setUser(null);
+          localStorage.removeItem("user");
+          Cookies.remove("token");
+        } else if (success) {
           setCartDisplay(data.length);
         }
       }
     };
 
     fetchCartItems();
-  }, [isAuthUser, user, navbarUpdateTrigger]); // Include navbarUpdateTrigger in the dependency array
+  }, [isAuthUser, user, navbarUpdateTrigger, setIsAuthUser, setUser]);
 
   const handleLogout = useCallback(() => {
     setIsAuthUser(false);
@@ -73,7 +79,7 @@ function Navbar() {
             className="flex items-center space-x-3 rtl:space-x-reverse"
             onClick={handleLinkClick("/")}
           >
-            <span className=" whitespace-nowrap text-sm font-semibold sm:text-xl lg:text-2xl dark:text-white">
+            <span className="whitespace-nowrap text-sm font-semibold sm:text-xl lg:text-2xl dark:text-white">
               AttireAlley
             </span>
           </Link>
@@ -119,55 +125,53 @@ function Navbar() {
         </div>
 
         <div className="navbar-end">
-          {!isAdminView && isAuthUser ? (
-            <>
-              <div className="dropdown dropdown-bottom">
+          {isAuthUser && !isAdminView ? (
+            <div className="dropdown dropdown-bottom">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-circle btn-ghost"
+              >
+                <div className="indicator">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <span className="badge indicator-item badge-sm">
+                    {cartDisplay}
+                  </span>
+                </div>
                 <div
                   tabIndex={0}
-                  role="button"
-                  className="btn btn-circle btn-ghost"
+                  className="card dropdown-content card-compact z-[1] w-52 bg-base-100 shadow"
                 >
-                  <div className="indicator">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                    <span className="badge indicator-item badge-sm">
-                      {cartDisplay}
+                  <div className="card-body">
+                    <span className="text-lg font-bold">
+                      {cartDisplay} Items
                     </span>
-                  </div>
-                  <div
-                    tabIndex={0}
-                    className="card dropdown-content card-compact z-[1] w-52 bg-base-100 shadow"
-                  >
-                    <div className="card-body">
-                      <span className="text-lg font-bold">
-                        {cartDisplay} Items
-                      </span>
-                      <span className="text-info">Subtotal: $999</span>
-                      <div className="card-actions">
-                        <button
-                          className="btn btn-primary btn-block"
-                          onClick={() => router.push("/cart")}
-                        >
-                          View cart
-                        </button>
-                      </div>
+                    <span className="text-info">Subtotal: $999</span>
+                    <div className="card-actions">
+                      <button
+                        className="btn btn-primary btn-block"
+                        onClick={() => router.push("/cart")}
+                      >
+                        View cart
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           ) : null}
 
           {user?.role === "admin" ? (

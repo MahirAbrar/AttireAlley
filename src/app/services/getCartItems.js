@@ -23,6 +23,10 @@ export const getCartItems = async (userID) => {
 
     const data = await response.json();
 
+    if (data.isExpired) {
+      return { isExpired: true };
+    }
+
     if (!response.ok) {
       return {
         success: false,
