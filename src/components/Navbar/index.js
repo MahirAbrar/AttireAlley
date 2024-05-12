@@ -23,6 +23,7 @@ function Navbar() {
   } = useContext(GlobalContext);
 
   const [cartDisplay, setCartDisplay] = useState(0);
+  const [cartAmount, setCartAmount] = useState(0);
 
   const router = useRouter();
   const pathName = usePathname();
@@ -40,6 +41,14 @@ function Navbar() {
           Cookies.remove("token");
         } else if (success) {
           setCartDisplay(data.length);
+          setCartAmount(
+            data.reduce(
+              (acc, item) =>
+                acc + (item.productID.price - item.productID.priceDrop),
+              0,
+            ),
+          );
+          console.log(data);
         }
       }
     };
@@ -159,7 +168,7 @@ function Navbar() {
                     <span className="text-lg font-bold">
                       {cartDisplay} Items
                     </span>
-                    <span className="text-info">Subtotal: $999</span>
+                    <span className="text-info">Subtotal: ${cartAmount}</span>
                     <div className="card-actions">
                       <button
                         className="btn btn-primary btn-block"
