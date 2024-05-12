@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const CartItemCard = ({ cartItems }) => {
+const CartItemCard = ({ cartItems, handleDelete }) => {
   const router = useRouter();
   const [expandedItems, setExpandedItems] = useState([]);
 
@@ -16,10 +16,6 @@ const CartItemCard = ({ cartItems }) => {
     } else {
       setExpandedItems([...expandedItems, itemId]);
     }
-  };
-
-  const handleDelete = (item) => {
-    console.log("Delete current item", item);
   };
 
   return (

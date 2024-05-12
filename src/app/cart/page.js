@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { getCartItems } from "../services/getCartItems";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import CartItemCard from "@/components/CartItem";
+import { deleteCartItem } from "@/app/services/deleteCartItem";
 
 const page = () => {
   const { isAuthUser, user } = useContext(GlobalContext);
@@ -38,7 +38,28 @@ const page = () => {
     }
   };
 
-  console.log(user);
+  const handleDelete = (item) => {
+    console.log("Delete current item", item.productID._id);
+    console.log("userID", user._id);
+
+    deleteCartItem(user._id, item.productID._id)
+      .then((response) => {
+        if (response.success) {
+          console.log("Item deleted successfully");
+          // Update the cart items after successful deletion
+          fetchUserCartItems();
+          // You can show a toast message here
+        } else {
+          console.error("Error deleting item", response.message);
+          // You can show a toast message here
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting item", error);
+        // You can show a toast message here
+      });
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="mb-4 flex flex-col items-center justify-between md:flex-row">
@@ -51,7 +72,7 @@ const page = () => {
         </div>
       </div>
       <div className="mb-4">
-        <CartItemCard cartItems={cartItems} />
+        <CartItemCard cartItems={cartItems} handleDelete={handleDelete} />
       </div>
       <div className="flex justify-end">
         <button className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
