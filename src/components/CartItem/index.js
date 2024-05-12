@@ -1,12 +1,21 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const CartItemCard = ({ cartItems }) => {
   const router = useRouter();
+  const [expandedItems, setExpandedItems] = useState([]);
 
   const handleImageClick = (productID) => {
     router.push(`/products/${productID}`);
+  };
+
+  const toggleDescription = (itemId) => {
+    if (expandedItems.includes(itemId)) {
+      setExpandedItems(expandedItems.filter((id) => id !== itemId));
+    } else {
+      setExpandedItems([...expandedItems, itemId]);
+    }
   };
 
   return (
@@ -28,7 +37,19 @@ const CartItemCard = ({ cartItems }) => {
             </figure>
             <div className="p-4">
               <h2 className="mb-2 text-lg font-bold">{item.productID.name}</h2>
-              <p className="mb-4 text-sm">{item.productID.description}</p>
+              <p className="mb-4 text-sm">
+                {expandedItems.includes(item._id)
+                  ? item.productID.description
+                  : `${item.productID.description.slice(0, 100)}...`}
+                {item.productID.description.length > 100 && (
+                  <span
+                    className="ml-1 cursor-pointer text-blue-500"
+                    onClick={() => toggleDescription(item._id)}
+                  >
+                    {expandedItems.includes(item._id) ? "Less" : "More"}
+                  </span>
+                )}
+              </p>
               <div className="flex items-center justify-between">
                 <div className="badge badge-outline">
                   Quantity: {item.quantity}
