@@ -38,7 +38,7 @@ const page = () => {
     }
   };
 
-  console.log(cartItems);
+  console.log(user);
   return (
     <div className="container mx-auto p-4">
       <div className="mb-4 flex flex-col items-center justify-between md:flex-row">
