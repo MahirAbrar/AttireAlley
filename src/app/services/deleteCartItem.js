@@ -4,7 +4,7 @@ export const deleteCartItem = async (userID, productID) => {
   try {
     console.log(userID, productID);
     const response = await fetch(
-      `/api/cart/delete-cart-item?userID=${userID}&productID=${productID}`,
+      `/api/cart/delete-from-cart?userID=${userID}&productID=${productID}`,
       {
         method: "DELETE",
         headers: {
@@ -21,12 +21,21 @@ export const deleteCartItem = async (userID, productID) => {
     }
 
     if (!response.ok) {
-      return {
-        success: false,
-        message:
-          data.message ||
-          "Network response was not ok from delete cart item service",
-      };
+      // Check for specific error messages from the backend
+      if (data.message === "Unauthorized") {
+        return { unauthorized: true, message: data.message };
+      } else if (data.message === "User not found") {
+        return { userNotFound: true, message: data.message };
+      } else if (data.message === "Cart item not found") {
+        return { cartItemNotFound: true, message: data.message };
+      } else {
+        return {
+          success: false,
+          message:
+            data.message ||
+            "Network response was not ok from delete cart item service",
+        };
+      }
     }
 
     return {

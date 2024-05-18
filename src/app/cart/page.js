@@ -8,7 +8,8 @@ import CartItemCard from "@/components/CartItem";
 import { deleteCartItem } from "@/app/services/deleteCartItem";
 
 const page = () => {
-  const { isAuthUser, user } = useContext(GlobalContext);
+  const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
+    useContext(GlobalContext);
   const [cartItems, setCartItems] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const router = useRouter();
@@ -48,6 +49,7 @@ const page = () => {
           console.log("Item deleted successfully");
           // Update the cart items after successful deletion
           fetchUserCartItems();
+          triggerNavbarUpdate();
           // You can show a toast message here
         } else {
           console.error("Error deleting item", response.message);

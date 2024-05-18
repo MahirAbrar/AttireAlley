@@ -21,6 +21,7 @@ export default function GlobalState({ children }) {
   const [cartitemsCount, setCartItemsCount] = useState(0);
   const [navbarUpdateTrigger, setNavbarUpdateTrigger] = useState(0);
 
+  // Updates the cart in the navbar
   const triggerNavbarUpdate = () => {
     setNavbarUpdateTrigger((prevTrigger) => (prevTrigger + 1) % 11);
   };

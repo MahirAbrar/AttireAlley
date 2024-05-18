@@ -20,7 +20,7 @@ const CartItemCard = ({ cartItems, handleDelete }) => {
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {cartItems.map((item) => (
+      {cartItems?.map((item) => (
         <div
           key={item._id}
           className="relative flex transform flex-col overflow-hidden rounded-lg bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105"
