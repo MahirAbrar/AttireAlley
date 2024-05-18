@@ -6,10 +6,18 @@ import Loader from "@/components/Loader";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { getCartItems } from "@/app/services/getCartItems";
+
+import { GlobalContext } from "@/context";
+import { addToCart } from "@/app/services/addToCart";
+import { useContext } from "react";
+
 const Page = ({ params }) => {
   const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
+  const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
+    useContext(GlobalContext);
 
   useEffect(() => {
     setLoading(true);
@@ -26,6 +34,32 @@ const Page = ({ params }) => {
     }
     setLoading(false);
   };
+
+  async function addItemToCart(product) {
+    if (!isAuthUser || !user) {
+      toast.error("Please login to add items to cart");
+      return;
+    }
+
+    const formData = {
+      productID: product._id,
+      userID: user._id,
+      quantity: 1,
+    };
+
+    const res = await addToCart(formData);
+    if (res.success) {
+      toast.success("Item added to cart");
+      const { success, data } = await getCartItems(user._id);
+      if (success) {
+        setCartItemsCount(data.length);
+        triggerNavbarUpdate(); // Trigger the navbar update
+      }
+    } else {
+      toast.error(res.message || "Error adding item to cart");
+    }
+    console.log("res is ", res);
+  }
 
   console.log(productDetails);
   if (loading) {
@@ -67,7 +101,10 @@ const Page = ({ params }) => {
           <h1 className="text-5xl font-bold">{productDetails.name}</h1>
 
           <div className="flex w-full flex-row flex-wrap gap-4">
-            <button className="btn btn-primary btn-wide mr-4">
+            <button
+              className="btn btn-primary btn-wide mr-4"
+              onClick={() => addItemToCart(productDetails)}
+            >
               <FontAwesomeIcon icon={faShoppingCart} />
               Add to cart
             </button>
