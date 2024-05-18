@@ -29,12 +29,14 @@ export default function GlobalState({ children }) {
   useEffect(() => {
     const token = Cookies.get("token");
     const user = localStorage.getItem("user");
+
     if (token && user) {
       setIsAuthUser(true);
       setUser(JSON.parse(user));
     } else {
       setIsAuthUser(false);
       setUser(null);
+      localStorage.removeItem("user");
     }
   }, []);
 

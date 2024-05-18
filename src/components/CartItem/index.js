@@ -69,7 +69,9 @@ const CartItemCard = ({ cartItems, handleDelete }) => {
             </p>
           </div>
           <div className="flex items-center justify-between px-4 pb-4">
-            <div className="badge badge-outline">Quantity: {item.quantity}</div>
+            <div className="badge badge-outline p-4">
+              Quantity: {item.quantity}
+            </div>
             {item.productID.onSale === "Yes" ? (
               <div className="flex items-center">
                 <span className="mr-2 text-lg font-bold text-gray-500 line-through">
@@ -81,7 +83,7 @@ const CartItemCard = ({ cartItems, handleDelete }) => {
               </div>
             ) : (
               <div className="badge text-lg font-bold text-gray-500">
-                Price: ${item.productID.price}
+                ${item.productID.price}
               </div>
             )}
           </div>
