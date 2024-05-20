@@ -13,6 +13,7 @@ export default async function handler(req, res) {
   try {
     await connectToDB();
 
+    // id is productID
     const { id } = req.query;
 
     if (!id) {
@@ -26,7 +27,7 @@ export default async function handler(req, res) {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized",
+        message: "Unauthorized, please log in",
       });
     } else if (user.isExpired) {
       return res.status(403).json({
@@ -56,7 +57,8 @@ export default async function handler(req, res) {
       // If the user is not recognized as an admin
       return res.status(401).json({
         success: false,
-        message: "Unauthorized",
+        message:
+          "Unauthorized, only admins are allowed to perform this action.",
       });
     }
   } catch (error) {

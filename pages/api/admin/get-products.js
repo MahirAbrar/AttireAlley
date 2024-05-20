@@ -1,5 +1,6 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
+import AuthUser from "@/middleware/AuthUser";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +15,20 @@ export default async function handler(req, res, next) {
   try {
     await connectToDB();
 
-    // const isAuthUser = await AuthUser(req);
-    let isAuthUser = {
-      role: "admin",
-    };
+    const user = await AuthUser(req);
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized, please log in.",
+      });
+    } else if (user.isExpired) {
+      return res.status(403).json({
+        success: false,
+        message: "Token expired, please log in again.",
+      });
+    }
 
-    if (isAuthUser.role === "admin") {
+    if (user.role === "admin") {
       try {
         // Use Product.find() without a filter to retrieve all documents from the collection
         const products = await Product.find({});
@@ -42,7 +51,7 @@ export default async function handler(req, res, next) {
       // User is not admin
       return res.status(401).json({
         success: false,
-        message: "Unauthorized",
+        message: "Unauthorized, please log in as an admin",
       });
     }
   } catch (error) {

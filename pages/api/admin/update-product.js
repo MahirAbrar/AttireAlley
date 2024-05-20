@@ -1,5 +1,6 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
+import AuthUser from "@/middleware/AuthUser";
 
 export default async function handler(req, res) {
   if (req.method !== "PUT") {
@@ -16,10 +17,22 @@ export default async function handler(req, res) {
     const productUpdates = req.body;
 
     // Authentication and authorization logic here
-    const isAuthUser = await AuthUser(req);
+
+    const user = await AuthUser(req);
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized, please log in.",
+      });
+    } else if (user.isExpired) {
+      return res.status(403).json({
+        success: false,
+        message: "Token expired, please log in again.",
+      });
+    }
 
     if (isAuthUser.role === "admin") {
-      // If the user is not recognized as an admin
+      // If user user is not recognized as an admin
       return res.status(401).json({
         success: false,
         message: "Unauthorized",

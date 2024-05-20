@@ -36,7 +36,7 @@ export default async function handler(req, res, next) {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized",
+        message: "Unauthorized, please log in.",
       });
     } else if (user.isExpired) {
       return res.status(403).json({

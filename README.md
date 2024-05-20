@@ -53,3 +53,5 @@ Need Auth fix
 - Update product from admin
 
 Page does not fix navbar when token expirees
+
+Product details don't show if no image is available
