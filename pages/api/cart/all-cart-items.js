@@ -15,15 +15,21 @@ export default async function handler(req, res) {
   if (!user) {
     return res.status(401).json({
       success: false,
-      message: "Unauthorized",
+      message: "Unauthorized, please log in.",
     });
   } else if (user.isExpired) {
     return res.status(403).json({
       success: false,
       message: "Token expired, please log in again.",
     });
+  } else if (user.id != req.query.userID) {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden, you are not allowed to perform this action.",
+    });
   }
 
+  console.log(user);
   try {
     await connectToDB();
 
