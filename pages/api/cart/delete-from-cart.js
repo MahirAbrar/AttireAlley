@@ -21,6 +21,12 @@ export default async function handler(req, res) {
       success: false,
       message: "Token expired, please log in again.",
     });
+  } else if (user.id != req.query.userID) {
+    return res.status(403).json({
+      success: false,
+      message:
+        "Forbidden, you are not allowed to perform this action from this account.",
+    });
   }
 
   try {

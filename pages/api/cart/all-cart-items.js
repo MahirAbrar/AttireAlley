@@ -25,7 +25,8 @@ export default async function handler(req, res) {
   } else if (user.id != req.query.userID) {
     return res.status(403).json({
       success: false,
-      message: "Forbidden, you are not allowed to perform this action.",
+      message:
+        "Forbidden, you are not allowed to perform this action from this account.",
     });
   }
 
