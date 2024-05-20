@@ -46,3 +46,10 @@ Only admins can access the APIs.
 Account api
 Account services
 Account UI
+
+Need Auth fix
+
+- Get product from admin
+- Update product from admin
+
+Page does not fix navbar when token expirees

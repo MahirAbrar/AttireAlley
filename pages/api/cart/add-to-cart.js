@@ -1,6 +1,7 @@
 import connectToDB from "@/app/database";
 import User from "@/app/models/user";
 import mongoose from "mongoose";
+import AuthUser from "@/middleware/AuthUser";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -9,6 +10,27 @@ export default async function handler(req, res) {
       message: "Method not allowed",
     });
   }
+
+  // Authorization check
+  const user = await AuthUser(req);
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized, please log in.",
+    });
+  } else if (user.isExpired) {
+    return res.status(403).json({
+      success: false,
+      message: "Token expired, please log in again.",
+    });
+  } else if (user.id != req.body.userID) {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden, you are not allowed to perform this action.",
+    });
+  }
+
+  console.log(user);
 
   try {
     await connectToDB();

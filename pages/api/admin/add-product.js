@@ -31,9 +31,21 @@ export default async function handler(req, res, next) {
   // Assuming connectToDB is an async function that returns a Promise when the connection is successful
   try {
     await connectToDB();
-    const isAuthUser = await AuthUser(req);
 
-    if (isAuthUser.role === "admin") {
+    const user = await AuthUser(req);
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    } else if (user.isExpired) {
+      return res.status(403).json({
+        success: false,
+        message: "Token expired, please log in again.",
+      });
+    }
+
+    if (user.role === "admin") {
       console.log("Admin user. Add product");
 
       const data = req.body;

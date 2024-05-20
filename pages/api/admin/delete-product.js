@@ -22,10 +22,21 @@ export default async function handler(req, res) {
       });
     }
 
-    const isAuthUser = await AuthUser(req);
+    const user = await AuthUser(req);
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    } else if (user.isExpired) {
+      return res.status(403).json({
+        success: false,
+        message: "Token expired, please log in again.",
+      });
+    }
 
     // Authentication and authorization logic here
-    if (isAuthUser.role === "admin") {
+    if (user.role === "admin") {
       const deletedProduct = await Product.findByIdAndDelete(id);
 
       if (!deletedProduct) {
