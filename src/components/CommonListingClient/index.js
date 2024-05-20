@@ -6,6 +6,8 @@ import { GlobalContext } from "@/context";
 import { toast } from "react-toastify";
 import { useContext } from "react";
 import { getCartItems } from "@/app/services/getCartItems";
+import Loader from "../Loader";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const ClientCommonListing = ({ product, params }) => {
   const router = useRouter();
@@ -13,6 +15,7 @@ const ClientCommonListing = ({ product, params }) => {
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
     useContext(GlobalContext);
   const [expandedItems, setExpandedItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   let redirectLink = "";
   if (pathname == "/products") {
@@ -22,6 +25,8 @@ const ClientCommonListing = ({ product, params }) => {
   }
 
   async function addItemToCart(product) {
+    setLoading(true);
+
     if (!isAuthUser || !user) {
       toast.error("Please login to add items to cart");
       return;
@@ -45,6 +50,7 @@ const ClientCommonListing = ({ product, params }) => {
       toast.error(res.message || "Error adding item to cart");
     }
     console.log("res is ", res);
+    setLoading(false);
   }
 
   const toggleDescription = (itemId) => {
@@ -111,7 +117,7 @@ const ClientCommonListing = ({ product, params }) => {
             className="btn btn-warning mt-auto flex-grow"
             onClick={() => addItemToCart(product)}
           >
-            Add to Cart
+            Add to Cart {loading && <Loader />}
           </button>
         </div>
       </div>

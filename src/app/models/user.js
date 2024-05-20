@@ -14,6 +14,12 @@ const UserSchema = new mongoose.Schema({
       quantity: Number,
     },
   ],
+  address: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address",
+    },
+  ],
 });
 
 const User = mongoose.models.User || mongoose.model("User", UserSchema);

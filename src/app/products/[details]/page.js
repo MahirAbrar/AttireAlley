@@ -15,6 +15,7 @@ import { useContext } from "react";
 const Page = ({ params }) => {
   const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingCart, setLoadingCart] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
     useContext(GlobalContext);
@@ -36,6 +37,7 @@ const Page = ({ params }) => {
   };
 
   async function addItemToCart(product) {
+    setLoadingCart(true);
     if (!isAuthUser || !user) {
       toast.error("Please login to add items to cart");
       return;
@@ -59,6 +61,7 @@ const Page = ({ params }) => {
       toast.error(res.message || "Error adding item to cart");
     }
     console.log("res is ", res);
+    setLoadingCart(false);
   }
 
   console.log(productDetails);
@@ -106,7 +109,7 @@ const Page = ({ params }) => {
               onClick={() => addItemToCart(productDetails)}
             >
               <FontAwesomeIcon icon={faShoppingCart} />
-              Add to cart
+              Add to cart {loadingCart && <Loader />}
             </button>
             {productDetails.onSale == "Yes" ? (
               <>

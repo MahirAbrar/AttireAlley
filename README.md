@@ -39,10 +39,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Bugs and ToDO
 
-onSale error in Admin View add new product
-Display on all product page
 Image only uploaded when submit button is pressed in Add new Product from Admin view
 
 Only admins can access the APIs.
 
-NEED TO FIX MIDDLEWARE AUTH
+Account api
+Account services
+Account UI
