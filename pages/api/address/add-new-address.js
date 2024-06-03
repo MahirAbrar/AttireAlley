@@ -31,6 +31,7 @@ export default async function handler(req, res) {
       city,
       country,
       postalCode,
+      additionalDetails,
     });
 
     const user = await User.findById(userID);
@@ -40,6 +41,7 @@ export default async function handler(req, res) {
         .json({ success: false, message: "User not found" });
     }
 
+    // add address to model schema and ID to userID.address
     const newAddress = new Address({
       userID,
       fullName,

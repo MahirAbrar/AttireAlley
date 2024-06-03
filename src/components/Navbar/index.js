@@ -176,6 +176,12 @@ function Navbar() {
                       >
                         View cart
                       </button>
+                      <button
+                        className="btn btn-primary btn-block"
+                        onClick={() => router.push("/account")}
+                      >
+                        Account
+                      </button>
                     </div>
                   </div>
                 </div>
