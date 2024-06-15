@@ -1,12 +1,26 @@
 import connectToDB from "@/app/database";
 import User from "@/app/models/user";
 import Address from "@/app/models/address";
+import AuthUser from "@/middleware/AuthUser";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res
       .status(405)
       .json({ success: false, message: "Method not allowed" });
+  }
+
+  const user = await AuthUser(req);
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Unauthorized, please log in.",
+    });
+  } else if (user.isExpired) {
+    return res.status(403).json({
+      success: false,
+      message: "Token expired, please log in again.",
+    });
   }
 
   // post method taking body data

@@ -63,7 +63,7 @@ const page = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto  border-x-2   border-accent border-opacity-5 p-4 shadow-lg dark:border-accentDark  dark:border-opacity-5">
       <div className="mb-4 flex flex-col items-center justify-between md:flex-row">
         <h1 className="mb-4 text-2xl font-bold md:mb-0">Cart Items</h1>
         <div className="flex items-center">

@@ -48,7 +48,6 @@ function Navbar() {
               0,
             ),
           );
-          console.log(data);
         }
       }
     };
