@@ -6,3 +6,11 @@ check if expired
 
 connect db
 get input
+
+use .then for async
+  const deleteAddressHandler = (address) => {
+    deleteAddress(address.userID, address._id).then(() => {
+      toast.success("Address deleted successfully");
+      fetchAddresses(user._id);
+    });
+  };
