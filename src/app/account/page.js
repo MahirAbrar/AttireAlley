@@ -18,6 +18,7 @@ const page = () => {
   const [addresses, setAddresses] = useState([]);
   const [addLoading, setAddLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState({});
+  const [fetchLoading, setFetchLoading] = useState(true);
 
   const fetchAddresses = async (userID) => {
     const { success, data } = await getAllAddresses(userID);
@@ -26,6 +27,7 @@ const page = () => {
       setAddresses(data.data);
       console.log(addresses);
     }
+    setFetchLoading(false);
   };
 
   useEffect(() => {
@@ -94,7 +96,12 @@ const page = () => {
       <h3>Admin</h3>
       <button className="btn my-2">View your orders</button>
       <h1 className="font-bold">Your addresses :</h1>
-      {addresses.length === 0 && <h3>No addresses found.</h3>}
+      {fetchLoading ? (
+        <Loader />
+      ) : (
+        addresses.length === 0 && <h3>No addresses found.</h3>
+      )}
+
       {addresses.map((address) => (
         <div
           key={address._id}
