@@ -11,10 +11,13 @@ import {
   getAllAddresses,
 } from "../services/address";
 import { toast } from "react-toastify";
+import Loader from "@/components/Loader";
 
 const page = () => {
   const { user } = useContext(GlobalContext);
   const [addresses, setAddresses] = useState([]);
+  const [addLoading, setAddLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState({});
 
   const fetchAddresses = async (userID) => {
     const { success, data } = await getAllAddresses(userID);
@@ -39,10 +42,23 @@ const page = () => {
   };
 
   const deleteAddressHandler = (address) => {
-    deleteAddress(address.userID, address._id).then(() => {
-      toast.success("Address deleted successfully");
-      fetchAddresses(user._id);
-    });
+    setDeleteLoading((prevState) => ({ ...prevState, [address._id]: true }));
+    deleteAddress(address.userID, address._id)
+      .then(() => {
+        toast.success("Address deleted successfully");
+        fetchAddresses(user._id);
+        setDeleteLoading((prevState) => ({
+          ...prevState,
+          [address._id]: false,
+        }));
+      })
+      .catch((e) => {
+        toast.error("Error deleting address");
+        setDeleteLoading((prevState) => ({
+          ...prevState,
+          [address._id]: false,
+        }));
+      });
   };
 
   const [formData, setFormData] = useState({
@@ -63,9 +79,11 @@ const page = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setAddLoading(true);
     addAddress(formData).then(() => {
       toast.success("Address added successfully");
       fetchAddresses(user._id);
+      setAddLoading(false);
     });
   };
 
@@ -96,10 +114,11 @@ const page = () => {
               Update
             </button>
             <button
-              className="btn btn-warning  "
+              className="btn btn-warning"
               onClick={() => deleteAddressHandler(address)}
+              disabled={deleteLoading[address._id]}
             >
-              Delete
+              Delete {deleteLoading[address._id] ? <Loader /> : ""}
             </button>
           </div>
         </div>
@@ -214,7 +233,7 @@ const page = () => {
             type="submit"
             className="dark:btn-primaryDark btn btn-primary mt-4"
           >
-            Add Address
+            Add Address {addLoading ? <Loader /> : ""}
           </button>
         </form>
       </div>

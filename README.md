@@ -54,7 +54,4 @@ Page does not fix navbar when token expirees
 
 Product details don't show if no image is available
 
-Rerender when deleting an address
-
-add address
 update address
