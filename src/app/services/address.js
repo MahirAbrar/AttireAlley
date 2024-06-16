@@ -38,6 +38,8 @@ export const addAddress = async (data) => {
 
 // Frontend service function to delete an address
 export const deleteAddress = async (userID, addressID) => {
+  console.log("DELETEING ADDRESWS");
+  console.log(userID, addressID);
   try {
     const response = await fetch(
       `/api/address/delete-address?userID=${userID}&addressID=${addressID}`,
@@ -60,7 +62,6 @@ export const deleteAddress = async (userID, addressID) => {
     }
     return { success: true, data };
   } catch (e) {
-    console.log("Error in delete address service", e);
     return { success: false, message: e.message };
   }
 };
