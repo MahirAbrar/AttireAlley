@@ -14,6 +14,9 @@ const page = () => {
   const [totalItems, setTotalItems] = useState(0);
   const router = useRouter();
 
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
   useEffect(() => {
     if (isAuthUser && user) {
       fetchUserCartItems();
@@ -68,7 +71,10 @@ const page = () => {
         <h1 className="mb-4 text-2xl font-bold md:mb-0">Cart Items</h1>
         <div className="flex items-center">
           <div className="mr-4">Total Items: {totalItems}</div>
-          <button className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+          <button
+            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+            onClick={handleCheckout}
+          >
             Continue to Checkout
           </button>
         </div>
@@ -77,7 +83,10 @@ const page = () => {
         <CartItemCard cartItems={cartItems} handleDelete={handleDelete} />
       </div>
       <div className="flex justify-end">
-        <button className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+        <button
+          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          onClick={handleCheckout}
+        >
           Continue to Checkout
         </button>
       </div>
