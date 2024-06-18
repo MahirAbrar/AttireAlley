@@ -138,7 +138,7 @@ function Navbar() {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-circle btn-ghost"
+                className="btn btn-circle btn-ghost relative z-[1001]"
               >
                 <div className="indicator">
                   <svg
@@ -159,9 +159,11 @@ function Navbar() {
                     {cartDisplay}
                   </span>
                 </div>
+              </div>
+              <div className="relative z-[1000]">
                 <div
                   tabIndex={0}
-                  className="card dropdown-content card-compact z-[1] w-52 bg-base-100 shadow"
+                  className="card dropdown-content card-compact w-52 bg-base-100 shadow"
                 >
                   <div className="card-body">
                     <span className="text-lg font-bold">

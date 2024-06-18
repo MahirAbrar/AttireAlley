@@ -5,15 +5,22 @@ import { getAllAddresses } from "../services/address";
 import { getCartItems } from "../services/getCartItems";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
 
 const page = () => {
   const { isAuthUser, user } = useContext(GlobalContext);
+  const router = useRouter();
 
   const [cartItems, setCartItems] = useState([]);
   const [addresses, setAddresses] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [cartLoading, setCartLoading] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(false);
 
   const fetchUserCartItems = async () => {
+    setCartLoading(true);
     try {
       const response = await getCartItems(user._id);
       setCartItems(response.data);
@@ -24,19 +31,30 @@ const page = () => {
         0,
       );
       setTotalItems(totalItemCount);
+      setCartLoading(false);
     } catch (error) {
       console.error("Error fetching cart items:", error);
       // Handle error if needed
+      setCartLoading(false);
     }
   };
 
   const fetchUserAddresses = async () => {
+    setAddressLoading(true);
     try {
       const response = await getAllAddresses(user._id);
-      setAddresses(response.data);
+      if (response.success) {
+        setAddresses(response.data.data);
+        setAddressLoading(false);
+      } else {
+        console.error("Error fetching addresses:", response.message);
+        // Handle error if needed
+        setAddressLoading(false);
+      }
     } catch (error) {
       console.error("Error fetching addresses:", error);
       // Handle error if needed
+      setAddressLoading(false);
     }
   };
 
@@ -49,18 +67,91 @@ const page = () => {
     }
   }, [user, isAuthUser]);
 
+  const handleAddressSelect = (address) => {
+    setSelectedAddress(address);
+  };
+
   console.log("cartItems", cartItems);
   console.log("addresses", addresses);
   console.log("totalItems", totalItems);
 
   return (
-    <div className="flex w-full p-8">
-      <div className="card grid h-20 flex-grow place-items-center rounded-box bg-base-300">
-        content
+    <div className="flex w-full flex-wrap">
+      <div className="w-full p-4 md:w-1/2">
+        <div className="card rounded-box bg-base-300 p-4">
+          <h2 className="mb-4 text-xl font-bold">Cart Items</h2>
+          <div className="space-y-4">
+            {cartLoading && <Loader />}
+            {cartItems.map((item) => (
+              <div key={item._id} className="flex items-center space-x-2">
+                <img
+                  src={item.productID.imageURL[0]}
+                  alt={item.productID.name}
+                  className="h-20 w-20 rounded object-cover"
+                />
+                <div>
+                  <p className="font-bold">{item.productID.name}</p>
+                  <p>Quantity: {item.quantity}</p>
+                  <p>
+                    Price: $
+                    {item.productID.onSale === "Yes"
+                      ? item.productID.price - item.productID.priceDrop
+                      : item.productID.price}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-      <div className="divider divider-horizontal">OR</div>
-      <div className="card grid h-20 flex-grow place-items-center rounded-box bg-base-300">
-        content
+      <div className="w-full p-4 md:w-1/2">
+        <div className="card rounded-box bg-base-300 p-4">
+          <h2 className="mb-4 text-xl font-bold">Addresses</h2>
+          {addressLoading && <Loader />}
+          {addresses.map((address) => (
+            <div
+              key={address._id}
+              className={`mb-4 rounded border p-4 ${
+                selectedAddress?._id === address._id
+                  ? "bg-primary-focus border-2 border-primary"
+                  : "border-gray-300"
+              }`}
+            >
+              <p>
+                <strong>Full Name:</strong> {address.fullName}
+              </p>
+              <p>
+                <strong>Address:</strong> {address.address}
+              </p>
+              <p>
+                <strong>City:</strong> {address.city}
+              </p>
+              <p>
+                <strong>Country:</strong> {address.country}
+              </p>
+              <p>
+                <strong>Postal Code:</strong> {address.postalCode}
+              </p>
+              <p>
+                <strong>Additional Details:</strong> {address.additionalDetails}
+              </p>
+              <button
+                className="mt-2 rounded bg-primary px-4 py-2 text-white"
+                onClick={() => handleAddressSelect(address)}
+              >
+                {selectedAddress?._id === address._id
+                  ? "Selected"
+                  : "Select this address"}
+              </button>
+            </div>
+          ))}
+          <button
+            className="mt-2 rounded bg-secondary px-4 py-2"
+            onClick={router.push("/account")}
+          >
+            Add an address
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -68,6 +159,4 @@ const page = () => {
 
 export default page;
 
-//get cart items
-
-//
+//add address button which navigates to account page

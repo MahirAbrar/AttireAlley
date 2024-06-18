@@ -23,7 +23,7 @@ const CartItemCard = ({ cartItems, handleDelete }) => {
       {cartItems?.map((item) => (
         <div
           key={item._id}
-          className="relative flex transform flex-col overflow-hidden rounded-lg bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105"
+          className="relative z-0 flex transform flex-col overflow-hidden rounded-lg bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105"
         >
           <button
             className="absolute right-2 top-2 rounded-full bg-gray-700 p-2 text-white hover:bg-red-500"

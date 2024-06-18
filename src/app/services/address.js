@@ -9,6 +9,7 @@ export const addAddress = async (data) => {
     city: data.city,
     country: data.country,
     postalCode: data.postalCode,
+    additionalDetails: data.additionalDetails,
   };
   console.log("formData is ", formData);
   try {
@@ -76,6 +77,7 @@ export const updateAddress = async (data) => {
     city: data.city,
     country: data.country,
     postalCode: data.postalCode,
+    additionalDetails: data.additionalDetails,
   };
   console.log("formData is ", formData);
   try {
