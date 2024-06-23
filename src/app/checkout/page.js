@@ -58,6 +58,10 @@ const page = () => {
     }
   };
 
+  const handleAddAddressClick = () => {
+    router.push("/account");
+  };
+
   useEffect(() => {
     if (isAuthUser && user) {
       fetchUserCartItems();
@@ -70,10 +74,6 @@ const page = () => {
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
   };
-
-  console.log("cartItems", cartItems);
-  console.log("addresses", addresses);
-  console.log("totalItems", totalItems);
 
   return (
     <div className="flex w-full flex-wrap">
@@ -106,7 +106,11 @@ const page = () => {
       </div>
       <div className="w-full p-4 md:w-1/2">
         <div className="card rounded-box bg-base-300 p-4">
-          <h2 className="mb-4 text-xl font-bold">Addresses</h2>
+          <h2 className=" text-xl font-bold">Addresses</h2>
+          <h2 className="text-md mb-4 font-semibold">
+            Please select a shipping address.
+          </h2>
+
           {addressLoading && <Loader />}
           {addresses.map((address) => (
             <div
@@ -146,10 +150,47 @@ const page = () => {
             </div>
           ))}
           <button
-            className="mt-2 rounded bg-secondary px-4 py-2"
-            onClick={router.push("/account")}
+            className="mt-2 w-fit rounded bg-secondary px-4 py-2 dark:text-text"
+            onClick={handleAddAddressClick}
           >
-            Add an address
+            Add an Address
+          </button>
+
+          <div className="divider"></div>
+          <div className="flex justify-between">
+            <h3>Subtotal:</h3>
+            <h3 className="font-bold">
+              $
+              {cartItems.reduce(
+                (acc, item) =>
+                  acc +
+                  (item.productID.price - item.productID.priceDrop) *
+                    item.quantity,
+                0,
+              )}
+            </h3>
+          </div>
+          <div className="flex justify-between">
+            <h3>Shipping:</h3>
+            <h3 className="font-bold">Free</h3>
+          </div>
+          <div className="flex justify-between">
+            <h3>Total:</h3>
+            <h3 className="font-bold">
+              {cartItems.reduce(
+                (acc, item) =>
+                  acc +
+                  (item.productID.price - item.productID.priceDrop) *
+                    item.quantity,
+                0,
+              )}
+            </h3>
+          </div>
+          <button
+            className="mt-2 rounded bg-secondary px-4 py-2 dark:text-text"
+            onClick={() => console.log("Checkout button clicked")}
+          >
+            Checkout
           </button>
         </div>
       </div>

@@ -17,13 +17,15 @@ export default async function handler(req, res) {
     return res.status(401).json({
       success: false,
       message: "Unauthorized, please log in.",
+      isExpired: false,
     });
   } else if (user.isExpired) {
     return res.status(403).json({
       success: false,
       message: "Token expired, please log in again.",
+      isExpired: true,
     });
-  } else if (user.id != req.body.userID) {
+  } else if (user.id != req.query.userID) {
     return res.status(403).json({
       success: false,
       message:

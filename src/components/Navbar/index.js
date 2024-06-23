@@ -33,6 +33,7 @@ function Navbar() {
     const fetchCartItems = async () => {
       if (isAuthUser && user) {
         const { success, data, isExpired } = await getCartItems(user._id);
+        console.log(isExpired, success, data);
         if (isExpired) {
           // Token has expired, update state variables
           setIsAuthUser(false);
