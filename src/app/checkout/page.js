@@ -188,6 +188,7 @@ const page = () => {
           </div>
           <button
             className="mt-2 rounded bg-secondary px-4 py-2 dark:text-text"
+            disabled={!selectedAddress || cartItems.length === 0}
             onClick={() => console.log("Checkout button clicked")}
           >
             Checkout

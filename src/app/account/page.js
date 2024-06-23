@@ -82,8 +82,12 @@ const page = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setAddLoading(true);
-    addAddress(formData).then(() => {
-      toast.success("Address added successfully");
+    addAddress(formData).then((res) => {
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
       fetchAddresses(user._id);
       setAddLoading(false);
     });

@@ -11,19 +11,20 @@ export default async function handler(req, res) {
   }
 
   const user = await AuthUser(req);
+  // console.log(user);
   if (!user) {
     return res.status(401).json({
       success: false,
       message: "Unauthorized, please log in.",
       isExpired: false,
     });
-  } else if (user.isExpired) {
+  } else if (user?.isExpired) {
     return res.status(403).json({
       success: false,
       message: "Token expired, please log in again.",
       isExpired: true,
     });
-  } else if (user.id != req.query.userID) {
+  } else if (user.id != req.body.userID) {
     return res.status(403).json({
       success: false,
       message:
