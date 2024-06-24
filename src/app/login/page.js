@@ -150,7 +150,7 @@ const Login = () => {
         </form>
 
         <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-          Don't have an Account?
+          {"Don't have an Account?"}
         </p>
         <button
           type="submit"
