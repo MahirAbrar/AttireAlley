@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 const isRegistered = false;
 
-const register = () => {
+const Register = () => {
   const { isAuthUser } = useContext(GlobalContext);
   const router = useRouter();
 
@@ -46,4 +46,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Register;
