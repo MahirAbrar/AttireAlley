@@ -30,11 +30,6 @@ const UpdateProduct = () => {
     setUpdateItem,
   } = useContext(GlobalContext);
 
-  const productId = updateItem?._id;
-  if (!updateItem) {
-    return <div>Nothing to update</div>;
-  }
-
   const [imageUploading, setImageUploading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -88,6 +83,11 @@ const UpdateProduct = () => {
         },
       );
     });
+  }
+
+  const productId = updateItem?._id;
+  if (!updateItem) {
+    return <div>Nothing to update</div>;
   }
 
   async function handleUpdateProduct(e) {
