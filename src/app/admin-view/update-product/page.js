@@ -33,16 +33,16 @@ const UpdateProduct = () => {
   const [imageUploading, setImageUploading] = useState(false);
 
   const [formData, setFormData] = useState({
-    user: updateItem.user,
-    name: updateItem.name,
-    price: updateItem.price,
-    description: updateItem.description,
-    category: updateItem.category,
-    deliveryInfo: updateItem.deliveryInfo,
-    onSale: updateItem.onSale,
-    priceDrop: updateItem.priceDrop,
-    sizes: updateItem.sizes,
-    imageURL: updateItem.imageURL,
+    user: updateItem?.user || "",
+    name: updateItem?.name || "",
+    price: updateItem?.price || "",
+    description: updateItem?.description || "",
+    category: updateItem?.category || "",
+    deliveryInfo: updateItem?.deliveryInfo || "",
+    onSale: updateItem?.onSale || "",
+    priceDrop: updateItem?.priceDrop || "",
+    sizes: updateItem?.sizes || [],
+    imageURL: updateItem?.imageURL || "",
   });
 
   console.log(formData);
