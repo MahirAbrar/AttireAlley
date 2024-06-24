@@ -187,7 +187,7 @@ const page = () => {
             </h3>
           </div>
           <button
-            className="mt-2 rounded bg-secondary px-4 py-2 dark:text-text"
+            className={`mt-2 rounded px-4 py-2 dark:text-text ${!selectedAddress || cartItems.length === 0 ? "cursor-not-allowed bg-gray-400" : "hover:bg-secondary-dark bg-secondary shadow-md"}`}
             disabled={!selectedAddress || cartItems.length === 0}
             onClick={() => console.log("Checkout button clicked")}
           >
