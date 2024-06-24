@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import CartItemCard from "@/components/CartItem";
 import { deleteCartItem } from "@/app/services/deleteCartItem";
 
-const page = () => {
+const Cart = () => {
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
     useContext(GlobalContext);
   const [cartItems, setCartItems] = useState([]);
@@ -94,4 +94,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Cart;

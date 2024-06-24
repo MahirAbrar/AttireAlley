@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 // This is saved in the env.local file FIREBASE_STORAGE_URL=gs://next-js-ecomm-478a2.appspot.com how do i access it?
 const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
 
-const addProduct = () => {
+const AddProduct = () => {
   const app = initializeApp(firebaseConfig);
   const storage = getStorage(app, firebaseStorageUrl);
   const [uploadedCount, setUploadedCount] = useState(0);
@@ -356,4 +356,4 @@ const addProduct = () => {
   );
 };
 
-export default addProduct;
+export default AddProduct;

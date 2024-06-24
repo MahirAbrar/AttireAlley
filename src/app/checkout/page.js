@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 
-const page = () => {
+const Checkout = () => {
   const { isAuthUser, user } = useContext(GlobalContext);
   const router = useRouter();
 
@@ -199,6 +199,6 @@ const page = () => {
   );
 };
 
-export default page;
+export default Checkout;
 
 //add address button which navigates to account page
