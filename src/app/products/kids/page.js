@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 const PRODUCTS_PER_PAGE = 5;
 
-const kids = () => {
+const Kids = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,4 +75,4 @@ const kids = () => {
   );
 };
 
-export default kids;
+export default Kids;

@@ -7,7 +7,7 @@ import ClientCommonListing from "@/components/CommonListingClient";
 
 const PRODUCTS_PER_PAGE = 10;
 
-const products = () => {
+const Products = () => {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,4 +71,4 @@ const products = () => {
   );
 };
 
-export default products;
+export default Products;
