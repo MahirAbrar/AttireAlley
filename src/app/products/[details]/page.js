@@ -90,6 +90,7 @@ const Page = ({ params }) => {
               <button
                 onClick={() => setSelectedImage(index)}
                 className="btn btn-xs"
+                key={index}
               >
                 {index + 1}
               </button>
