@@ -13,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 import Loader from "@/components/Loader";
 
-const page = () => {
+const Account = () => {
   const { user } = useContext(GlobalContext);
   const [addresses, setAddresses] = useState([]);
   const [addLoading, setAddLoading] = useState(false);
@@ -252,4 +252,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Account;
