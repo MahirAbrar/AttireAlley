@@ -140,17 +140,46 @@ const Checkout = () => {
                 <strong>Additional Details:</strong> {address.additionalDetails}
               </p>
               <button
-                className="mt-2 rounded bg-primary px-4 py-2 text-white"
+                className={`
+    mt-2 rounded px-4 py-2 font-semibold transition-all duration-300 ease-in-out
+    ${
+      selectedAddress?._id === address._id
+        ? "bg-green-500 text-white shadow-md hover:bg-green-600 active:bg-green-700"
+        : "hover:bg-primary-dark active:bg-primary-darker bg-primary text-white shadow-md hover:shadow-lg active:shadow-inner"
+    }
+    focus:outline-none focus:ring-2 focus:ring-offset-2
+    ${
+      selectedAddress?._id === address._id
+        ? "focus:ring-green-500"
+        : "focus:ring-primary"
+    }
+    transform hover:-translate-y-0.5 active:translate-y-0
+  `}
                 onClick={() => handleAddressSelect(address)}
               >
-                {selectedAddress?._id === address._id
-                  ? "Selected"
-                  : "Select this address"}
+                {selectedAddress?._id === address._id ? (
+                  <span className="flex items-center justify-center">
+                    <svg
+                      className="mr-2 h-5 w-5"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Selected
+                  </span>
+                ) : (
+                  "Select this address"
+                )}
               </button>
             </div>
           ))}
           <button
-            className="mt-2 w-fit rounded bg-secondary px-4 py-2 dark:text-text"
+            className="hover:bg-secondary-dark active:bg-secondary-darker mt-2 w-fit transform rounded bg-secondary px-4 py-2 font-semibold text-white shadow-md transition duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 active:translate-y-0 active:shadow-inner dark:text-text"
             onClick={handleAddAddressClick}
           >
             Add an Address
@@ -174,7 +203,7 @@ const Checkout = () => {
             <h3>Shipping:</h3>
             <h3 className="font-bold">Free</h3>
           </div>
-          <div className="flex justify-between">
+          <div className="mb-2 flex justify-between">
             <h3>Total:</h3>
             <h3 className="font-bold">
               {cartItems.reduce(
@@ -187,7 +216,16 @@ const Checkout = () => {
             </h3>
           </div>
           <button
-            className={`mt-2 rounded px-4 py-2 dark:text-text ${!selectedAddress || cartItems.length === 0 ? "cursor-not-allowed bg-gray-400" : "hover:bg-secondary-dark bg-secondary shadow-md"}`}
+            className={`
+    mt-2 rounded px-4 py-2 font-semibold transition duration-300 ease-in-out
+    ${
+      !selectedAddress || cartItems.length === 0
+        ? "cursor-not-allowed bg-gray-400 text-gray-600"
+        : "hover:bg-secondary-dark bg-secondary text-white shadow-lg hover:shadow-xl active:scale-95 active:transform"
+    }
+    focus:outline-none
+    focus:ring-2 focus:ring-secondary focus:ring-opacity-50 dark:text-text
+  `}
             disabled={!selectedAddress || cartItems.length === 0}
             onClick={() => console.log("Checkout button clicked")}
           >
