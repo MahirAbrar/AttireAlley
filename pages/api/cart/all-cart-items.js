@@ -3,7 +3,7 @@ import User from "@/app/models/user";
 import Products from "@/app/models/products";
 import AuthUser from "@/middleware/AuthUser";
 
-export default async function handler(req) {
+export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({
       success: false,

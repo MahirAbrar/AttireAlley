@@ -25,15 +25,13 @@ export default async function handler(req, res) {
       message: "Token expired, please log in again.",
       isExpired: true,
     });
-  } else if (user.id != req.query.userID) {
+  } else if (user.id != req.body.userID) {
     return res.status(403).json({
       success: false,
       message:
         "Forbidden, you are not allowed to perform this action from this account.",
     });
   }
-
-  console.log(user);
 
   try {
     await connectToDB();
