@@ -46,10 +46,10 @@ const AboutPage = () => {
                 With an Admin User
               </h2>
               <p>
-                <strong>Username:</strong> "testuser@attirealley.com"
+                <strong>Username:</strong> &quot;testuser@attirealley.com&quot;
               </p>
               <p>
-                <strong>Password:</strong> "abcd1234"
+                <strong>Password:</strong> &quot;abcd1234&quot;
               </p>
             </div>
             <div className="mt-2">
@@ -57,10 +57,10 @@ const AboutPage = () => {
                 With an Regular User
               </h2>
               <p>
-                <strong>Username:</strong> "useruser@attirealley.com"
+                <strong>Username:</strong> &quot;useruser@attirealley.com&quot;
               </p>
               <p>
-                <strong>Password:</strong> "abcd1234"
+                <strong>Password:</strong> &quot;abcd1234&quot;
               </p>
             </div>
           </section>
@@ -77,11 +77,11 @@ const AboutPage = () => {
               href=""
               className="text-primary hover:underline dark:text-primaryDark"
             >
-              "Link"
+              &quot;Link&quot;
             </Link>
             <p className="mt-4">
               Thank you for visiting my website. I welcome the opportunity to
-              speak with you if you feel I'd be a strong candidate for a
+              speak with you if you feel I&apos;d be a strong candidate for a
               position in your organization.
             </p>
           </section>
