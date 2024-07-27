@@ -8,6 +8,10 @@ import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+);
+
 const Checkout = () => {
   const { isAuthUser, user } = useContext(GlobalContext);
   const router = useRouter();
@@ -18,6 +22,9 @@ const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [cartLoading, setCartLoading] = useState(false);
   const [addressLoading, setAddressLoading] = useState(false);
+
+  const [isOrderProcessing, setIsOrderProcessing] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
   const fetchUserCartItems = async () => {
     setCartLoading(true);
