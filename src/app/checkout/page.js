@@ -7,6 +7,7 @@ import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
+import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
