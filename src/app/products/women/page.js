@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Loader from "@/components/Loader";
+import LoaderBig from "@/components/LoaderBig";
 import { getClientProducts } from "@/app/services/getClientProducts";
 import { useState, useEffect } from "react";
 import ClientCommonListing from "@/components/CommonListingClient";
@@ -14,7 +15,6 @@ const Women = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setLoading(false); // Authenticated as admin, proceed to fetch products
     fetchProducts(); // Now call fetchProducts within this condition
   }, []);
 
@@ -22,14 +22,16 @@ const Women = () => {
     const res = await getClientProducts("women");
     if (res?.data?.data) {
       setProducts(res.data.data);
+      setLoading(false);
     } else {
       // Handle error or empty data case
       toast.error("Failed to fetch products or data is empty.");
+      setLoading(false);
     }
   };
 
   if (loading) {
-    return <Loader />; // Show loading state while checking authentication and role
+    return <LoaderBig />;
   }
 
   const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;

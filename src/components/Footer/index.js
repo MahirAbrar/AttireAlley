@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const index = () => {
   return (
@@ -12,7 +13,9 @@ const index = () => {
       </nav>
       <nav>
         <h6 className="footer-title">Company</h6>
-        <a className="link-hover link">About us</a>
+        <Link href="/about" className="link-hover link">
+          About us
+        </Link>
         <a className="link-hover link">Contact</a>
       </nav>
       <nav>

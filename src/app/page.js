@@ -84,21 +84,21 @@ export default function Home() {
         "https://images.unsplash.com/photo-1625657332021-9b714782dde0?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       altText: "Kids Collection",
       title: "Kids",
-      linkHref: "/collections/summer",
+      linkHref: "/products/kids",
     },
     {
       imageSrc:
         "https://images.unsplash.com/photo-1698815614885-97a1b2d29669?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       altText: "Womens Collection",
       title: "Women",
-      linkHref: "/collections/winter",
+      linkHref: "/products/women",
     },
     {
       imageSrc:
         "https://images.unsplash.com/photo-1558541983-39b080b84d16?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       altText: "Mens Collection",
       title: "Mens",
-      linkHref: "/collections/new-arrivals",
+      linkHref: "/products/men",
     },
   ];
 
@@ -116,8 +116,8 @@ export default function Home() {
           className="w-full bg-background bg-opacity-100 py-8 dark:bg-backgroundDark dark:bg-opacity-100"
         >
           <div className="container mx-auto px-4">
-            <div className="flex flex-col items-center md:flex-row md:items-start md:justify-between">
-              <div className="md:w-2/5 md:pr-8 lg:w-1/3">
+            <div className="flex flex-col items-center  md:flex-row md:justify-between">
+              <div className=" md:w-2/5 md:pr-8 lg:w-1/3">
                 <h1 className="mb-4 text-4xl font-bold text-primary">
                   Shop all our collection!
                 </h1>
@@ -169,12 +169,22 @@ export default function Home() {
               {products?.length > 0 && (
                 <div className="grid grid-cols-1 gap-4 md:w-2/3 md:grid-cols-2">
                   {/* Popular Item 1 */}
-                  <div className="overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
+                  <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
                     <img
                       src={products[19].imageURL[0]}
                       alt="Popular Item 1"
-                      className="h-96 w-full object-cover"
+                      className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <h3 className="mb-2 text-xl font-bold text-white">
+                        Item Name 1
+                      </h3>
+                      <Link href={`/products/${products[19]._id}`} passHref>
+                        <button className="rounded bg-white px-4 py-2 text-black transition-colors duration-300 hover:bg-gray-200">
+                          Check Details
+                        </button>
+                      </Link>
+                    </div>
                     <div className="p-4">
                       <h2 className="mb-2 text-lg font-semibold">
                         Item Name 1
@@ -183,12 +193,22 @@ export default function Home() {
                     </div>
                   </div>
                   {/* Popular Item 2 */}
-                  <div className="overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
+                  <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
                     <img
                       src={products[15].imageURL[0]}
                       alt="Popular Item 2"
-                      className="h-96 w-full object-cover"
+                      className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                     />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <h3 className="mb-2 text-xl font-bold text-white">
+                        Item Name 2
+                      </h3>
+                      <Link href={`/products/${products[15]._id}`} passHref>
+                        <button className="rounded bg-white px-4 py-2 text-black transition-colors duration-300 hover:bg-gray-200">
+                          Check Details
+                        </button>
+                      </Link>
+                    </div>
                     <div className="p-4">
                       <h2 className="mb-2 text-lg font-semibold">
                         Item Name 2

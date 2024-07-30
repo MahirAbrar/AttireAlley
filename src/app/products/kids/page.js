@@ -5,6 +5,7 @@ import { getClientProducts } from "@/app/services/getClientProducts";
 import { useState, useEffect } from "react";
 import ClientCommonListing from "@/components/CommonListingClient";
 import { toast } from "react-toastify";
+import LoaderBig from "@/components/LoaderBig";
 
 const PRODUCTS_PER_PAGE = 5;
 
@@ -14,7 +15,6 @@ const Kids = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setLoading(false); // Authenticated as admin, proceed to fetch products
     fetchProducts(); // Now call fetchProducts within this condition
   }, []);
 
@@ -22,14 +22,16 @@ const Kids = () => {
     const res = await getClientProducts("kids");
     if (res?.data?.data) {
       setProducts(res.data.data);
+      setLoading(false);
     } else {
       // Handle error or empty data case
       toast.error("Failed to fetch products or data is empty.");
+      setLoading(false);
     }
   };
 
   if (loading) {
-    return <Loader />; // Show loading state while checking authentication and role
+    return <LoaderBig />; // Show loading state while checking authentication and role
   }
 
   const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
