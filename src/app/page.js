@@ -177,7 +177,7 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <h3 className="mb-2 text-xl font-bold text-white">
-                        Item Name 1
+                        {products[19].name}
                       </h3>
                       <Link href={`/products/${products[19]._id}`} passHref>
                         <button className="rounded bg-white px-4 py-2 text-black transition-colors duration-300 hover:bg-gray-200">
@@ -187,9 +187,11 @@ export default function Home() {
                     </div>
                     <div className="p-4">
                       <h2 className="mb-2 text-lg font-semibold">
-                        Item Name 1
+                        {products[19].name}
                       </h2>
-                      <p className="text-gray-600 dark:text-gray-300">$99.99</p>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {products[19].price - products[19].priceDrop} AUD
+                      </p>
                     </div>
                   </div>
                   {/* Popular Item 2 */}
@@ -201,7 +203,7 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <h3 className="mb-2 text-xl font-bold text-white">
-                        Item Name 2
+                        {products[15].name}
                       </h3>
                       <Link href={`/products/${products[15]._id}`} passHref>
                         <button className="rounded bg-white px-4 py-2 text-black transition-colors duration-300 hover:bg-gray-200">
@@ -211,9 +213,11 @@ export default function Home() {
                     </div>
                     <div className="p-4">
                       <h2 className="mb-2 text-lg font-semibold">
-                        Item Name 2
+                        {products[15].name}
                       </h2>
-                      <p className="text-gray-600 dark:text-gray-300">$79.99</p>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {products[15].price - products[15].priceDrop} AUD
+                      </p>
                     </div>
                   </div>
                 </div>
