@@ -80,6 +80,23 @@ const AboutPage = () => {
               &quot;Link&quot;
             </Link>
             <p className="mt-4">
+              Visit my{" "}
+              <Link
+                href="https://www.linkedin.com/in/hamid-abrar-mahir/"
+                className="text-primary hover:underline dark:text-primaryDark"
+              >
+                LinkedIn
+              </Link>{" "}
+              And{" "}
+              <Link
+                href="https://github.com/MahirAbrar"
+                className="text-primary hover:underline dark:text-primaryDark"
+              >
+                GitHub
+              </Link>{" "}
+              Page.
+            </p>
+            <p className="mt-4">
               Thank you for visiting my website. I welcome the opportunity to
               speak with you if you feel I&apos;d be a strong candidate for a
               position in your organization.
