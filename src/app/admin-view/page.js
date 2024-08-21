@@ -3,7 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "@/context/index";
 
 import { useRouter } from "next/navigation";
-import Loader from "@/components/Loader"; // Assuming you have a Loader component
+import Loader from "@/components/Loader";
+import LoaderBig from "@/components/LoaderBig";
 
 const AdminView = () => {
   const router = useRouter();
@@ -24,7 +25,11 @@ const AdminView = () => {
   }, [isAuthUser, user]);
 
   if (loading) {
-    return <Loader />; // Show loading state while checking
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
+        <LoaderBig />
+      </div>
+    );
   }
 
   return <div>Admin Page</div>;

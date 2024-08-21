@@ -66,7 +66,11 @@ const Page = ({ params }) => {
 
   console.log(productDetails);
   if (loading) {
-    return <Loader />;
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
+        <LoaderBig />
+      </div>
+    );
   }
 
   if (!productDetails) {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import AdminCommonListing from "@/components/CommonListingAdmin";
 import { getProducts } from "@/app/services/getProducts";
 import { useRouter } from "next/navigation";
-import Loader from "@/components/Loader";
+import LoaderBig from "@/components/LoaderBig";
 import { useContext } from "react";
 import { GlobalContext } from "@/context/index";
 import { deleteProduct } from "@/app/services/deleteProduct";
@@ -22,7 +22,6 @@ const AllProducts = () => {
         router.push("/some-other-route");
         return; // Exit early to prevent further execution
       } else {
-        setLoading(false); // Authenticated as admin, proceed to fetch products
         fetchProducts(); // Now call fetchProducts within this condition
       }
     }
@@ -36,6 +35,7 @@ const AllProducts = () => {
       // Handle error or empty data case
       console.error("Failed to fetch products or data is empty.");
     }
+    setLoading(false); // Authenticated as admin, proceed to fetch products
   };
 
   const handleDelete = async (id) => {
@@ -44,7 +44,11 @@ const AllProducts = () => {
   };
 
   if (loading) {
-    return <Loader />; // Show loading state while checking authentication and role
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
+        <LoaderBig />
+      </div>
+    );
   }
 
   return (

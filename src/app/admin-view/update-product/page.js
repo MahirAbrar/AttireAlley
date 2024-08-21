@@ -117,7 +117,11 @@ const UpdateProduct = () => {
   }
 
   if (!isAuthUser || user?.role !== "admin") {
-    return <Loader />;
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
+        <LoaderBig />
+      </div>
+    );
   }
 
   return (

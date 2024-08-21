@@ -102,13 +102,13 @@ export default function Home() {
     },
   ];
 
-  if (loading)
+  if (loading) {
     return (
-      <div>
+      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
         <LoaderBig />
       </div>
     );
-  else {
+  } else {
     return (
       <main className="flex flex-col items-center bg-background text-text dark:bg-backgroundDark dark:text-textDark">
         <div

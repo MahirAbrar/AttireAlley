@@ -18,6 +18,9 @@ export default async function handler(req, res) {
 
     // Authentication and authorization logic here
     const user = await AuthUser(req);
+    console.log(user);
+    const que = req.query;
+    console.log(que);
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -30,19 +33,11 @@ export default async function handler(req, res) {
         message: "Token expired, please log in again.",
         isExpired: true,
       });
-    } else if (user.id != req.query.userID) {
+    } else if (user.role !== "admin") {
       return res.status(403).json({
         success: false,
         message:
           "Forbidden, you are not allowed to perform this action from this account.",
-      });
-    }
-
-    if (isAuthUser.role === "admin") {
-      // If user user is not recognized as an admin
-      return res.status(401).json({
-        success: false,
-        message: "Unauthorized",
       });
     }
 
@@ -72,7 +67,8 @@ export default async function handler(req, res) {
     return res.status(500).json({
       success: false,
       message:
-        "Failed to connect to database or update product" + error.message,
+        "Failed to connect to database or update product (error 500) " +
+        error.message,
     });
   }
 }

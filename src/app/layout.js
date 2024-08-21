@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <GlobalState>
           <Navbar />
           <ToastContainer />
-          <main className="flex  flex-grow   flex-col  items-center justify-center   pb-12 pt-6 text-text dark:bg-backgroundDark dark:text-textDark">
+          <main className="flex flex-grow  flex-col items-center   justify-center pb-12 pt-6 text-text dark:bg-backgroundDark dark:text-textDark">
             {children}
           </main>
           <Footer />

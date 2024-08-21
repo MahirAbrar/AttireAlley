@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { addNewProduct } from "@/app/services/addProduct";
 import { toast } from "react-toastify";
+import LoaderBig from "@/components/LoaderBig";
 
 // This is saved in the env.local file FIREBASE_STORAGE_URL=gs://next-js-ecomm-478a2.appspot.com how do i access it?
 const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
@@ -194,7 +195,11 @@ const AddProduct = () => {
     }
   }
   if (!isAuthUser || user?.role !== "admin") {
-    return <Loader />;
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
+        <LoaderBig />
+      </div>
+    );
   }
 
   return (

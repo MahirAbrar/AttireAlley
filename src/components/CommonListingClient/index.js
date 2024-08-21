@@ -106,7 +106,7 @@ const ClientCommonListing = ({ product, params }) => {
           </div>
         ) : (
           <div className="flex items-center">
-            <h3>{product.price}</h3>
+            <h3>{product.price} AUD</h3>
             <div className="badge badge-outline ml-auto">
               Category: {product.category}
             </div>
