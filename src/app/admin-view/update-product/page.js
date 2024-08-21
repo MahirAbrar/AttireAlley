@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { updateProduct } from "@/app/services/updateProduct";
 import { toast } from "react-toastify";
+import LoaderBig from "@/components/LoaderBig";
 
 const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
 

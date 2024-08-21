@@ -11,6 +11,7 @@ import { getCartItems } from "@/app/services/getCartItems";
 import { GlobalContext } from "@/context";
 import { addToCart } from "@/app/services/addToCart";
 import { useContext } from "react";
+import LoaderBig from "@/components/LoaderBig";
 
 const Page = ({ params }) => {
   const [productDetails, setProductDetails] = useState(null);

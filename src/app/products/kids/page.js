@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import Loader from "@/components/Loader";
 import { getClientProducts } from "@/app/services/getClientProducts";
 import { useState, useEffect } from "react";
 import ClientCommonListing from "@/components/CommonListingClient";
@@ -93,7 +92,7 @@ const Kids = () => {
             No more products available
           </h1>
           <p className="mt-1 text-gray-500 dark:text-gray-400">
-            You've reached the end of the product list.
+            You&apos;ve reached the end of the product list.
           </p>
         </div>
       )}
