@@ -1,7 +1,7 @@
-import connectToDB from "@/database";
-import AuthUser from "@/middleware/AuthUser";
-import Order from "@/models/order";
-import User from "@/models/user";
+import connectToDB from "@/app/database";
+import AuthUser from "@/app/middleware/AuthUser";
+import Order from "@/app/models/order";
+import User from "@/app/models/user";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
