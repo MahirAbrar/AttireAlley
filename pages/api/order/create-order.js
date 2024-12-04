@@ -1,5 +1,5 @@
 import connectToDB from "@/app/database";
-import AuthUser from "@/app/middleware/AuthUser";
+import AuthUser from "@/middleware/AuthUser";
 import Order from "@/app/models/order";
 import User from "@/app/models/user";
 import { NextResponse } from "next/server";
