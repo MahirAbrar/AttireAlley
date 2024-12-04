@@ -1,5 +1,5 @@
 "use client";
-
+// Disable adblock of any sort to make stripe work
 import React, { useState, useEffect } from "react";
 import { getAllAddresses } from "../services/address";
 import { getCartItems } from "../services/getCartItems";
@@ -8,6 +8,8 @@ import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { loadStripe } from "@stripe/stripe-js";
+import { callStripeSession } from "../services/stripe";
+import { set } from "mongoose";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
@@ -81,6 +83,42 @@ const Checkout = () => {
 
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
+  };
+
+  const handleCheckout = async () => {
+    const stripe = await stripePromise;
+
+    const createLineItems = cartItems.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.productID.name,
+          images: [item.productID.imageURL[0]],
+        },
+        unit_amount: item.productID.price * 100,
+      },
+      quantity: item.quantity,
+    }));
+
+    console.log("Line items:", createLineItems);
+    const res = await callStripeSession({ createLineItems });
+    console.log("Stripe session response:", res); // Add this log
+
+    setIsOrderProcessing(true);
+
+    if (!res || !res.id) {
+      console.error("Invalid response from Stripe session creation:", res);
+      return;
+    }
+
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: res.id,
+    });
+
+    if (error) {
+      console.error("Stripe redirect error:", error);
+      setIsOrderProcessing(false);
+    }
   };
 
   return (
@@ -235,7 +273,7 @@ const Checkout = () => {
     focus:ring-2 focus:ring-secondary focus:ring-opacity-50 dark:text-text
   `}
             disabled={!selectedAddress || cartItems.length === 0}
-            onClick={() => console.log("Checkout button clicked")}
+            onClick={() => handleCheckout()}
           >
             Checkout
           </button>

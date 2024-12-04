@@ -1,8 +1,9 @@
 import Cookies from "js-cookie";
 
 export const callStripeSession = async (formData) => {
+  console.log("callStripeSession");
   try {
-    const res = await fetch("/api/stripe", {
+    const res = await fetch("/api/stripe/route", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

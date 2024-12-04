@@ -4,6 +4,7 @@ import AuthUser from "@/middleware/AuthUser";
 export const dynamic = "force-dynamic";
 
 export default async function handler(req, res) {
+  console.log("striping");
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -32,16 +33,23 @@ export default async function handler(req, res) {
       });
     }
 
+    // Get the base URL
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : "https://attirealley.vercel.app/");
+
     // Parse the request body
-    const requestBody = await req.body;
+    const { createLineItems } = req.body;
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: requestBody.lineItems, // Ensure you're passing the correct data structure
+      line_items: createLineItems, // Make sure this matches what you're sending
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?status=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?status=cancel`,
+      success_url: `${baseUrl}/checkout?status=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${baseUrl}/checkout?status=cancel`,
     });
 
     return res.status(200).json({
@@ -49,10 +57,10 @@ export default async function handler(req, res) {
       id: session.id,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Stripe Error:", error);
     return res.status(500).json({
       success: false,
-      message: "Something went wrong! Please try again",
+      message: error.message || "Something went wrong! Please try again",
     });
   }
 }
