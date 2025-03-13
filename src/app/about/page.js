@@ -70,15 +70,15 @@ const AboutPage = () => {
               Portfolio and Contact
             </h2>
             <p>
-              Visit my portfolio website (which may be under construction as of
-              June 2024) at:
+              Visit my portfolio website at:{" "}
+              <Link
+                href="https://mahirabrar.net"
+                className="text-primary hover:underline dark:text-primaryDark"
+              >
+                mahirabrar.net
+              </Link>
             </p>
-            <Link
-              href=""
-              className="text-primary hover:underline dark:text-primaryDark"
-            >
-              &quot;Link&quot;
-            </Link>
+
             <p className="mt-4">
               Visit my{" "}
               <Link
