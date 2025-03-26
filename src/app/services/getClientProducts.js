@@ -1,32 +1,21 @@
-import Cookies from "js-cookie";
-
-// Frontend will send to Backend API to fetch products
-export const getClientProducts = async (cat) => {
+export async function getClientProducts(category) {
   try {
+    // Use absolute URL with the current host
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     const response = await fetch(
-      `/api/client/get-client-product?category=${cat}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
+      `${baseUrl}/api/client/get-client-product?category=${category}`,
     );
-
     const data = await response.json();
-    console.log("Success fetching products in services/products");
 
-    if (!response.ok) {
-      return {
-        success: false,
-        message:
-          data.message || "Network response was not ok from services/products",
-      };
-    }
-
-    return { success: true, data };
-  } catch (e) {
-    console.log("Error fetching products in services/products", e);
-    return { success: false, message: e.message };
+    return {
+      success: true,
+      data: data,
+    };
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return {
+      success: false,
+      message: error.message,
+    };
   }
-};
+}
