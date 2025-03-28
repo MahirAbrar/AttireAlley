@@ -1,6 +1,8 @@
 import connectToDB from "@/app/database";
 import Product from "@/app/models/products";
 
+export const dynamic = "force-dynamic";
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({

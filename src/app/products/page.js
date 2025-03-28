@@ -1,6 +1,8 @@
 import { getClientProducts } from "@/app/services/getClientProducts";
 import ProductPagination from "@/components/Products/ProductPagination";
 
+export const dynamic = "force-dynamic";
+
 async function getProducts() {
   const res = await getClientProducts("all");
   if (!res?.data?.data) {

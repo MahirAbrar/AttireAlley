@@ -5,12 +5,11 @@ export async function getClientProducts(category) {
     const response = await fetch(
       `${baseUrl}/api/client/get-client-product?category=${category}`,
       {
-        // Option 1: Remove no-store and use revalidate
-        next: { revalidate: 3600 }, // revalidate every hour
-
-        // OR Option 2: If you really need no-store, use this configuration
-        // cache: 'no-store',
-        // next: { tags: ['products'] }
+        next: {
+          revalidate: 3600, // Revalidate every hour
+          tags: ["products"], // Optional: for on-demand revalidation
+          cache: "force-cache", // Use cache during build
+        },
       },
     );
     const data = await response.json();
