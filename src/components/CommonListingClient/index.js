@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { getCartItems } from "@/app/services/getCartItems";
 import Loader from "../Loader";
 import { faL } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 const ClientCommonListing = ({ product, params }) => {
   const router = useRouter();
@@ -64,7 +65,7 @@ const ClientCommonListing = ({ product, params }) => {
   return (
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
       <figure onClick={() => router.push(redirectLink)}>
-        <img
+        <Image
           src={product.imageURL}
           alt={product.name}
           className="h-60 w-full cursor-pointer rounded-xl object-cover"
