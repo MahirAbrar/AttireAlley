@@ -1,10 +1,25 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ClientCommonListing from "../CommonListingClient";
+import LoaderBig from "../LoaderBig";
 
 export default function ProductPagination({ initialProducts }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const PRODUCTS_PER_PAGE = 20;
+
+  useEffect(() => {
+    // Simulate a small delay to prevent flash of loading state
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
+        <LoaderBig />
+      </div>
+    );
+  }
 
   const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
   const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
