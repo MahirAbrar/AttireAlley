@@ -9,8 +9,8 @@ export default function AIPage() {
           Coming Soon
         </p>
         <p className="text-md text-gray-500 dark:text-gray-400">
-          We're working on an exciting feature to help you match your outfits
-          using AI technology.
+          We&apos;re working on an exciting feature to help you match your
+          outfits using AI technology.
         </p>
       </div>
     </div>

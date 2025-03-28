@@ -6,6 +6,7 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import LoaderBig from "@/components/LoaderBig";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -92,7 +93,7 @@ export default function HomeClient({ products, collections }) {
               </Link>
             </div>
             <div className="mt-8 md:mt-0 md:w-3/5 lg:w-2/3">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Collection Preview"
                 className="h-auto w-full rounded-lg object-cover shadow-lg"
@@ -127,7 +128,7 @@ export default function HomeClient({ products, collections }) {
               <div className="grid grid-cols-1 gap-4 md:w-2/3 md:grid-cols-2">
                 {/* Popular Item 1 */}
                 <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
-                  <img
+                  <Image
                     src={products[19].imageURL[0]}
                     alt="Popular Item 1"
                     className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -153,7 +154,7 @@ export default function HomeClient({ products, collections }) {
                 </div>
                 {/* Popular Item 2 */}
                 <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
-                  <img
+                  <Image
                     src={products[15].imageURL[0]}
                     alt="Popular Item 2"
                     className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -203,7 +204,7 @@ export default function HomeClient({ products, collections }) {
                   key={index}
                   className="aspect-w-16 aspect-h-9 group relative overflow-hidden"
                 >
-                  <img
+                  <Image
                     src={collection.imageSrc}
                     alt={collection.altText}
                     className="h-full max-h-[300px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
@@ -223,7 +224,7 @@ export default function HomeClient({ products, collections }) {
             </div>
             <div className="aspect-w-9 aspect-h-16 md:aspect-h-20">
               <div className="group relative h-full overflow-hidden">
-                <img
+                <Image
                   src={collections[2].imageSrc}
                   alt={collections[2].altText}
                   className="h-full max-h-[620px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
