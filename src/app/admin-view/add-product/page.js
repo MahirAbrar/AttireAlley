@@ -11,7 +11,7 @@ import {
 import { GlobalContext } from "@/context/index";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
-import { addNewProduct } from "@/app/services/addProduct";
+import { addNewProduct } from "@/services/addProduct";
 import { toast } from "react-toastify";
 import LoaderBig from "@/components/LoaderBig";
 

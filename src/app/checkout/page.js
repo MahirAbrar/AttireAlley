@@ -1,14 +1,14 @@
 "use client";
 // Disable adblock of any sort to make stripe work
 import React, { useState, useEffect } from "react";
-import { getAllAddresses } from "../services/address";
-import { getCartItems } from "../services/getCartItems";
+import { getAllAddresses } from "../../services/address";
+import { getCartItems } from "../../services/getCartItems";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
 import { loadStripe } from "@stripe/stripe-js";
-import { callStripeSession } from "../services/stripe";
+import { callStripeSession } from "../../services/stripe";
 import { set } from "mongoose";
 
 const stripePromise = loadStripe(

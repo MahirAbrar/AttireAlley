@@ -9,7 +9,7 @@ import {
   deleteAddress,
   addAddress,
   getAllAddresses,
-} from "../services/address";
+} from "../../services/address";
 import { toast } from "react-toastify";
 import Loader from "@/components/Loader";
 

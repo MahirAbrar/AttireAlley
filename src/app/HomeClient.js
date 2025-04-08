@@ -68,7 +68,7 @@ export default function HomeClient({ products, collections }) {
   }
 
   return (
-    <main className="flex flex-col items-center bg-background text-text dark:bg-backgroundDark dark:text-textDark">
+    <main className="flex flex-col items-center ">
       <div
         ref={section1Ref}
         className="w-full bg-background bg-opacity-100 py-8 dark:bg-backgroundDark dark:bg-opacity-100"
@@ -96,6 +96,8 @@ export default function HomeClient({ products, collections }) {
               <Image
                 src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Collection Preview"
+                width={1771}
+                height={1000}
                 className="h-auto w-full rounded-lg object-cover shadow-lg"
               />
             </div>
@@ -131,7 +133,10 @@ export default function HomeClient({ products, collections }) {
                   <Image
                     src={products[19].imageURL[0]}
                     alt="Popular Item 1"
+                    width={500}
+                    height={384}
                     className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    priority
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <h3 className="mb-2 text-xl font-bold text-white">
@@ -157,7 +162,10 @@ export default function HomeClient({ products, collections }) {
                   <Image
                     src={products[15].imageURL[0]}
                     alt="Popular Item 2"
+                    width={500}
+                    height={384}
                     className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    priority
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <h3 className="mb-2 text-xl font-bold text-white">
@@ -207,6 +215,8 @@ export default function HomeClient({ products, collections }) {
                   <Image
                     src={collection.imageSrc}
                     alt={collection.altText}
+                    width={800}
+                    height={300}
                     className="h-full max-h-[300px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -227,6 +237,8 @@ export default function HomeClient({ products, collections }) {
                 <Image
                   src={collections[2].imageSrc}
                   alt={collections[2].altText}
+                  width={800}
+                  height={620}
                   className="h-full max-h-[620px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">

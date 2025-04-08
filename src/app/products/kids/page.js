@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { getClientProducts } from "@/app/services/getClientProducts";
+import { getClientProducts } from "@/services/getClientProducts";
 import { useState, useEffect } from "react";
 import ClientCommonListing from "@/components/CommonListingClient";
 import { toast } from "react-toastify";

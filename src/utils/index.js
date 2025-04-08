@@ -1,12 +1,8 @@
 export const navOptions = [
-  {
-    id: 1,
-    label: "Home",
-    path: "/",
-  },
+
   {
     id: 2,
-    label: "All Products",
+    label: "Products",
     path: "/products/",
   },
   {
@@ -21,11 +17,11 @@ export const navOptions = [
   },
   {
     id: 5,
-    label: "kids",
+    label: "Kids",
     path: "/products/kids",
   },
   { id: 6, label: "About", path: "/about" },
-  { id: 7, label: "AI Match Outfit", path: "/aipage" },
+  { id: 7, label: "AI Match", path: "/aipage" },
 ];
 
 export const adminNavOptions = [

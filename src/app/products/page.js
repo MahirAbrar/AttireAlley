@@ -1,4 +1,4 @@
-import { getClientProducts } from "@/app/services/getClientProducts";
+import { getClientProducts } from "@/services/getClientProducts";
 import ProductPagination from "@/components/Products/ProductPagination";
 
 export const dynamic = "force-dynamic";

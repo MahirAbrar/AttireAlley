@@ -8,7 +8,11 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import { getCartItems } from "@/app/services/getCartItems";
+import { getCartItems } from "@/services/getCartItems";
+import { ShoppingBagIcon } from "@heroicons/react/24/outline";
+import DarkModeToggle from "../DarkModeToggle";
+import NeonButton from "../NeonButton";
+import "@/styles/navbar.css";
 
 function Navbar() {
   const {
@@ -20,14 +24,40 @@ function Navbar() {
     setUser,
     cartItemsCount,
     navbarUpdateTrigger,
+    isDark,
+    setIsDark,
   } = useContext(GlobalContext);
 
   const [cartDisplay, setCartDisplay] = useState(0);
   const [cartAmount, setCartAmount] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const router = useRouter();
   const pathName = usePathname();
   const isAdminView = pathName.includes("admin-view");
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== 'undefined') {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > lastScrollY) { // scrolling down
+          setIsVisible(false);
+        } else { // scrolling up
+          setIsVisible(true);
+        }
+        
+        setLastScrollY(currentScrollY);
+      }
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, [lastScrollY]);
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -81,181 +111,174 @@ function Navbar() {
 
   return (
     <>
-      <nav className="navbar px-2 dark:bg-gray-800">
-        <div className="navbar-start">
+      <nav 
+        className={`bg-backgroundDark sticky top-0 z-50 shadow-lg px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
+          isVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
+        <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center space-x-3 rtl:space-x-reverse"
+            className="flex items-center gap-2.5 text-2xl 2xl:text-4xl font-bold text-textDark no-underline transition-all duration-300 hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)] hover:scale-105 border-2 border-transparent hover:border-primary rounded-lg px-4 py-2"
             onClick={handleLinkClick("/")}
           >
-            <span className="whitespace-nowrap text-sm font-semibold sm:text-xl lg:text-2xl dark:text-white">
-              AttireAlley
-            </span>
+            <ShoppingBagIcon className="h-8 2xl:h-12 w-8 2xl:w-12 text-primary transition-all duration-300" />
+            <span>AttireAlley</span>
           </Link>
-          <div />
-        </div>
 
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-vertical m-0 list-none rounded p-0 text-right lg:menu-horizontal">
-            {isAdminView
-              ? adminNavOptions.map((item) => (
-                  <li key={item.id} className="ml-2 inline-block">
-                    <Link
-                      href={item.path}
-                      className={`text-sm uppercase transition-colors duration-300 ease-in-out hover:text-red-500 ${
-                        item.active
-                          ? "text-red-500"
-                          : "text-gray-800 dark:text-white"
-                      }`}
-                      aria-current="page"
-                      onClick={() => handleLinkClick(item.path)}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))
-              : navOptions.map((item) => (
-                  <li key={item.id} className="ml-2 inline-block">
-                    <Link
-                      href={item.path}
-                      className={`text-sm uppercase transition-colors duration-300 ease-in-out hover:text-red-500 ${
-                        item.active
-                          ? "text-red-500"
-                          : "text-gray-800 dark:text-white"
-                      }`}
-                      aria-current="page"
-                      onClick={() => handleLinkClick(item.path)}
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-          </ul>
-        </div>
+          <div className="hidden lg:flex">
+            <ul className="flex gap-6 2xl:gap-8">
+              {isAdminView
+                ? adminNavOptions.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        href={item.path}
+                        className={`nav-link text-lg 2xl:text-xl text-textDark font-medium px-4 py-2 ${
+                          item.active ? "active" : ""
+                        }`}
+                        onClick={() => handleLinkClick(item.path)}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))
+                : navOptions.map((item) => (
+                    <li key={item.id}>
+                      <Link
+                        href={item.path}
+                        className={`nav-link text-lg 2xl:text-xl text-textDark font-medium px-4 py-2 ${
+                          item.active ? "active" : ""
+                        }`}
+                        onClick={() => handleLinkClick(item.path)}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+            </ul>
+          </div>
 
-        <div className="navbar-end">
-          {isAuthUser && !isAdminView ? (
-            <div className="dropdown dropdown-bottom">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-circle btn-ghost relative z-[1001]"
-              >
-                <div className="indicator">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  <span className="badge indicator-item badge-sm">
-                    {cartDisplay}
-                  </span>
-                </div>
-              </div>
-              <div className="relative z-[1000]">
+          <div className="flex items-center gap-4 2xl:gap-6">
+            <DarkModeToggle />
+            {isAuthUser && !isAdminView ? (
+              <div className="dropdown dropdown-bottom">
                 <div
                   tabIndex={0}
-                  className="card dropdown-content card-compact w-52 bg-base-100 shadow"
+                  role="button"
+                  className="relative z-[1001] transition-all duration-300 hover:scale-110 [&>div>svg]:hover:text-primary"
                 >
-                  <div className="card-body">
-                    <span className="text-lg font-bold">
-                      {cartDisplay} Items
+                  <div className="indicator">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 2xl:h-8 w-6 2xl:w-8 text-textDark transition-colors duration-300"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span className="badge indicator-item badge-xs 2xl:badge-sm bg-primary text-textDark">
+                      {cartDisplay}
                     </span>
-                    <span className="text-info">Subtotal: ${cartAmount}</span>
-                    <div className="card-actions">
-                      <button
-                        className="btn btn-primary btn-block"
-                        onClick={() => router.push("/cart")}
-                      >
-                        View cart
-                      </button>
-                      <button
-                        className="btn btn-primary btn-block"
-                        onClick={() => router.push("/account")}
-                      >
-                        Account
-                      </button>
+                  </div>
+                </div>
+                <div className="relative z-[1000]">
+                  <div
+                    tabIndex={0}
+                    className="card dropdown-content card-compact w-52 bg-backgroundDark shadow-lg"
+                  >
+                    <div className="card-body">
+                      <span className="text-lg font-bold text-textDark">
+                        {cartDisplay} Items
+                      </span>
+                      <span className="text-primary">Subtotal: ${cartAmount}</span>
+                      <div className="card-actions">
+                        <button
+                          className="btn btn-primary btn-block bg-primary text-textDark hover:bg-primary/90"
+                          onClick={() => router.push("/cart")}
+                        >
+                          View cart
+                        </button>
+                        <button
+                          className="btn btn-primary btn-block bg-primary text-textDark hover:bg-primary/90"
+                          onClick={() => router.push("/account")}
+                        >
+                          Account
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
 
-          {user?.role === "admin" ? (
-            isAdminView ? (
-              <button
-                onClick={handleLinkClick("/")}
-                className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
+            {user?.role === "admin" ? (
+              isAdminView ? (
+                <NeonButton
+                  onClick={handleLinkClick("/")}
+                  className="text-textDark"
+                >
+                  Client view
+                </NeonButton>
+              ) : (
+                <NeonButton
+                  onClick={handleLinkClick("/admin-view")}
+                  className="text-textDark"
+                >
+                  Admin View
+                </NeonButton>
+              )
+            ) : null}
+
+            {isAuthUser ? (
+              <NeonButton
+                onClick={handleLogout}
+                className="text-textDark"
               >
-                Client view
-              </button>
+                Logout
+              </NeonButton>
             ) : (
-              <button
-                onClick={handleLinkClick("/admin-view")}
-                className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
+              <NeonButton
+                className="text-textDark"
+                onClick={handleLinkClick("/login")}
               >
-                Admin View
-              </button>
-            )
-          ) : null}
-          {isAuthUser ? (
-            <button
-              onClick={handleLogout}
-              className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
-            >
-              Logout
-            </button>
-          ) : (
-            <button
-              className="btn btn-md mx-1 bg-gray-200 md:btn-md lg:btn-lg dark:bg-gray-700"
-              onClick={handleLinkClick("/login")}
-            >
-              Login
-            </button>
-          )}
+                Login
+              </NeonButton>
+            )}
 
-          <div className="lg:hidden">
-            <label className="btn btn-circle swap swap-rotate">
-              {/* this hidden checkbox controls the state */}
-              <input
-                type="checkbox"
-                onClick={handleNavModalToggle}
-                ref={checkBoxRef}
-              />
-              <span className="sr-only">Open main menu</span>
-              {/* hamburger icon */}
-
-              {/* closed menu showing hamburger */}
-
-              <svg
-                className="swap-off fill-current"
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 512 512"
-              >
-                <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
-              </svg>
-              <svg
-                className="swap-on fill-current"
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 512 512"
-              >
-                <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
-              </svg>
-            </label>
+            <div className="lg:hidden">
+              <label className="btn btn-circle swap swap-rotate">
+                <input
+                  type="checkbox"
+                  onClick={handleNavModalToggle}
+                  ref={checkBoxRef}
+                />
+                <span className="sr-only">Open main menu</span>
+                <svg
+                  className="swap-off fill-current text-textDark"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+                </svg>
+                <svg
+                  className="swap-on fill-current text-textDark"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 512 512"
+                >
+                  <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
+                </svg>
+              </label>
+            </div>
           </div>
         </div>
       </nav>

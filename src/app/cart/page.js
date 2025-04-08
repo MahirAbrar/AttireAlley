@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getCartItems } from "../services/getCartItems";
+import { getCartItems } from "../../services/getCartItems";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import CartItemCard from "@/components/CartItem";
-import { deleteCartItem } from "@/app/services/deleteCartItem";
+import { deleteCartItem } from "@/services/deleteCartItem";
 
 const Cart = () => {
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =

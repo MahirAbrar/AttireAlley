@@ -1,6 +1,6 @@
-import connectToDB from "@/app/database";
-import User from "@/app/models/user";
-import Products from "@/app/models/products";
+import connectToDB from "@/database";
+import User from "@/models/user";
+import Products from "@/models/products";
 import AuthUser from "@/middleware/AuthUser";
 
 export default async function handler(req, res) {

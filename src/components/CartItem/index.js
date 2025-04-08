@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const CartItemCard = ({ cartItems, handleDelete }) => {
   const router = useRouter();
@@ -43,11 +44,14 @@ const CartItemCard = ({ cartItems, handleDelete }) => {
             </svg>
           </button>
           <figure>
-            <img
+            <Image
               src={item.productID.imageURL[0]}
               alt={item.productID.name}
+              width={500}
+              height={160}
               className="h-40 w-full cursor-pointer object-cover"
               onClick={() => handleImageClick(item.productID._id)}
+              priority
             />
           </figure>
           <div className="flex-grow p-4">

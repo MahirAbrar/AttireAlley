@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { registerNewUser } from "../services/register";
+import { registerNewUser } from "../../services/register";
 
 const RegisterForm = () => {
   const router = useRouter();

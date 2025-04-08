@@ -1,7 +1,19 @@
 /** @type {import('next').NextConfig} */
 const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
-module.exports = {
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+      }
+    ],
+  },
   // webpack: (config, { dev, isServer }) => {
   //   const serverSideOrProd = isServer || !dev;
   //   if (!serverSideOrProd)
@@ -22,3 +34,5 @@ module.exports = {
   //   return config;
   // },
 };
+
+module.exports = nextConfig;

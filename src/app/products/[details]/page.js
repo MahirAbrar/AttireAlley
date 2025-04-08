@@ -1,15 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getProductDetails } from "@/app/services/getProductDetails";
+import { getProductDetails } from "@/services/getProductDetails";
 import { toast } from "react-toastify";
 import Loader from "@/components/Loader";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { getCartItems } from "@/app/services/getCartItems";
+import { getCartItems } from "@/services/getCartItems";
 
 import { GlobalContext } from "@/context";
-import { addToCart } from "@/app/services/addToCart";
+import { addToCart } from "@/services/addToCart";
 import { useContext } from "react";
 import LoaderBig from "@/components/LoaderBig";
 

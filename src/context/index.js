@@ -20,6 +20,9 @@ export default function GlobalState({ children }) {
   const [updateItem, setUpdateItem] = useState(null);
   const [cartitemsCount, setCartItemsCount] = useState(0);
   const [navbarUpdateTrigger, setNavbarUpdateTrigger] = useState(0);
+  const [isDark, setIsDark] = useState(
+    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('isDark') || 'false') : false
+  );
 
   // Updates the cart in the navbar
   const triggerNavbarUpdate = () => {
@@ -40,6 +43,15 @@ export default function GlobalState({ children }) {
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem('isDark', JSON.stringify(isDark));
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDark]);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -59,6 +71,8 @@ export default function GlobalState({ children }) {
         setCartItemsCount,
         navbarUpdateTrigger,
         triggerNavbarUpdate,
+        isDark,
+        setIsDark,
       }}
     >
       {children}

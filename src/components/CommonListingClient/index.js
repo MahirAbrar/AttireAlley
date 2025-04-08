@@ -1,11 +1,11 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
-import { addToCart } from "@/app/services/addToCart";
+import { addToCart } from "@/services/addToCart";
 import { GlobalContext } from "@/context";
 import { toast } from "react-toastify";
 import { useContext } from "react";
-import { getCartItems } from "@/app/services/getCartItems";
+import { getCartItems } from "@/services/getCartItems";
 import Loader from "../Loader";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
@@ -68,7 +68,10 @@ const ClientCommonListing = ({ product, params }) => {
         <Image
           src={product.imageURL}
           alt={product.name}
+          width={500}
+          height={240}
           className="h-60 w-full cursor-pointer rounded-xl object-cover"
+          priority
         />
       </figure>
       <div className="card-body flex-grow">

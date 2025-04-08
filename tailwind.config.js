@@ -5,21 +5,17 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  // change to media for dark mode
-  darkMode: "media",
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
+        primary: "#57a7a8",
+        secondary: "#ff7e67",
         text: "#0a1414",
         background: "#f8fbfc",
-        primary: "#57a7a8",
-        secondary: "#aab9d3",
-        accent: "#858ec0",
+        accent: "#ffd166",
         textDark: "#ebf5f5",
         backgroundDark: "#030607",
-        primaryDark: "#57a7a8",
-        secondaryDark: "#2b3a54",
-        accentDark: "#4a5568",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

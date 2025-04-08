@@ -4,7 +4,7 @@ import Loader from "@/components/Loader";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useState, useContext } from "react";
-import { LoginUser } from "@/app/services/login";
+import { LoginUser } from "@/services/login";
 import { GlobalContext } from "@/context/index";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";

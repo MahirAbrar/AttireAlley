@@ -25,6 +25,8 @@ const AdminCommonListing = ({ user, onDelete }) => {
         <Image
           src={user.imageURL}
           alt={user.name}
+          width={500}
+          height={240}
           className="h-60 w-full cursor-pointer rounded-xl object-cover"
         />
       </figure>

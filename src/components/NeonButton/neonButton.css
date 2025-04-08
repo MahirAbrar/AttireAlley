@@ -1,0 +1,9 @@
+.neon-element {
+  position: relative;
+  padding: 20px 30px;
+  border: 2px solid #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.neon-blue { border-color: #0ff; color: #0ff; }

@@ -1,4 +1,4 @@
-import connectToDB from "@/app/database";
+import connectToDB from "@/database";
 import passport from "passport";
 import "@/app/auth/passport-config";
 

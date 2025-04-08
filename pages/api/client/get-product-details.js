@@ -1,5 +1,5 @@
-import connectToDB from "@/app/database";
-import Product from "@/app/models/products";
+import connectToDB from "@/database";
+import Product from "@/models/products";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
