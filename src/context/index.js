@@ -20,9 +20,18 @@ export default function GlobalState({ children }) {
   const [updateItem, setUpdateItem] = useState(null);
   const [cartitemsCount, setCartItemsCount] = useState(0);
   const [navbarUpdateTrigger, setNavbarUpdateTrigger] = useState(0);
-  const [isDark, setIsDark] = useState(
-    typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('isDark') || 'false') : false
-  );
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // Check localStorage first
+      const saved = localStorage.getItem('isDark');
+      if (saved !== null) {
+        return JSON.parse(saved);
+      }
+      // If no saved preference, check system preference
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
 
   // Updates the cart in the navbar
   const triggerNavbarUpdate = () => {
