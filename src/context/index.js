@@ -20,21 +20,27 @@ export default function GlobalState({ children }) {
   const [updateItem, setUpdateItem] = useState(null);
   const [cartitemsCount, setCartItemsCount] = useState(0);
   const [navbarUpdateTrigger, setNavbarUpdateTrigger] = useState(0);
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('isDark');
-      if (saved !== null) {
-        return JSON.parse(saved);
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    return false;
-  });
+  const [isDark, setIsDark] = useState(false);
 
   // Updates the cart in the navbar
   const triggerNavbarUpdate = () => {
     setNavbarUpdateTrigger((prevTrigger) => (prevTrigger + 1) % 11);
   };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('isDark');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialDarkMode = saved !== null ? JSON.parse(saved) : prefersDark;
+      
+      setIsDark(initialDarkMode);
+      if (initialDarkMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
