@@ -1,7 +1,8 @@
 export async function getClientProducts(category) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-    // Use the complete URL for server-side requests
+    console.log("Fetching products from:", `${baseUrl}/api/client/get-client-product?category=${category}`);
+    
     const response = await fetch(
       `${baseUrl}/api/client/get-client-product?category=${category}`,
       {
@@ -12,7 +13,17 @@ export async function getClientProducts(category) {
         },
       },
     );
+
+    if (!response.ok) {
+      console.error("API response not OK:", response.status, response.statusText);
+      return {
+        success: false,
+        message: `API request failed: ${response.status} ${response.statusText}`,
+      };
+    }
+
     const data = await response.json();
+    console.log("Products fetched successfully:", data);
 
     return {
       success: true,
@@ -23,6 +34,7 @@ export async function getClientProducts(category) {
     return {
       success: false,
       message: error.message,
+      error: error,
     };
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { GlobalContext } from "@/context/index";
 import Link from "next/link";
 import { gsap } from "gsap";
@@ -12,6 +12,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function HomeClient({ products, collections }) {
   const { isAuthUser, user } = useContext(GlobalContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Set loading to false after a short delay to prevent flash of loading state
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const divider1Ref = useRef(null);
   const divider2Ref = useRef(null);
@@ -59,7 +69,7 @@ export default function HomeClient({ products, collections }) {
     });
   }, [divider1Ref, divider2Ref, section1Ref, section2Ref, section3Ref]);
 
-  if (!products?.length) {
+  if (loading || !products?.length) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
         <LoaderBig />
