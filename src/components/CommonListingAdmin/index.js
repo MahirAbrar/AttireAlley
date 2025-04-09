@@ -3,7 +3,6 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
-import { StarIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
 
 const AdminCommonListing = ({ user, onDelete }) => {
@@ -23,7 +22,7 @@ const AdminCommonListing = ({ user, onDelete }) => {
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
       <figure>
         <Image
-          src={user.imageURL}
+          src={Array.isArray(user.imageURL) ? user.imageURL[0] : user.imageURL}
           alt={user.name}
           width={500}
           height={240}

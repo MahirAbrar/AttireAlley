@@ -116,7 +116,7 @@ function Navbar() {
           isDark ? 'bg-backgroundDark' : 'bg-background'
         } sticky top-0 z-50 shadow-lg px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
-        }`}
+        } ${isDark ? 'dark' : ''}`}
       >
         <div className="flex items-center justify-between">
           <Link
