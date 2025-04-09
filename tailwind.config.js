@@ -11,10 +11,8 @@ module.exports = {
       colors: {
         primary: "#57a7a8",
         secondary: "#ff7e67",
-        text: "#0a1414",
         background: "#f8fbfc",
         accent: "#ffd166",
-        textDark: "#ebf5f5",
         backgroundDark: "#030607",
       },
       backgroundImage: {

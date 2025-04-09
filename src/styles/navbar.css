@@ -3,11 +3,12 @@
     position: relative;
     transition: all 0.3s ease;
     overflow: hidden;
-    color: #eeeeee;
     text-decoration: none;
     font-weight: 500;
     padding: 8px 15px;
     border-radius: 4px;
+    display: inline-block;
+    isolation: isolate;
 }
 
 .nav-link::before {
@@ -20,10 +21,11 @@
     background-color: rgba(0, 173, 181, 0.2);
     transition: all 0.3s ease;
     z-index: -1;
+    border-radius: 4px;
 }
 
 .nav-link:hover {
-    color: #00adb5;
+    color: #00adb5 !important;
 }
 
 .nav-link:hover::before {
@@ -31,7 +33,7 @@
 }
 
 .nav-link.active {
-    color: #00adb5;
+    color: #00adb5 !important;
 }
 
 .bg-backgroundDark {
@@ -51,7 +53,6 @@
 
 .bg-backgroundDark .nav-link {
     position: relative;
-    color: #eeeeee;
     text-decoration: none;
     font-weight: 500;
     padding: 8px 15px;
@@ -59,6 +60,7 @@
     transition: color 0.3s ease;
     display: inline-block;
     overflow: hidden;
+    isolation: isolate;
 }
 
 .bg-backgroundDark .nav-link::before {
@@ -76,7 +78,7 @@
 }
 
 .bg-backgroundDark .nav-link:hover {
-    color: #00adb5;
+    color: #00adb5 !important;
 }
 
 .bg-backgroundDark .nav-link:hover::before {
@@ -85,5 +87,5 @@
 }
 
 .bg-backgroundDark .nav-link.active {
-    color: #00adb5;
+    color: #00adb5 !important;
 } 

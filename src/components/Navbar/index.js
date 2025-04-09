@@ -112,14 +112,18 @@ function Navbar() {
   return (
     <>
       <nav 
-        className={`bg-backgroundDark sticky top-0 z-50 shadow-lg px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
+        className={`${
+          isDark ? 'bg-backgroundDark' : 'bg-background'
+        } sticky top-0 z-50 shadow-lg px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-2.5 text-2xl 2xl:text-4xl font-bold text-textDark no-underline transition-all duration-300 hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)] hover:scale-105 border-2 border-transparent hover:border-primary rounded-lg px-4 py-2"
+            className={`flex items-center gap-2.5 text-2xl 2xl:text-4xl font-bold ${
+              isDark ? 'text-textDark' : 'text-text'
+            } no-underline transition-all duration-300 hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)] hover:scale-105 border-2 border-transparent hover:border-primary rounded-lg px-4 py-2`}
             onClick={handleLinkClick("/")}
           >
             <ShoppingBagIcon className="h-8 2xl:h-12 w-8 2xl:w-12 text-primary transition-all duration-300" />
@@ -133,7 +137,9 @@ function Navbar() {
                     <li key={item.id}>
                       <Link
                         href={item.path}
-                        className={`nav-link text-lg 2xl:text-xl text-textDark font-medium px-4 py-2 ${
+                        className={`nav-link text-lg 2xl:text-xl ${
+                          isDark ? 'text-textDark' : 'text-text'
+                        } font-medium px-4 py-2 ${
                           item.active ? "active" : ""
                         }`}
                         onClick={() => handleLinkClick(item.path)}
@@ -146,7 +152,9 @@ function Navbar() {
                     <li key={item.id}>
                       <Link
                         href={item.path}
-                        className={`nav-link text-lg 2xl:text-xl text-textDark font-medium px-4 py-2 ${
+                        className={`nav-link text-lg 2xl:text-xl ${
+                          isDark ? 'text-textDark' : 'text-text'
+                        } font-medium px-4 py-2 ${
                           item.active ? "active" : ""
                         }`}
                         onClick={() => handleLinkClick(item.path)}
