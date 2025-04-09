@@ -10,6 +10,7 @@ import Loader from "@/components/Loader";
 import { loadStripe } from "@stripe/stripe-js";
 import { callStripeSession } from "../../services/stripe";
 import { set } from "mongoose";
+import Image from 'next/image';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
@@ -130,10 +131,12 @@ const Checkout = () => {
             {cartLoading && <Loader />}
             {cartItems.map((item) => (
               <div key={item._id} className="flex items-center space-x-2">
-                <img
+                <Image
                   src={item.productID.imageURL[0]}
                   alt={item.productID.name}
-                  className="h-20 w-20 rounded object-cover"
+                  width={100}
+                  height={100}
+                  className="h-24 w-24 object-cover"
                 />
                 <div>
                   <p className="font-bold">{item.productID.name}</p>

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Loader from "@/components/Loader";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from 'next/image';
 
 import { getCartItems } from "@/services/getCartItems";
 
@@ -83,12 +84,14 @@ const Page = ({ params }) => {
     <div className="flex min-h-screen w-full flex-col gap-4 bg-base-200 p-4 lg:flex-row">
       {/* left side */}
       <div className="flex flex-col">
-        {productDetails.imageURL && productDetails.imageURL.length > 0 && (
-          <img
-            src={productDetails.imageURL[selectedImage]}
-            className="w-full "
-          />
-        )}
+        <Image
+          src={productDetails.imageURL[0]}
+          alt={productDetails.name}
+          width={500}
+          height={300}
+          className="h-60 w-full rounded-xl object-cover"
+          priority
+        />
         {productDetails.imageURL && productDetails.imageURL.length > 1 && (
           <div className="flex w-full justify-center gap-2 py-2">
             {productDetails.imageURL.map((image, index) => (

@@ -15,7 +15,7 @@ const Register = () => {
     if (isAuthUser) {
       router.push("/");
     }
-  }, [isAuthUser]);
+  }, [isAuthUser, router]);
 
   return (
     <>

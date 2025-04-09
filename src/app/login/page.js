@@ -29,8 +29,10 @@ const Login = () => {
   } = useContext(GlobalContext);
 
   useEffect(() => {
-    if (isAuthUser) router.push("/");
-  }, [isAuthUser]);
+    if (isAuthUser) {
+      router.push("/");
+    }
+  }, [isAuthUser, router]);
 
   const [nameTyped, setNameTyped] = useState(false);
   // Handle input changes

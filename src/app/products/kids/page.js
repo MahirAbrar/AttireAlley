@@ -14,16 +14,16 @@ const Kids = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchProducts(); // Now call fetchProducts within this condition
+    fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
     const res = await getClientProducts("kids");
     if (res?.data?.data) {
+      console.log("Product data:", res.data.data);
       setProducts(res.data.data);
       setLoading(false);
     } else {
-      // Handle error or empty data case
       toast.error("Failed to fetch products or data is empty.");
       setLoading(false);
     }
