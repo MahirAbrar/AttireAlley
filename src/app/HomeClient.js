@@ -57,7 +57,7 @@ export default function HomeClient({ products, collections }) {
         to: { y: 0 },
       });
     });
-  }, []);
+  }, [divider1Ref, divider2Ref, section1Ref, section2Ref, section3Ref]);
 
   if (!products?.length) {
     return (

@@ -1,9 +1,13 @@
 import connectToDB from "@/database";
 import Product from "@/models/products";
+import CorsMiddleware from "@/middleware/CorsMiddleware";
 
 export const dynamic = "force-dynamic";
 
 export default async function handler(req, res) {
+  // Apply CORS middleware
+  await CorsMiddleware(req, res, () => {});
+
   if (req.method !== "GET") {
     return res.status(405).json({
       success: false,

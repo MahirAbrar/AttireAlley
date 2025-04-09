@@ -41,7 +41,7 @@ export default function GlobalState({ children }) {
       setUser(null);
       localStorage.removeItem("user");
     }
-  }, []);
+  }, [setIsAuthUser, setUser]);
 
   useEffect(() => {
     localStorage.setItem('isDark', JSON.stringify(isDark));

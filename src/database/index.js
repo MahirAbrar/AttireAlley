@@ -23,8 +23,13 @@ const connectToDB = async () => {
     await mongoose.connect(connectionUrl, configOptions);
     console.log("Successfully connected to MongoDB Database");
   } catch (error) {
-    console.error("Error connecting to MongoDB Database:", error.message);
-    throw error; // Propagate the error to be caught by the calling function
+    console.error("Error connecting to MongoDB Database:", {
+      message: error.message,
+      code: error.code,
+      name: error.name,
+      stack: error.stack
+    });
+    throw error;
   }
 };
 
