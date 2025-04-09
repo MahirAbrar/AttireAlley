@@ -49,7 +49,9 @@ export default function Home() {
   }, []);
 
   const fetchProducts = async () => {
+    console.log("Fetching products");
     const res = await getClientProducts("all");
+    console.log("Products fetched");
     if (res?.data?.data) {
       console.log("Product data:", res.data.data);
       setProducts(res.data.data);

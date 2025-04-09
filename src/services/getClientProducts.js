@@ -1,6 +1,9 @@
 export async function getClientProducts(category) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    // In production, we want to use the same origin
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 
+      (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+    
     console.log("Fetching products from:", `${baseUrl}/api/client/get-client-product?category=${category}`);
     
     const response = await fetch(
@@ -8,9 +11,9 @@ export async function getClientProducts(category) {
       {
         next: {
           revalidate: 3600, // Revalidate every hour
-          tags: ["products"], // Optional: for on-demand revalidation
-          cache: "force-cache", // Use cache during build
+          tags: ["products"],
         },
+        cache: 'no-store', // Don't cache during build
       },
     );
 

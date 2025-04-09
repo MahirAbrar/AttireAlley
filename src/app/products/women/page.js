@@ -18,7 +18,7 @@ const Women = () => {
   }, []);
 
   const fetchProducts = async () => {
-    const res = await getClientProducts("women");
+    const res = await getClientProducts("Women");
     if (res?.data?.data) {
       console.log("Product data:", res.data.data);
       setProducts(res.data.data);
