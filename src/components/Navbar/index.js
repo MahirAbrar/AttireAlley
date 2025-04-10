@@ -118,7 +118,7 @@ function Navbar() {
     <>
       <nav 
         className={`${
-          mounted && isDark ? 'bg-backgroundDark' : 'bg-background'
+          mounted && isDark ? 'bg-backgroundDark' : 'bg-gray-300'
         } sticky top-0 z-50 shadow-lg px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         } ${mounted && isDark ? 'dark' : ''}`}
@@ -128,10 +128,16 @@ function Navbar() {
             href="/"
             className={`flex items-center gap-2.5 text-2xl 2xl:text-4xl font-bold ${
               isDark ? 'text-textDark' : 'text-text'
-            } no-underline transition-all duration-300 hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)] hover:scale-105 border-2 border-transparent hover:border-primary rounded-lg px-4 py-2`}
+            } no-underline transition-all duration-300 ${
+              isDark 
+                ? 'hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)] hover:scale-105' 
+                : 'hover:border-primary hover:scale-[1.03] hover:shadow-[0_0_0_2px_rgba(0,173,181,0.5)]'
+            } border-2 border-transparent rounded-lg px-4 py-2`}
             onClick={handleLinkClick("/")}
           >
-            <ShoppingBagIcon className="h-8 2xl:h-12 w-8 2xl:w-12 text-primary transition-all duration-300" />
+            <ShoppingBagIcon className={`h-8 2xl:h-12 w-8 2xl:w-12 ${
+              isDark ? 'dark:text-primary' : ''
+            } transition-all duration-300`} />
             <span>AttireAlley</span>
           </Link>
 
