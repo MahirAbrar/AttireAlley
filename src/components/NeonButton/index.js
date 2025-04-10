@@ -61,9 +61,7 @@ function NeonButton({
       `}
       style={{
         borderColor: color,
-        color: color,
-        textShadow: `0 0 5px ${color}`,
-        boxShadow: `0 0 5px ${color}, inset 0 0 5px ${color}`
+        boxShadow: `0 0 2px ${color}, inset 0 0 2px ${color}` 
       }}
       onClick={onClick}
     >
