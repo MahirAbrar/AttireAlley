@@ -134,7 +134,7 @@ export default function Home() {
               }}
             >
               <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg text-white">
-                "Style is a way to say who you are without having to speak"
+                &quot;Style is a way to say who you are without having to speak&quot;
               </h1>
               <p className="text-xl md:text-2xl drop-shadow-md text-white/90">
                 At Attire Alley, we believe in making fashion speak volumes about your unique personality
@@ -189,9 +189,11 @@ export default function Home() {
               {/* Army Collection */}
               <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
                 <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
-                  <img
-                    src="landingpage\seconddiv1.jpg"
-                    alt="Army Collection"
+                  <Image
+                    src="/landingpage/seconddiv1.jpg"
+                    alt="Army Girl"
+                    width={500}
+                    height={500}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
@@ -200,9 +202,11 @@ export default function Home() {
               {/* Third Collection */}
               <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
                 <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
-                  <img
-                    src="landingpage\seconddiv2.jpg"
+                  <Image
+                    src="/landingpage/seconddiv2.jpg"
                     alt="Third Collection"
+                    width={500}
+                    height={500}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
@@ -211,9 +215,11 @@ export default function Home() {
               {/* Grok Collection */}
               <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
                 <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
-                  <img
-                    src="landingpage\seconddiv3.jpg"
+                  <Image
+                    src="/landingpage/seconddiv3.jpg"
                     alt="Grok Collection"
+                    width={500}
+                    height={500}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
@@ -264,9 +270,11 @@ export default function Home() {
               <div className="grid grid-cols-1 gap-4 md:w-2/3 md:grid-cols-2">
                 {/* Popular Item 1 */}
                 <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
-                  <img
+                  <Image
                     src={products[19].imageURL[0]}
                     alt="Popular Item 1"
+                    width={500}
+                    height={500}
                     className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -290,9 +298,11 @@ export default function Home() {
                 </div>
                 {/* Popular Item 2 */}
                 <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
-                  <img
+                  <Image
                     src={products[15].imageURL[0]}
                     alt="Popular Item 2"
+                    width={500}
+                    height={500}
                     className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -338,9 +348,11 @@ export default function Home() {
                   key={index}
                   className="aspect-w-16 aspect-h-9 group relative overflow-hidden"
                 >
-                  <img
+                  <Image
                     src={collection.imageSrc}
                     alt={collection.altText}
+                    width={500}
+                    height={300}
                     className="h-full max-h-[300px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
@@ -358,9 +370,11 @@ export default function Home() {
             </div>
             <div className="aspect-w-9 aspect-h-16 md:aspect-h-20">
               <div className="group relative h-full overflow-hidden">
-                <img
+                <Image
                   src={collections[2].imageSrc}
                   alt={collections[2].altText}
+                  width={500}
+                  height={620}
                   className="h-full max-h-[620px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
