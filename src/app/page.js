@@ -243,10 +243,16 @@ export default function Home() {
         className="h-1 w-full bg-gradient-to-r from-accent via-secondary to-primary dark:from-accentDark dark:via-secondaryDark dark:to-primaryDark"
       ></div>
 
+{/* Third Section */}
       <section
         className="w-full bg-background bg-opacity-95 py-8 dark:bg-backgroundDark dark:bg-opacity-95"
       >
         <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg text-primary">
+              Most Popular Sales
+            </h1>
+          </div>
           <div className="flex flex-col items-center justify-between md:flex-row">
             <div className="mb-6 md:mb-0 md:w-1/3">
               <h1 className="mb-4 text-4xl font-bold text-primary">
