@@ -135,49 +135,49 @@ export default function Home() {
 {/* Divider */}
       <div className="h-1 w-full bg-gradient-to-r dark:from-primary dark:via-secondary dark:to-accent from-secondary  to-accent"></div>
 
-  
-        <div className="w-full h-screen bg-gray-500 bg-opacity-100 dark:bg-backgroundDark dark:bg-opacity-100">
+  {/* 2nd section */}
+        <div className="w-full h-screen bg-gray-300 bg-opacity-100 dark:bg-backgroundDark dark:bg-opacity-100">
           <div className="w-full h-full flex flex-col justify-center px-4">
             {/* Image Accordion */}
-            <div className="flex flex-col md:flex-row h-[40vh] gap-4 mb-12">
+            <div className="flex flex-col md:flex-row h-[40vh] gap-8 mb-12 items-center justify-center">
               {/* Army Collection */}
-              <div className="group flex-1 relative overflow-hidden rounded-2xl transition-all duration-500 hover:flex-[2]">
-                <img
-                  src="/landingpage/grok army shirt.jpg"
-                  alt="Army Collection"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    Army Collection
-                  </h3>
-                  <p className="text-lg md:text-xl text-white/90 italic transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
-                    "Take your aura to the next level"
-                  </p>
+              <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
+                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20">
+                  <img
+                    src="landingpage\seconddiv1-Photoroom.png"
+                    alt="Army Collection"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
+                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
               </div>
-
-              {/* Grok Collection */}
-              <div className="group flex-1 relative overflow-hidden rounded-2xl transition-all duration-500 hover:flex-[2]">
-                <img
-                  src="/landingpage/grok asset.jpg"
-                  alt="Grok Collection"
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    Grok Collection
-                  </h3>
-                  <p className="text-lg md:text-xl text-white/90 italic transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
-                    "Bold designs for the fearless"
-                  </p>
+              {/* Third Collection */}
+              <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
+                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20">
+                  <img
+                    src="landingpage\seconddiv2-Photoroom.png"
+                    alt="Third Collection"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
+                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+              </div>
+              {/* Grok Collection */}
+              <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
+                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20">
+                  <img
+                    src="landingpage\seconddiv3-Photoroom.png"
+                    alt="Grok Collection"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
               </div>
             </div>
 
             {/* Main Heading */}
             <div className="text-center mb-12">
-              <HoverText text="Elevate Your Style" className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-primary mb-4" />
+              <HoverText text="Elevate Your Style" className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary mb-4" />
               <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Discover collections that speak to your unique style and personality
               </p>
@@ -185,11 +185,6 @@ export default function Home() {
 
             {/* Welcome Section */}
             <div className="text-center max-w-4xl mx-auto">
-              <div className="space-y-4 mb-8">
-                <p className="text-lg md:text-xl italic text-gray-600 dark:text-gray-300">"Fashion is the armor to survive the reality of everyday life"</p>
-                <p className="text-lg md:text-xl italic text-gray-600 dark:text-gray-300">"Style is a way to say who you are without having to speak"</p>
-                <p className="text-lg md:text-xl italic text-gray-600 dark:text-gray-300">"Dress how you want to be addressed"</p>
-              </div>
               <Link href="/products" passHref>
                 <button className="hover:bg-accent-dark rounded-lg bg-accent px-8 py-4 font-bold text-white transition-colors duration-300 text-lg md:text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                   Explore Collections
@@ -199,7 +194,7 @@ export default function Home() {
           </div>
         </div>
 
-
+{/* divider 2 */}
       <div
         className="h-1 w-full bg-gradient-to-r from-accent via-secondary to-primary dark:from-accentDark dark:via-secondaryDark dark:to-primaryDark"
       ></div>
