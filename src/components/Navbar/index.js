@@ -119,14 +119,14 @@ function Navbar() {
       <nav 
         className={`${
           mounted && isDark ? 'bg-backgroundDark' : 'bg-gray-300'
-        } sticky top-0 z-50 shadow-lg px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
+        } sticky top-0 z-50 shadow-lg px-2 sm:px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         } ${mounted && isDark ? 'dark' : ''}`}
       >
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className={`flex items-center gap-2.5 text-2xl 2xl:text-4xl font-bold ${
+            className={`flex items-center gap-2.5 text-xl sm:text-2xl 2xl:text-4xl font-bold ${
               isDark ? 'text-textDark' : 'text-text'
             } no-underline transition-all duration-300 ${
               isDark 
@@ -135,7 +135,7 @@ function Navbar() {
             } border-2 border-transparent rounded-lg px-4 py-2`}
             onClick={handleLinkClick("/")}
           >
-            <ShoppingBagIcon className={`h-8 2xl:h-12 w-8 2xl:w-12 ${
+            <ShoppingBagIcon className={`h-6 sm:h-8 2xl:h-12 w-6 sm:w-8 2xl:w-12 ${
               isDark ? 'dark:text-primary' : ''
             } transition-all duration-300`} />
             <span>AttireAlley</span>
@@ -240,14 +240,14 @@ function Navbar() {
               isAdminView ? (
                 <NeonButton
                   onClick={handleLinkClick("/")}
-                  className="text-textDark"
+                  className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
                 >
                   Client view
                 </NeonButton>
               ) : (
                 <NeonButton
                   onClick={handleLinkClick("/admin-view")}
-                  className="text-textDark"
+                  className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
                 >
                   Admin View
                 </NeonButton>
@@ -257,13 +257,13 @@ function Navbar() {
             {isAuthUser ? (
               <NeonButton
                 onClick={handleLogout}
-                className="text-textDark"
+                className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
               >
                 Logout
               </NeonButton>
             ) : (
               <NeonButton
-                className="text-textDark"
+                className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
                 onClick={handleLinkClick("/login")}
               >
                 Login
@@ -279,19 +279,15 @@ function Navbar() {
                 />
                 <span className="sr-only">Open main menu</span>
                 <svg
-                  className="swap-off fill-current text-textDark"
+                  className="swap-off fill-current text-textDark w-6 h-6 sm:w-8 sm:h-8"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
                   viewBox="0 0 512 512"
                 >
                   <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
                 </svg>
                 <svg
-                  className="swap-on fill-current text-textDark"
+                  className="swap-on fill-current text-textDark w-6 h-6 sm:w-8 sm:h-8"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
                   viewBox="0 0 512 512"
                 >
                   <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />

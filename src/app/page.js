@@ -97,18 +97,6 @@ export default function Home() {
     );
   }
 
-  const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
-  const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
-  const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct,
-  );
-
-  const numberOfPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   return (
     <main className="w-full -mt-6">
@@ -117,7 +105,11 @@ export default function Home() {
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out"
           style={{
-            backgroundImage: "url('/backgroundlanding.png')"
+            backgroundImage: "url('/backgroundlanding.png')",
+            maxWidth: "1920px",
+            margin: "0 auto",
+            left: "0",
+            right: "0"
           }}
         />
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
