@@ -8,6 +8,7 @@ import Image from "next/image";
 import { getClientProducts } from "@/services/getClientProducts";
 import ClientCommonListing from "@/components/CommonListingClient";
 import HoverText from "@/components/HoverText";
+import NeonButton from "@/components/NeonButton";
 
 const PRODUCTS_PER_PAGE = 5;
 
@@ -16,9 +17,39 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pulseCircles, setPulseCircles] = useState([]);
 
   useEffect(() => {
     fetchProducts();
+    // Create initial pulse circles (reduced from 5 to 3)
+    const initialCircles = Array.from({ length: 3 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      size: Math.random() * 200 + 100,
+      duration: Math.random() * 4 + 4,
+      delay: Math.random() * 4
+    }));
+    setPulseCircles(initialCircles);
+
+    // Create new pulse circles periodically (increased interval from 2000 to 3000)
+    const interval = setInterval(() => {
+      const newCircle = {
+        id: Date.now(),
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        size: Math.random() * 200 + 100,
+        duration: Math.random() * 4 + 4
+      };
+      setPulseCircles(prev => [...prev, newCircle]);
+
+      // Remove the circle after animation completes
+      setTimeout(() => {
+        setPulseCircles(prev => prev.filter(circle => circle.id !== newCircle.id));
+      }, newCircle.duration * 1000);
+    }, 3000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const collections = [
@@ -82,7 +113,7 @@ export default function Home() {
   return (
     <main className="w-full -mt-6">
       {/* First Section */}
-      <div className="relative w-full h-[94vh] overflow-hidden">
+      <div className="relative w-full h-screen overflow-hidden">
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out"
           style={{
@@ -136,42 +167,57 @@ export default function Home() {
       <div className="h-1 w-full bg-gradient-to-r dark:from-primary dark:via-secondary dark:to-accent from-secondary  to-accent"></div>
 
   {/* 2nd section */}
-        <div className="w-full h-screen bg-gray-300 bg-opacity-100 dark:bg-backgroundDark dark:bg-opacity-100">
-          <div className="w-full h-full flex flex-col justify-center px-4">
+        <div className="w-full h-screen bg-gray-300/50 dark:bg-backgroundDark/50 relative overflow-hidden backdrop-blur-sm">
+          {/* Pulse Circles Background */}
+          {pulseCircles.map(circle => (
+            <div
+              key={circle.id}
+              className="pulse-circle"
+              style={{
+                left: `${circle.left}%`,
+                top: `${circle.top}%`,
+                width: `${circle.size}px`,
+                height: `${circle.size}px`,
+                animationDuration: `${circle.duration}s`,
+                animationDelay: `${circle.delay || 0}s`
+              }}
+            />
+          ))}
+          <div className="w-full h-full flex flex-col justify-center px-4 relative z-20">
             {/* Image Accordion */}
             <div className="flex flex-col md:flex-row h-[40vh] gap-8 mb-12 items-center justify-center">
               {/* Army Collection */}
               <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
-                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20">
+                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
                   <img
-                    src="landingpage\seconddiv1-Photoroom.png"
+                    src="landingpage\seconddiv1.jpg"
                     alt="Army Collection"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
-                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
               </div>
               {/* Third Collection */}
               <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
-                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20">
+                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
                   <img
-                    src="landingpage\seconddiv2-Photoroom.png"
+                    src="landingpage\seconddiv2.jpg"
                     alt="Third Collection"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
-                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
               </div>
               {/* Grok Collection */}
               <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
-                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20">
+                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
                   <img
-                    src="landingpage\seconddiv3-Photoroom.png"
+                    src="landingpage\seconddiv3.jpg"
                     alt="Grok Collection"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                 </div>
-                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
               </div>
             </div>
 
@@ -186,9 +232,9 @@ export default function Home() {
             {/* Welcome Section */}
             <div className="text-center max-w-4xl mx-auto">
               <Link href="/products" passHref>
-                <button className="hover:bg-accent-dark rounded-lg bg-accent px-8 py-4 font-bold text-white transition-colors duration-300 text-lg md:text-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <NeonButton color="#00adb5" className="text-lg md:text-xl">
                   Explore Collections
-                </button>
+                </NeonButton>
               </Link>
             </div>
           </div>

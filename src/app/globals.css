@@ -23,3 +23,38 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* Pulse Circle Animation */
+.pulse-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(87, 167, 168, 0.8) 0%, rgba(87, 167, 168, 0) 70%);
+  transform: scale(0);
+  animation: pulse 8s ease-out infinite;
+  mix-blend-mode: multiply;
+  z-index: 0;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Glass Container Styles */
+.glass-container {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass-container {
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
