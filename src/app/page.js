@@ -1,7 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "@/context/index";
+import { useContext, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import LoaderBig from "@/components/LoaderBig";
 import Image from "next/image";
@@ -10,14 +9,12 @@ import ClientCommonListing from "@/components/CommonListingClient";
 import HoverText from "@/components/HoverText";
 import NeonButton from "@/components/NeonButton";
 
-const PRODUCTS_PER_PAGE = 5;
 
 export default function Home() {
-  const { isAuthUser, user } = useContext(GlobalContext);
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [pulseCircles, setPulseCircles] = useState([]);
+  const scrollWrapperRef = useRef(null);
 
   useEffect(() => {
     fetchProducts();
@@ -245,7 +242,7 @@ export default function Home() {
 
 {/* Third Section */}
       <section
-        className="w-full bg-background bg-opacity-95 py-8 dark:bg-backgroundDark dark:bg-opacity-95"
+        className="w-full bg-gray-100 bg-opacity-95 py-8 dark:bg-backgroundDark dark:bg-opacity-95"
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -253,77 +250,40 @@ export default function Home() {
               Most Popular Sales
             </h1>
           </div>
-          <div className="flex flex-col items-center justify-between md:flex-row">
-            <div className="mb-6 md:mb-0 md:w-1/3">
-              <h1 className="mb-4 text-4xl font-bold text-primary">
-                Most popular sales
-              </h1>
-              <Link href="/products" passHref>
-                <button className="hover:bg-accent-dark rounded bg-accent px-4 py-2 font-bold text-white transition-colors duration-300">
-                  Shop All
-                </button>
-              </Link>
+
+          {/* Horizontal Scroll Gallery */}
+          <div className="relative h-screen overflow-hidden ">
+            <div className="horizontal-scroll-wrapper">
+              {products?.slice(0, 10).map((product, index) => (
+                <div 
+                  key={product._id} 
+                  className={`img-wrapper ${index % 3 === 0 ? 'slower' : index % 3 === 1 ? 'faster' : 'vertical'}`}
+                >
+                  <Link href={`/products/${product._id}`}>
+                    <div className="overflow-hidden rounded-lg shadow-lg">
+                      <Image
+                        src={product.imageURL[0]}
+                        alt={product.name}
+                        width={500}
+                        height={500}
+                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+                      />
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 hover:opacity-100">
+                        <h3 className="mb-2 text-xl font-bold text-white">
+                          {product.name}
+                        </h3>
+                        <p className="text-white">
+                          {product.onSale === "Yes" 
+                            ? `${product.price - product.priceDrop} AUD`
+                            : `${product.price} AUD`}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
             </div>
-            {products?.length > 0 && (
-              <div className="grid grid-cols-1 gap-4 md:w-2/3 md:grid-cols-2">
-                {/* Popular Item 1 */}
-                <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
-                  <Image
-                    src={products[19].imageURL[0]}
-                    alt="Popular Item 1"
-                    width={500}
-                    height={500}
-                    className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <h3 className="mb-2 text-xl font-bold text-white">
-                      {products[19].name}
-                    </h3>
-                    <Link href={`/products/${products[19]._id}`} passHref>
-                      <button className="rounded bg-white px-4 py-2 text-black transition-colors duration-300 hover:bg-gray-200">
-                        Check Details
-                      </button>
-                    </Link>
-                  </div>
-                  <div className="p-4">
-                    <h2 className="mb-2 text-lg font-semibold">
-                      {products[19].name}
-                    </h2>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      {products[19].price - products[19].priceDrop} AUD
-                    </p>
-                  </div>
-                </div>
-                {/* Popular Item 2 */}
-                <div className="group relative overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
-                  <Image
-                    src={products[15].imageURL[0]}
-                    alt="Popular Item 2"
-                    width={500}
-                    height={500}
-                    className="h-96 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <h3 className="mb-2 text-xl font-bold text-white">
-                      {products[15].name}
-                    </h3>
-                    <Link href={`/products/${products[15]._id}`} passHref>
-                      <button className="rounded bg-white px-4 py-2 text-black transition-colors duration-300 hover:bg-gray-200">
-                        Check Details
-                      </button>
-                    </Link>
-                  </div>
-                  <div className="p-4">
-                    <h2 className="mb-2 text-lg font-semibold">
-                      {products[15].name}
-                    </h2>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      {products[15].price - products[15].priceDrop} AUD
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+            
           </div>
         </div>
       </section>
