@@ -242,48 +242,45 @@ export default function Home() {
 
 {/* Third Section */}
       <section
-        className="w-full bg-gray-100 bg-opacity-95 py-8 dark:bg-backgroundDark dark:bg-opacity-95"
+        className="w-full bg-gray-100 bg-opacity-95 pt-4 dark:bg-backgroundDark dark:bg-opacity-95"
       >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg text-primary">
-              Most Popular Sales
-            </h1>
-          </div>
+        <div className="text-center ">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg text-primary">
+            Most Popular Sales
+          </h1>
+        </div>
 
-          {/* Horizontal Scroll Gallery */}
-          <div className="relative h-screen overflow-hidden ">
-            <div className="horizontal-scroll-wrapper">
-              {products?.slice(0, 10).map((product, index) => (
-                <div 
-                  key={product._id} 
-                  className={`img-wrapper ${index % 3 === 0 ? 'slower' : index % 3 === 1 ? 'faster' : 'vertical'}`}
-                >
-                  <Link href={`/products/${product._id}`}>
-                    <div className="overflow-hidden rounded-lg shadow-lg">
-                      <Image
-                        src={product.imageURL[0]}
-                        alt={product.name}
-                        width={500}
-                        height={500}
-                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
-                      />
-                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 hover:opacity-100">
-                        <h3 className="mb-2 text-xl font-bold text-white">
-                          {product.name}
-                        </h3>
-                        <p className="text-white">
-                          {product.onSale === "Yes" 
-                            ? `${product.price - product.priceDrop} AUD`
-                            : `${product.price} AUD`}
-                        </p>
-                      </div>
+        {/* Horizontal Scroll Gallery */}
+        <div className="relative h-screen w-full overflow-hidden">
+          <div className="horizontal-scroll-wrapper w-full">
+            {products?.slice(0, 10).map((product, index) => (
+              <div 
+                key={product._id} 
+                className={`img-wrapper ${index % 3 === 0 ? 'slower' : index % 3 === 1 ? 'faster' : 'vertical'}`}
+              >
+                <Link href={`/products/${product._id}`}>
+                  <div className="overflow-hidden rounded-lg shadow-lg">
+                    <Image
+                      src={product.imageURL[0]}
+                      alt={product.name}
+                      width={500}
+                      height={500}
+                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
+                    />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-40 opacity-0 transition-opacity duration-300 hover:opacity-100">
+                      <h3 className="mb-2 text-xl font-bold text-white">
+                        {product.name}
+                      </h3>
+                      <p className="text-white">
+                        {product.onSale === "Yes" 
+                          ? `${product.price - product.priceDrop} AUD`
+                          : `${product.price} AUD`}
+                      </p>
                     </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
-            
+                  </div>
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>
