@@ -11,7 +11,7 @@ const connectToDB = async () => {
 
   // --- Configuration for DNS Override ---
   // Set to true if system DNS fails for SRV records locally. 
-  const FORCE_GOOGLE_DNS = true;
+  const FORCE_GOOGLE_DNS = false;
   // -------------------------------------
 
   if (FORCE_GOOGLE_DNS) {
