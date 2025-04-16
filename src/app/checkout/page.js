@@ -5,11 +5,11 @@ import { getAllAddresses } from "../../services/address";
 import { getCartItems } from "../../services/getCartItems";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "@/components/Loader";
 import { loadStripe } from "@stripe/stripe-js";
 import { callStripeSession } from "../../services/stripe";
-import { set } from "mongoose";
+import { createNewOrder } from "../../services/order";
 import Image from 'next/image';
 
 const stripePromise = loadStripe(
@@ -19,6 +19,7 @@ const stripePromise = loadStripe(
 const Checkout = () => {
   const { isAuthUser, user } = useContext(GlobalContext);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [cartItems, setCartItems] = useState([]);
   const [addresses, setAddresses] = useState([]);
@@ -82,43 +83,156 @@ const Checkout = () => {
     }
   }, [user, isAuthUser]);
 
+  useEffect(() => {
+    const status = searchParams.get('status');
+    const sessionId = searchParams.get('session_id');
+    const userId = searchParams.get('user_id');
+    
+    console.log('Stripe callback - Status:', status);
+    console.log('Stripe callback - Session ID:', sessionId);
+    console.log('Stripe callback - User ID:', userId);
+    
+    if (status === 'success' && sessionId && userId && isAuthUser && user && user._id === userId) {
+      console.log('Payment successful, checking for order creation...');
+      if (cartItems.length > 0 && selectedAddress) {
+        console.log('Creating order...');
+        handleOrderCreation();
+      } else {
+        console.log('Waiting for cart items and address to be loaded...');
+      }
+    }
+  }, [searchParams, isAuthUser, user, cartItems, selectedAddress]);
+
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
   };
 
-  const handleCheckout = async () => {
-    const stripe = await stripePromise;
-
-    const createLineItems = cartItems.map((item) => ({
-      price_data: {
-        currency: "usd",
-        product_data: {
-          name: item.productID.name,
-          images: [item.productID.imageURL[0]],
-        },
-        unit_amount: item.productID.price * 100,
-      },
-      quantity: item.quantity,
-    }));
-
-    console.log("Line items:", createLineItems);
-    const res = await callStripeSession({ createLineItems });
-    console.log("Stripe session response:", res); // Add this log
-
-    setIsOrderProcessing(true);
-
-    if (!res || !res.id) {
-      console.error("Invalid response from Stripe session creation:", res);
+  const handleOrderCreation = async () => {
+    if (!selectedAddress || cartItems.length === 0) {
+      console.log('Missing required data for order creation');
       return;
     }
 
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: res.id,
-    });
+    const orderData = {
+      user: user._id,
+      orderItems: cartItems.map(item => ({
+        quantity: item.quantity,
+        productID: item.productID._id
+      })),
+      shippingAddress: {
+        fullName: selectedAddress.fullName,
+        address: selectedAddress.address,
+        city: selectedAddress.city,
+        country: selectedAddress.country,
+        postalCode: selectedAddress.postalCode,
+        additionalDetails: selectedAddress.additionalDetails || ""
+      },
+      paymentMethod: "Stripe",
+      totalPrice: cartItems.reduce((total, item) => 
+        total + (item.productID.onSale === "Yes" 
+          ? (item.productID.price - item.productID.priceDrop) * item.quantity
+          : item.productID.price * item.quantity
+        ), 0
+      ),
+      isPaid: true,
+      isProcessing: true,
+      paidAt: new Date()
+    };
 
-    if (error) {
-      console.error("Stripe redirect error:", error);
+    try {
+      console.log('Creating order with data:', orderData);
+      const orderResponse = await createNewOrder(orderData);
+      console.log('Order creation response:', orderResponse);
+      
+      if (orderResponse.success) {
+        console.log('Order created successfully');
+        setOrderSuccess(true);
+        setIsOrderProcessing(false);
+        router.push('/');
+      } else {
+        console.error('Failed to create order:', orderResponse.message);
+        setIsOrderProcessing(false);
+      }
+    } catch (error) {
+      console.error('Error creating order:', error);
       setIsOrderProcessing(false);
+    }
+  };
+
+  const handleCheckout = async () => {
+    if (!selectedAddress) {
+      alert("Please select a shipping address");
+      return;
+    }
+
+    // Create order first
+    const orderData = {
+      user: user._id,
+      orderItems: cartItems.map(item => ({
+        quantity: item.quantity,
+        productID: item.productID._id
+      })),
+      shippingAddress: {
+        fullName: selectedAddress.fullName,
+        address: selectedAddress.address,
+        city: selectedAddress.city,
+        country: selectedAddress.country,
+        postalCode: selectedAddress.postalCode,
+        additionalDetails: selectedAddress.additionalDetails || ""
+      },
+      paymentMethod: "Stripe",
+      totalPrice: cartItems.reduce((total, item) => 
+        total + (item.productID.onSale === "Yes" 
+          ? (item.productID.price - item.productID.priceDrop) * item.quantity
+          : item.productID.price * item.quantity
+        ), 0
+      ),
+      isPaid: false,
+      isProcessing: true
+    };
+
+    try {
+      // Create order in database
+      const orderResponse = await createNewOrder(orderData);
+      if (!orderResponse.success) {
+        throw new Error("Failed to create order");
+      }
+
+      // Redirect to processing page
+      router.push('/checkout/processing');
+
+      // Create Stripe session
+      const stripe = await stripePromise;
+      const createLineItems = cartItems.map((item) => ({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: item.productID.name,
+            images: [item.productID.imageURL[0]],
+          },
+          unit_amount: item.productID.onSale === "Yes" 
+            ? (item.productID.price - item.productID.priceDrop) * 100
+            : item.productID.price * 100,
+        },
+        quantity: item.quantity,
+      }));
+
+      const res = await callStripeSession({ createLineItems });
+      
+      if (!res || !res.id) {
+        throw new Error("Failed to create Stripe session");
+      }
+
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: res.id,
+      });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Something went wrong. Please try again.");
     }
   };
 

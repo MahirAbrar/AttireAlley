@@ -2,17 +2,23 @@ import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Order from "@/models/order";
 import User from "@/models/user";
-import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req) {
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({
+      success: false,
+      message: "Method not allowed",
+    });
+  }
+
   try {
     await connectToDB();
     const isAuthUser = await AuthUser(req);
 
     if (isAuthUser) {
-      const data = await req.json();
+      const data = req.body;
       const { user } = data;
 
       const saveNewOrder = await Order.create({
@@ -21,44 +27,31 @@ export async function POST(req) {
         shippingAddress: data.shippingAddress,
         paymentMethod: data.paymentMethod || "Stripe",
         totalPrice: data.totalPrice,
-        isPaid: false,
-        isProcessing: true,
+        isPaid: data.isPaid || false,
+        isProcessing: data.isProcessing || true
       });
 
       if (saveNewOrder) {
-        // Clear the user's cart after order creation
-        const updatedUser = await User.findByIdAndUpdate(
-          user,
-          { $set: { cart: [] } },
-          { new: true },
-        );
-
-        if (!updatedUser) {
-          return NextResponse.json({
-            success: false,
-            message: "Failed to clear cart after order creation",
-          });
-        }
-
-        return NextResponse.json({
+        return res.status(200).json({
           success: true,
-          message: "Products are on the way!",
+          message: "Order created successfully",
+          data: saveNewOrder
         });
       } else {
-        return NextResponse.json({
+        return res.status(400).json({
           success: false,
           message: "Failed to create an order! Please try again",
         });
       }
     } else {
-      return NextResponse.json({
+      return res.status(401).json({
         success: false,
         message: "You are not authenticated",
       });
     }
   } catch (e) {
     console.error("Order creation error:", e);
-    return NextResponse.json({
+    return res.status(500).json({
       success: false,
       message: "Something went wrong! Please try again later",
     });

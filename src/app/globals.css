@@ -69,13 +69,37 @@ body {
   position: relative; /* Needed for absolute positioning of pseudo-element */
 }
 
+/* Bottom left border */
 .partial-left-border::before {
   content: "";
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 2px; /* Border width */
-  height: 10%; /* Half height */
-  background-color: var(--primary); /* Use the primary color */
+  width: 2px;
+  height: 10%;
+  background-color: var(--primary);
+}
+
+/* Middle vertical lines */
+.partial-left-border::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 30%;
+  background-color: var(--primary);
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+}
+
+.partial-left-border .middle-line {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 30%;
+  background-color: var(--primary);
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
 }
 

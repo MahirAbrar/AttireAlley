@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       payment_method_types: ["card"],
       line_items: createLineItems, // Make sure this matches what you're sending
       mode: "payment",
-      success_url: `${baseUrl}/checkout?status=success&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${baseUrl}/checkout?status=success&session_id={CHECKOUT_SESSION_ID}&user_id=${user.id}`,
       cancel_url: `${baseUrl}/checkout?status=cancel`,
     });
 
