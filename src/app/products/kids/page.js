@@ -89,7 +89,7 @@ const Kids = () => {
         )}
       </div>
       {numberOfPages == currentPage && (
-        <div className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-600 dark:bg-gray-700">
+        <div className="mt-8 mb-4 rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-600 dark:bg-gray-700">
           <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
             No more products available
           </h1>
