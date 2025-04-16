@@ -35,12 +35,7 @@ const connectToDB = async () => {
     return;
   }
 
-  // --- Debugging ---
-  // console.log("DEBUG: DB_HOST:", user);
-  // console.log("DEBUG: DB_PASS:", pass ? '******' : undefined); // Avoid logging the actual password
-  // --- End Debugging ---
-
-  const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+  const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/`;
   console.log("Connecting to MongoDB Database...");
 
   try {
@@ -58,3 +53,4 @@ const connectToDB = async () => {
 };
 
 export default connectToDB;
+
