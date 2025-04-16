@@ -18,8 +18,8 @@ const AboutPage = () => {
             <p className="text-lg leading-relaxed">
               Every project starts with a spark, an idea. For me, this
               e-commerce platform was born out of a desire to deepen my skills
-              in modern web development, particularly with Next.js. It's more
-              than just code; it's a tangible demonstration of building a
+              in modern web development, particularly with Next.js. It&apos;s more
+              than just code; it&apos;s a tangible demonstration of building a
               full-stack application from the ground up. I wanted to create
               something functional, user-friendly, and visually appealing.
             </p>
@@ -139,7 +139,7 @@ const AboutPage = () => {
               .
             </p>
             <p className="text-lg italic">
-              Thank you for visiting! I'm passionate about building great web
+              Thank you for visiting! I&apos;m passionate about building great web
               experiences and am always open to discussing potential
               opportunities where I can contribute my skills.
             </p>
