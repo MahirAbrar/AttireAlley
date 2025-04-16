@@ -81,23 +81,24 @@ const Page = ({ params }) => {
   console.log(productDetails);
 
   return (
-    <div className="flex min-h-screen w-full flex-col gap-4 p-4 lg:flex-row">
+    <div className="flex min-h-screen w-screen flex-col gap-4 p-4 md:flex-row">
       {/* left side */}
       <div className="flex flex-col">
-        <Image
-          src={productDetails.imageURL[selectedImage]}
-          alt={productDetails.name}
-          width={500}
-          height={300}
-          className="w-full rounded-xl object-cover"
-          priority
-        />
+        <div className="relative w-[400px] md:w-[500px] lg:w-[500px] h-[300px] md:h-[400px] lg:h-[500px]">
+          <Image
+            src={productDetails.imageURL[selectedImage]}
+            alt={productDetails.name}
+            fill
+            className="rounded-xl object-cover"
+            priority
+          />
+        </div>
         {productDetails.imageURL && productDetails.imageURL.length > 1 && (
           <div className="flex w-full justify-center gap-2 py-2">
             {productDetails.imageURL.map((image, index) => (
               <button
                 onClick={() => setSelectedImage(index)}
-                className="btn btn-xs"
+                className="btn btn-md"
                 key={index}
               >
                 {index + 1}
@@ -108,7 +109,7 @@ const Page = ({ params }) => {
       </div>
 
       {/* right side */}
-      <div>
+      <div className="">
         <div className="flex flex-wrap gap-6">
           <h1 className="text-5xl font-bold">{productDetails.name}</h1>
 
@@ -130,7 +131,7 @@ const Page = ({ params }) => {
                     {productDetails.price - productDetails.priceDrop} AUD
                   </h3>
                 </div>
-                <div className="badge badge-accent badge-outline ml-auto h-full">
+                <div className="badge badge-accent text-md ml-auto h-full">
                   Category: {productDetails.category}
                 </div>
               </>
@@ -143,7 +144,7 @@ const Page = ({ params }) => {
         </div>
         <div className="divider"></div>
         <h1 className="text-xl ">Description</h1>
-        <p className="py-6">{productDetails.description}</p>
+        <p className="py-6 text-md tracking-wider">{productDetails.description}</p>
         <h3>Select your size</h3>
         {productDetails.sizes && productDetails.sizes.length > 0 ? (
           productDetails.sizes.map((size) => (
