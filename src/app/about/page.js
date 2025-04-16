@@ -104,7 +104,7 @@ const AboutPage = () => {
           {/* Section 4: Connect */}
           <section className="transform rounded-lg border border-secondary bg-white p-8 shadow-lg transition duration-500 hover:scale-105 hover:shadow-xl dark:border-secondary dark:bg-gray-800">
             <h2 className="mb-6 text-3xl font-semibold text-secondary">
-              Let's Connect
+              Let&apos;s Connect
             </h2>
             <p className="mb-4 text-lg">
               See more of my work on my portfolio:{" "}
