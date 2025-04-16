@@ -1,6 +1,6 @@
 "use client";
 // Disable adblock of any sort to make stripe work
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { getAllAddresses } from "../../services/address";
 import { getCartItems } from "../../services/getCartItems";
 import { GlobalContext } from "@/context/index";
@@ -16,7 +16,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 );
 
-const Checkout = () => {
+const CheckoutContent = () => {
   const { isAuthUser, user } = useContext(GlobalContext);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -388,6 +388,14 @@ const Checkout = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const Checkout = () => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <CheckoutContent />
+    </Suspense>
   );
 };
 
