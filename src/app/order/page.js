@@ -81,7 +81,7 @@ const OrderPage = () => {
         </div>
       ) : orders.length === 0 ? (
         <div className="text-center py-8">
-          <p className="text-xl text-gray-600">You haven't placed any orders yet.</p>
+          <p className="text-xl text-gray-600">You haven&apos;t placed any orders yet.</p>
         </div>
       ) : (
         <div className="space-y-6">
