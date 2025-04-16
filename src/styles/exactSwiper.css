@@ -2,11 +2,7 @@
 Home Slider
 ==================================== */
 
-#home-slider {
-  height: 80vh;
-  width: 90vw;
-  position: relative;
-}
+
 
 .swiper-container {
   height: 100%;

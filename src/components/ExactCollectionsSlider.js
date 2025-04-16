@@ -11,8 +11,8 @@ const ExactCollectionsSlider = (props) => {
 
     
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-gradient-to-br from-[#2a1f30] via-[#2a1f30] to-[#383d44]">
-      <div id="home-slider" className="relative h-screen">
+    <div className="w-full h-screen flex justify-center items-center bg-gradient-to-br from-[#2a1f30] via-[#2a1f30] to-[#383d44] text-white">
+      <div id="home-slider" className="relative h-[80vh] w-screen">
         <Swiper
           direction="vertical"
           loop={true}
@@ -20,14 +20,16 @@ const ExactCollectionsSlider = (props) => {
             clickable: true,
             el: '.swiper-pagination',
           }}
-          grabCursor={true}
+        //   grabCursor={true}
           speed={1000}
           parallax={true}
-          autoplay={false}
-          effect="slide"
-          mousewheel={{
-            forceToAxis: true,
-          }}
+          autoplay={
+            {
+              delay: 1000,
+            }
+          }
+          effect="creative"
+
           modules={[Pagination, Mousewheel, Parallax]}
           className="h-full"
         >

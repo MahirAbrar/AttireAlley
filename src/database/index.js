@@ -16,7 +16,7 @@ const connectToDB = async () => {
     return;
   }
 
-  const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/`;
+  const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/ecommweb?retryWrites=true&w=majority&appName=Cluster0`;
   console.log("Connecting to MongoDB Database...");
 
   try {
@@ -34,3 +34,4 @@ const connectToDB = async () => {
 };
 
 export default connectToDB;
+
