@@ -24,7 +24,7 @@ export const createNewOrder = async (formData) => {
 
 export const getAllOrdersForUser = async (id) => {
   try {
-    const res = await fetch(`/api/order/get-all-orders?id=${id}`, {
+    const res = await fetch(`/api/order/get-order?userID=${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -32,10 +32,10 @@ export const getAllOrdersForUser = async (id) => {
     });
 
     const data = await res.json();
-
     return data;
   } catch (e) {
     console.log(e);
+    return { success: false, message: "Failed to fetch orders" };
   }
 };
 

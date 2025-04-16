@@ -93,15 +93,10 @@ const Checkout = () => {
     console.log('Stripe callback - User ID:', userId);
     
     if (status === 'success' && sessionId && userId && isAuthUser && user && user._id === userId) {
-      console.log('Payment successful, checking for order creation...');
-      if (cartItems.length > 0 && selectedAddress) {
-        console.log('Creating order...');
-        handleOrderCreation();
-      } else {
-        console.log('Waiting for cart items and address to be loaded...');
-      }
+      console.log('Payment successful, redirecting to order page...');
+      router.push('/order');
     }
-  }, [searchParams, isAuthUser, user, cartItems, selectedAddress]);
+  }, [searchParams, isAuthUser, user]);
 
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
@@ -148,7 +143,10 @@ const Checkout = () => {
         console.log('Order created successfully');
         setOrderSuccess(true);
         setIsOrderProcessing(false);
-        router.push('/');
+        // Add a small delay to ensure state updates are processed
+        setTimeout(() => {
+          router.push('/order');
+        }, 1000);
       } else {
         console.error('Failed to create order:', orderResponse.message);
         setIsOrderProcessing(false);
@@ -165,41 +163,38 @@ const Checkout = () => {
       return;
     }
 
-    // Create order first
-    const orderData = {
-      user: user._id,
-      orderItems: cartItems.map(item => ({
-        quantity: item.quantity,
-        productID: item.productID._id
-      })),
-      shippingAddress: {
-        fullName: selectedAddress.fullName,
-        address: selectedAddress.address,
-        city: selectedAddress.city,
-        country: selectedAddress.country,
-        postalCode: selectedAddress.postalCode,
-        additionalDetails: selectedAddress.additionalDetails || ""
-      },
-      paymentMethod: "Stripe",
-      totalPrice: cartItems.reduce((total, item) => 
-        total + (item.productID.onSale === "Yes" 
-          ? (item.productID.price - item.productID.priceDrop) * item.quantity
-          : item.productID.price * item.quantity
-        ), 0
-      ),
-      isPaid: false,
-      isProcessing: true
-    };
-
     try {
+      // Create order first
+      const orderData = {
+        user: user._id,
+        orderItems: cartItems.map(item => ({
+          quantity: item.quantity,
+          productID: item.productID._id
+        })),
+        shippingAddress: {
+          fullName: selectedAddress.fullName,
+          address: selectedAddress.address,
+          city: selectedAddress.city,
+          country: selectedAddress.country,
+          postalCode: selectedAddress.postalCode,
+          additionalDetails: selectedAddress.additionalDetails || ""
+        },
+        paymentMethod: "Stripe",
+        totalPrice: cartItems.reduce((total, item) => 
+          total + (item.productID.onSale === "Yes" 
+            ? (item.productID.price - item.productID.priceDrop) * item.quantity
+            : item.productID.price * item.quantity
+          ), 0
+        ),
+        isPaid: false,
+        isProcessing: true
+      };
+
       // Create order in database
       const orderResponse = await createNewOrder(orderData);
       if (!orderResponse.success) {
         throw new Error("Failed to create order");
       }
-
-      // Redirect to processing page
-      router.push('/checkout/processing');
 
       // Create Stripe session
       const stripe = await stripePromise;
@@ -223,6 +218,7 @@ const Checkout = () => {
         throw new Error("Failed to create Stripe session");
       }
 
+      // Start Stripe checkout - this will handle the redirect
       const { error } = await stripe.redirectToCheckout({
         sessionId: res.id,
       });
