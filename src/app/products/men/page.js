@@ -53,12 +53,14 @@ const Men = () => {
   return (
     <>
       {/* Pagination */}
-      <div className="join">
+      <div className="join mt-8 mb-4 flex justify-center">
         {Array.from({ length: numberOfPages }, (_, index) => (
           <button
             key={index}
             className={`btn join-item ${
-              index + 1 === currentPage ? "btn-active" : ""
+              index + 1 === currentPage
+                ? "btn-outline btn-primary shadow-lg shadow-primary/50"
+                : "border-2 border-primary/20 hover:border-primary/60 hover:bg-primary/10"
             }`}
             onClick={() => handlePageChange(index + 1)}
           >

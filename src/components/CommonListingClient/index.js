@@ -63,7 +63,7 @@ const ClientCommonListing = ({ product, params }) => {
   };
 
   return (
-    <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
+    <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col shadow-xl shadow-blue-500/30 ring-1 hover:ring-primary transition duration-500 ease-in-out hover:scale-105">
       <figure onClick={() => router.push(redirectLink)}>
         <Image
           src={Array.isArray(product.imageURL) ? product.imageURL[0] : product.imageURL}
