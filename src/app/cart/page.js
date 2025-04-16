@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import CartItemCard from "@/components/CartItem";
 import { deleteCartItem } from "@/services/deleteCartItem";
+import NeonButton from "@/components/NeonButton";
 
 const Cart = () => {
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
@@ -71,24 +72,24 @@ const Cart = () => {
         <h1 className="mb-4 text-2xl font-bold md:mb-0">Cart Items</h1>
         <div className="flex items-center">
           <div className="mr-4">Total Items: {totalItems}</div>
-          <button
-            className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          <NeonButton
+            className=""
             onClick={handleCheckout}
           >
             Continue to Checkout
-          </button>
+          </NeonButton>
         </div>
       </div>
       <div className="mb-4">
         <CartItemCard cartItems={cartItems} handleDelete={handleDelete} />
       </div>
       <div className="flex justify-end">
-        <button
-          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        <NeonButton
+          className=""
           onClick={handleCheckout}
         >
           Continue to Checkout
-        </button>
+        </NeonButton>
       </div>
     </div>
   );

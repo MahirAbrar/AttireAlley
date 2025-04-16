@@ -3,103 +3,145 @@ import Link from "next/link";
 
 const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-background text-text dark:bg-backgroundDark dark:text-textDark">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-8 text-4xl font-bold text-primary dark:text-primaryDark">
-          About This Project
+    <div className="min-h-screen bg-gray-100 rounded-xl text-gray-800 dark:bg-backgroundDark dark:text-gray-200">
+      <div className="container mx-auto px-4 py-12">
+        <h1 className="mb-12 text-center text-5xl font-bold text-primary dark:text-primary">
+          My Journey Building This Project
         </h1>
 
-        <div className="space-y-6">
-          <section className="rounded-lg bg-secondary p-6 dark:bg-secondaryDark">
-            <h2 className="mb-4 text-2xl font-semibold">Tech Stack</h2>
-            <ul className="list-inside list-disc space-y-2">
-              <li>Next.js</li>
-              <li>Tailwind CSS</li>
-              <li>Daisy UI</li>
-              <li>
-                MongoDB Atlas (for encrypted user data, products, and addresses)
+        <div className="space-y-12">
+          {/* Section 1: Project Purpose */}
+          <section className="transform rounded-lg border border-secondary bg-white p-8 shadow-lg transition duration-500 hover:scale-105 hover:shadow-xl dark:border-secondary dark:bg-gray-800">
+            <h2 className="mb-6 text-3xl font-semibold text-secondary">
+              The Spark: Why This Project?
+            </h2>
+            <p className="text-lg leading-relaxed">
+              Every project starts with a spark, an idea. For me, this
+              e-commerce platform was born out of a desire to deepen my skills
+              in modern web development, particularly with Next.js. It's more
+              than just code; it's a tangible demonstration of building a
+              full-stack application from the ground up. I wanted to create
+              something functional, user-friendly, and visually appealing.
+            </p>
+          </section>
+
+          {/* Section 2: Tech Stack */}
+          <section className="transform rounded-lg border border-accent bg-white p-8 shadow-lg transition duration-500 hover:scale-105 hover:shadow-xl dark:border-accent dark:bg-gray-800">
+            <h2 className="mb-6 text-3xl font-semibold text-accent">
+              The Toolkit: Technologies Used
+            </h2>
+            <p className="mb-4 text-lg">
+              To bring this vision to life, I carefully selected a set of
+              powerful and efficient tools:
+            </p>
+            <ul className="grid grid-cols-1 gap-4 text-lg sm:grid-cols-2">
+              <li className="flex items-center space-x-3">
+                <span className="text-primary">&#x2713;</span>
+                <span>Next.js (React Framework)</span>
               </li>
-              <li>Passport.js (for authentication)</li>
-              <li>Firebase (for product image storage)</li>
-              <li>Stripe (for payment processing)</li>
-              <li>JWT and Cookies</li>
+              <li className="flex items-center space-x-3">
+                <span className="text-primary">&#x2713;</span>
+                <span>Tailwind CSS & Daisy UI (Styling)</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <span className="text-primary">&#x2713;</span>
+                <span>MongoDB Atlas (Database)</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <span className="text-primary">&#x2713;</span>
+                <span>Passport.js (Authentication)</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <span className="text-primary">&#x2713;</span>
+                <span>Firebase Storage (Image Storage)</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <span className="text-primary">&#x2713;</span>
+                <span>Stripe (Payment Processing)</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <span className="text-primary">&#x2713;</span>
+                <span>JWT & Cookies (Session Management)</span>
+              </li>
             </ul>
           </section>
 
-          <section className="rounded-lg bg-accent p-6 dark:bg-accentDark">
-            <h2 className="mb-4 text-2xl font-semibold">Project Purpose</h2>
-            <p>
-              This project was created to showcase my skills and as a learning
-              experience with Next.js. It demonstrates my ability to work with
-              modern web technologies and create full-stack applications.
-            </p>
-          </section>
-
-          <section className="rounded-lg bg-secondary p-6 dark:bg-secondaryDark">
-            <h2 className="mb-4 text-2xl font-semibold">Test the Website</h2>
-            <p>
-              To explore the features of this website, you can log in using the
-              following credentials:
-            </p>
-            <div className="mt-2">
-              <h2 className="mb-4 text-2xl font-semibold">
-                With an Admin User
-              </h2>
-              <p>
-                <strong>Username:</strong> &quot;testuser@attirealley.com&quot;
-              </p>
-              <p>
-                <strong>Password:</strong> &quot;abcd1234&quot;
-              </p>
-            </div>
-            <div className="mt-2">
-              <h2 className="mb-4 text-2xl font-semibold">
-                With an Regular User
-              </h2>
-              <p>
-                <strong>Username:</strong> &quot;useruser@attirealley.com&quot;
-              </p>
-              <p>
-                <strong>Password:</strong> &quot;abcd1234&quot;
-              </p>
-            </div>
-          </section>
-
-          <section className="rounded-lg bg-accent p-6 dark:bg-accentDark">
-            <h2 className="mb-4 text-2xl font-semibold">
-              Portfolio and Contact
+          {/* Section 3: Test Drive */}
+          <section className="transform rounded-lg border border-primary bg-white p-8 shadow-lg transition duration-500 hover:scale-105 hover:shadow-xl dark:border-primary dark:bg-gray-800">
+            <h2 className="mb-6 text-3xl font-semibold text-primary">
+              Take It for a Spin: Test Credentials
             </h2>
-            <p>
-              Visit my portfolio website at:{" "}
+            <p className="mb-6 text-lg">
+              Experience the site firsthand! You can log in using these test
+              accounts:
+            </p>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+              <div>
+                <h3 className="mb-3 text-2xl font-medium text-secondary">
+                  Admin User Access
+                </h3>
+                <p className="text-lg">
+                  <strong>Username:</strong> testuser@attirealley.com
+                </p>
+                <p className="text-lg">
+                  <strong>Password:</strong> abcd1234
+                </p>
+              </div>
+              <div>
+                <h3 className="mb-3 text-2xl font-medium text-secondary">
+                  Regular User Access
+                </h3>
+                <p className="text-lg">
+                  <strong>Username:</strong> useruser@attirealley.com
+                </p>
+                <p className="text-lg">
+                  <strong>Password:</strong> abcd1234
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 4: Connect */}
+          <section className="transform rounded-lg border border-secondary bg-white p-8 shadow-lg transition duration-500 hover:scale-105 hover:shadow-xl dark:border-secondary dark:bg-gray-800">
+            <h2 className="mb-6 text-3xl font-semibold text-secondary">
+              Let's Connect
+            </h2>
+            <p className="mb-4 text-lg">
+              See more of my work on my portfolio:{" "}
               <Link
                 href="https://mahirabrar.net"
-                className="text-primary hover:underline dark:text-primaryDark"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary underline transition hover:text-accent dark:text-primary dark:hover:text-accent"
               >
                 mahirabrar.net
               </Link>
             </p>
-
-            <p className="mt-4">
-              Visit my{" "}
+            <p className="mb-6 text-lg">
+              Find me on{" "}
               <Link
                 href="https://www.linkedin.com/in/hamid-abrar-mahir/"
-                className="text-primary hover:underline dark:text-primaryDark"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary underline transition hover:text-accent dark:text-primary dark:hover:text-accent"
               >
                 LinkedIn
               </Link>{" "}
-              And{" "}
+              and{" "}
               <Link
                 href="https://github.com/MahirAbrar"
-                className="text-primary hover:underline dark:text-primaryDark"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-primary underline transition hover:text-accent dark:text-primary dark:hover:text-accent"
               >
                 GitHub
-              </Link>{" "}
-              Page.
+              </Link>
+              .
             </p>
-            <p className="mt-4">
-              Thank you for visiting my website. I welcome the opportunity to
-              speak with you if you feel I&apos;d be a strong candidate for a
-              position in your organization.
+            <p className="text-lg italic">
+              Thank you for visiting! I'm passionate about building great web
+              experiences and am always open to discussing potential
+              opportunities where I can contribute my skills.
             </p>
           </section>
         </div>

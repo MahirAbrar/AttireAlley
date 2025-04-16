@@ -81,15 +81,15 @@ const Page = ({ params }) => {
   console.log(productDetails);
 
   return (
-    <div className="flex min-h-screen w-full flex-col gap-4 bg-base-200 p-4 lg:flex-row">
+    <div className="flex min-h-screen w-full flex-col gap-4 p-4 lg:flex-row">
       {/* left side */}
       <div className="flex flex-col">
         <Image
-          src={productDetails.imageURL[0]}
+          src={productDetails.imageURL[selectedImage]}
           alt={productDetails.name}
           width={500}
           height={300}
-          className="h-60 w-full rounded-xl object-cover"
+          className="w-full rounded-xl object-cover"
           priority
         />
         {productDetails.imageURL && productDetails.imageURL.length > 1 && (

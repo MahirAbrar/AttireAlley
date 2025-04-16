@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { GlobalContext } from "@/context/index";
 import { useContext } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const AdminCommonListing = ({ user, onDelete }) => {
   const { updateItem, setUpdateItem } = useContext(GlobalContext);
@@ -21,13 +22,15 @@ const AdminCommonListing = ({ user, onDelete }) => {
   return (
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
       <figure>
-        <Image
-          src={Array.isArray(user.imageURL) ? user.imageURL[0] : user.imageURL}
-          alt={user.name}
-          width={500}
-          height={240}
-          className="h-60 w-full cursor-pointer rounded-xl object-cover"
-        />
+        <Link href={`/products/${user._id}`}>
+          <Image
+            src={Array.isArray(user.imageURL) ? user.imageURL[0] : user.imageURL}
+            alt={user.name}
+            width={500}
+            height={240}
+            className="h-60 w-full cursor-pointer rounded-xl object-cover"
+          />
+        </Link>
       </figure>
       <div className="card-body flex-grow">
         <h2 className="card-title">

@@ -36,6 +36,7 @@ const Account = () => {
     if (userExist) {
       fetchAddresses(user._id);
       setFormData({ ...formData, userID: user._id });
+      console.log(user)
     }
   }, [user]);
 
@@ -94,11 +95,12 @@ const Account = () => {
   };
 
   return (
-    <div className="container  mx-4  border-2 border-accent border-opacity-5 bg-base-100 bg-opacity-50 px-8 py-8 shadow-lg dark:border-accentDark  dark:border-opacity-5">
-      <h3>Mahir</h3>
-      <h3>hamid.mahir2597@Yahoo.com</h3>
-      <h3>Admin</h3>
-      <button className="btn my-2">View your orders</button>
+    <div className="container mx-4 border-2 rounded-lg my-4 text-lg border-primary border-opacity-50 bg-opacity-50 px-8 py-8 shadow-lg shadow-primary/30 dark:border-primaryDark dark:border-opacity-50 dark:shadow-primaryDark/30">
+      {user && <h3>{user.name}</h3>}
+      {user && <h3>{user.email}</h3>}
+      {user && user.role === "admin" && <h3>Admin</h3>}
+      {user && user.role === "customer" && <h3>Customer</h3>}
+      <button className="btn btn-accent my-2 text-lg">View your orders</button>
       <h1 className="font-bold">Your addresses :</h1>
       {fetchLoading ? (
         <Loader />
@@ -141,8 +143,8 @@ const Account = () => {
           <div>
             <label
               htmlFor="fullName"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
-            >
+              className="mb-2 block text-sm font-medium  "
+              >
               Full Name
             </label>
             <input
@@ -151,14 +153,14 @@ const Account = () => {
               id="fullName"
               value={formData.name}
               onChange={handleChange}
-              className="dark:placeholder-gray-text block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder:text-text dark:focus:border-primary dark:focus:ring-primary"
+              className="dark:placeholder-gray-text block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder:text-text dark:focus:border-primary dark:focus:ring-primary"
               required
             />
           </div>
           <div>
             <label
               htmlFor="address"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
+              className="mb-2 block text-sm font-medium "
             >
               Address
             </label>
@@ -168,14 +170,14 @@ const Account = () => {
               id="address"
               value={formData.address}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
               required
             />
           </div>
           <div>
             <label
               htmlFor="city"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
+              className="mb-2 block text-sm font-medium  "
             >
               City
             </label>
@@ -185,14 +187,14 @@ const Account = () => {
               id="city"
               value={formData.city}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
               required
             />
           </div>
           <div>
             <label
               htmlFor="country"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
+              className="mb-2 block text-sm font-medium  "
             >
               Country
             </label>
@@ -202,14 +204,14 @@ const Account = () => {
               id="country"
               value={formData.country}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
               required
             />
           </div>
           <div>
             <label
               htmlFor="postcode"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
+              className="mb-2 block text-sm font-medium  "
             >
               Postal Code
             </label>
@@ -219,14 +221,14 @@ const Account = () => {
               id="postalCode"
               value={formData.postalCode}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
               required
             />
           </div>
           <div>
             <label
               htmlFor="additionalDetails"
-              className="mb-2 block text-sm font-medium text-gray-900 dark:text-textDark"
+              className="mb-2 block text-sm font-medium  "
             >
               Additional Details
             </label>
@@ -237,12 +239,12 @@ const Account = () => {
               value={formData.additionalDetails}
               onChange={handleChange}
               placeholder="Additional details - first floor, 2 on the lift, etc"
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
             />
           </div>
           <button
             type="submit"
-            className="dark:btn-primaryDark btn btn-primary mt-4"
+            className="dark:btn-primaryDark btn btn-primary text-lg mt-4"
           >
             Add Address {addLoading ? <Loader /> : ""}
           </button>

@@ -59,7 +59,7 @@ const Women = () => {
             key={index}
             className={`btn join-item ${
               index + 1 === currentPage
-                ? "btn-outline btn-primary shadow-lg shadow-primary/50"
+                ? "btn-outline btn-primary shadow-lg "
                 : "border-2 border-primary/20 hover:border-primary/60 hover:bg-primary/10"
             }`}
             onClick={() => handlePageChange(index + 1)}
@@ -88,8 +88,8 @@ const Women = () => {
           </div>
         )}
       </div>
-      {numberOfPages == currentPage && (
-        <div className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-600 dark:bg-gray-700">
+      {numberOfPages === currentPage && (
+        <div className="mt-8 rounded-lg border   p-4 text-center mb-8">
           <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
             No more products available
           </h1>

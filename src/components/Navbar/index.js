@@ -209,13 +209,13 @@ function Navbar() {
                 <div className="relative z-[1000]">
                   <div
                     tabIndex={0}
-                    className="card dropdown-content card-compact w-52 bg-backgroundDark shadow-lg"
+                    className="card dropdown-content card-compact w-52 bg-gray-300 dark:bg-gray-900 shadow-lg"
                   >
                     <div className="card-body">
                       <span className="text-lg font-bold text-textDark">
                         {cartDisplay} Items
                       </span>
-                      <span className="text-primary">Subtotal: ${cartAmount}</span>
+                      <span className="text-primary font-semibold text-md">Subtotal: ${cartAmount}</span>
                       <div className="card-actions">
                         <button
                           className="btn btn-primary btn-block bg-primary text-textDark hover:bg-primary/90"

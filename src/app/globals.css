@@ -64,3 +64,18 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Partial Left Border */
+.partial-left-border {
+  position: relative; /* Needed for absolute positioning of pseudo-element */
+}
+
+.partial-left-border::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 2px; /* Border width */
+  height: 10%; /* Half height */
+  background-color: var(--primary); /* Use the primary color */
+}
+

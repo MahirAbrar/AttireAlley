@@ -24,10 +24,10 @@ const CartItemCard = ({ cartItems, handleDelete }) => {
       {cartItems?.map((item) => (
         <div
           key={item._id}
-          className="relative z-0 flex transform flex-col overflow-hidden rounded-lg bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105"
+          className="relative z-0 flex transform flex-col overflow-hidden rounded-lg  shadow-xl transition duration-500 ease-in-out hover:scale-105"
         >
           <button
-            className="absolute right-2 top-2 rounded-full bg-gray-700 p-2 text-white hover:bg-red-500"
+            className="absolute right-2 top-2 rounded-full p-2  hover:bg-red-500"
             onClick={() => handleDelete(item)}
           >
             <svg
@@ -86,7 +86,7 @@ const CartItemCard = ({ cartItems, handleDelete }) => {
                 </span>
               </div>
             ) : (
-              <div className="badge text-lg font-bold text-gray-500">
+              <div className="text-lg font-bold ">
                 ${item.productID.price}
               </div>
             )}

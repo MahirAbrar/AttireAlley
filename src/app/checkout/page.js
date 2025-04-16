@@ -124,8 +124,8 @@ const Checkout = () => {
 
   return (
     <div className="flex w-full flex-wrap">
-      <div className="w-full p-4 md:w-1/2">
-        <div className="card rounded-box bg-base-300 p-4">
+      <div className="w-full p-4 md:w-1/2 border border-primary rounded-lg my-4">
+        <div className="card rounded-box p-4">
           <h2 className="mb-4 text-xl font-bold">Cart Items</h2>
           <div className="space-y-4">
             {cartLoading && <Loader />}
@@ -154,7 +154,7 @@ const Checkout = () => {
         </div>
       </div>
       <div className="w-full p-4 md:w-1/2">
-        <div className="card rounded-box bg-base-300 p-4">
+        <div className="card rounded-box border border-primary p-4">
           <h2 className=" text-xl font-bold">Addresses</h2>
           <h2 className="text-md mb-4 font-semibold">
             Please select a shipping address.
@@ -193,15 +193,10 @@ const Checkout = () => {
     mt-2 rounded px-4 py-2 font-semibold transition-all duration-300 ease-in-out
     ${
       selectedAddress?._id === address._id
-        ? "bg-green-500 text-white shadow-md hover:bg-green-600 active:bg-green-700"
-        : "hover:bg-primary-dark active:bg-primary-darker bg-primary text-white shadow-md hover:shadow-lg active:shadow-inner"
+        ? "bg-primary text-white shadow-md hover:brightness-90 active:brightness-75"
+        : "hover:brightness-90 active:brightness-75 bg-primary text-white shadow-md hover:shadow-lg active:shadow-inner"
     }
-    focus:outline-none focus:ring-2 focus:ring-offset-2
-    ${
-      selectedAddress?._id === address._id
-        ? "focus:ring-green-500"
-        : "focus:ring-primary"
-    }
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
     transform hover:-translate-y-0.5 active:translate-y-0
   `}
                 onClick={() => handleAddressSelect(address)}
@@ -228,7 +223,7 @@ const Checkout = () => {
             </div>
           ))}
           <button
-            className="hover:bg-secondary-dark active:bg-secondary-darker mt-2 w-fit transform rounded bg-secondary px-4 py-2 font-semibold text-white shadow-md transition duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 active:translate-y-0 active:shadow-inner dark:text-text"
+            className="hover:brightness-90 active:brightness-75 mt-2 w-fit transform rounded bg-secondary px-4 py-2 font-semibold text-white shadow-md transition duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 active:translate-y-0 active:shadow-inner dark:text-text"
             onClick={handleAddAddressClick}
           >
             Add an Address
@@ -269,8 +264,8 @@ const Checkout = () => {
     mt-2 rounded px-4 py-2 font-semibold transition duration-300 ease-in-out
     ${
       !selectedAddress || cartItems.length === 0
-        ? "cursor-not-allowed bg-gray-400 text-gray-600"
-        : "hover:bg-secondary-dark bg-secondary text-white shadow-lg hover:shadow-xl active:scale-95 active:transform"
+        ? "cursor-not-allowed bg-gray-300 text-gray-500"
+        : "hover:brightness-90 bg-secondary text-white shadow-lg hover:shadow-xl active:scale-95 active:transform"
     }
     focus:outline-none
     focus:ring-2 focus:ring-secondary focus:ring-opacity-50 dark:text-text

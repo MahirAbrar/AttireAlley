@@ -57,7 +57,7 @@ const Products = () => {
               key={index}
               className={`btn join-item ${
                 index + 1 === currentPage
-                  ? "btn-outline btn-primary shadow-lg shadow-primary/50"
+                  ? "btn-outline btn-primary shadow-lg"
                   : "border-2 border-primary/20 hover:border-primary/60 hover:bg-primary/10"
               }`}
               onClick={() => handlePageChange(index + 1)}
