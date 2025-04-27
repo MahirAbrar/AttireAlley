@@ -196,15 +196,15 @@ const AddProduct = () => {
   }
   if (!isAuthUser || user?.role !== "admin") {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
+      <div className="flex h-screen w-full items-center justify-center ">
         <LoaderBig />
       </div>
     );
   }
 
   return (
-    <div className="card w-full max-w-sm shrink-0 bg-base-100 p-4 shadow-2xl">
-      <div className="bg-base-200 p-2 text-base-content">
+    <div className="my-8 card w-full max-w-sm shrink-0  p-4 shadow-2xl bg-base-100">
+      <div className=" p-2 text-base-content">
         {uploadedCount} Image{uploadedCount !== 1 ? "s" : ""} Uploaded
       </div>
 
@@ -212,7 +212,7 @@ const AddProduct = () => {
         <input
           type="file"
           multiple
-          className="file-input w-full max-w-xs"
+          className="file-input file-input-bordered w-full max-w-xs bg-white"
           accept="image/*"
           onChange={handleImage}
         />
@@ -224,10 +224,10 @@ const AddProduct = () => {
             Available Sizes <span className="text-red-500">*</span>
           </span>
         </div>
-        <ul className="menu  menu-horizontal rounded-box bg-base-200">
+        <ul className="menu menu-horizontal rounded-box bg-white">
           <li>
             <a
-              className={formData.sizes.includes("S") ? "active" : ""}
+              className={formData.sizes.includes("S") ? "active bg-primary text-white" : "bg-white"}
               onClick={() => handleSizeClick("S")}
             >
               S
@@ -235,7 +235,7 @@ const AddProduct = () => {
           </li>
           <li>
             <a
-              className={formData.sizes.includes("M") ? "active" : ""}
+              className={formData.sizes.includes("M") ? "active bg-primary text-white" : "bg-white"}
               onClick={() => handleSizeClick("M")}
             >
               M
@@ -243,7 +243,7 @@ const AddProduct = () => {
           </li>
           <li>
             <a
-              className={formData.sizes.includes("L") ? "active" : ""}
+              className={formData.sizes.includes("L") ? "active bg-primary text-white" : "bg-white"}
               onClick={() => handleSizeClick("L")}
             >
               L
@@ -260,7 +260,7 @@ const AddProduct = () => {
         <input
           type="text"
           placeholder="Enter name"
-          className="input input-bordered w-full "
+          className="input input-bordered w-full bg-white"
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
       </label>
@@ -273,7 +273,7 @@ const AddProduct = () => {
         <input
           type="number"
           placeholder="Enter price"
-          className="input input-bordered w-full "
+          className="input input-bordered w-full bg-white"
           onChange={(e) => setFormData({ ...formData, price: e.target.value })}
         />
       </label>
@@ -284,7 +284,7 @@ const AddProduct = () => {
         <input
           type="text"
           placeholder="Enter description"
-          className="input input-bordered w-full "
+          className="input input-bordered w-full bg-white"
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
           }
@@ -299,7 +299,7 @@ const AddProduct = () => {
           onChange={(e) =>
             setFormData({ ...formData, category: e.target.value })
           }
-          className="select select-bordered"
+          className="select select-bordered bg-white"
         >
           <option value="Kids">Everyone</option>
           <option value="Men">Men</option>
@@ -314,7 +314,7 @@ const AddProduct = () => {
         <input
           type="text"
           placeholder="Enter delivery info"
-          className="input input-bordered w-full "
+          className="input input-bordered w-full bg-white"
           onChange={(e) =>
             setFormData({ ...formData, deliveryInfo: e.target.value })
           }
@@ -326,7 +326,7 @@ const AddProduct = () => {
         </div>
         <select
           onChange={(e) => setFormData({ ...formData, onSale: e.target.value })}
-          className="select select-bordered"
+          className="select select-bordered bg-white"
         >
           <option value="No">No</option>
           <option value="Yes">Yes</option>
@@ -341,7 +341,7 @@ const AddProduct = () => {
           <input
             type="number"
             placeholder="Enter Price Drop"
-            className="input input-bordered w-full "
+            className="input input-bordered w-full bg-white"
             onChange={(e) =>
               setFormData({ ...formData, priceDrop: e.target.value })
             }
@@ -350,7 +350,7 @@ const AddProduct = () => {
         </label>
       )}
       <button
-        className="btn mt-2 w-full"
+        className="btn btn-primary mt-2 w-full"
         onClick={handleAddProduct}
         disabled={imageUploading}
       >

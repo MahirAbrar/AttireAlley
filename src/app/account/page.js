@@ -100,7 +100,6 @@ const Account = () => {
       {user && <h3>{user.email}</h3>}
       {user && user.role === "admin" && <h3>Admin</h3>}
       {user && user.role === "customer" && <h3>Customer</h3>}
-      <button className="btn btn-accent my-2 text-lg">View your orders</button>
       <h1 className="font-bold">Your addresses :</h1>
       {fetchLoading ? (
         <Loader />

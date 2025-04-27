@@ -189,7 +189,7 @@ function Navbar() {
                   <div className="indicator">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 2xl:h-8 w-6 2xl:w-8 text-textDark transition-colors duration-300"
+                      className="h-6 2xl:h-8 w-6 2xl:w-8  transition-colors duration-300"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -201,7 +201,7 @@ function Navbar() {
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    <span className="badge indicator-item badge-sm 2xl:badge-md text-textDark border-1 border-backgroundDark">
+                    <span className="badge indicator-item badge-sm 2xl:badge-md  border-1 border-backgroundDark">
                       {cartDisplay}
                     </span>
                   </div>
@@ -212,19 +212,25 @@ function Navbar() {
                     className="card dropdown-content card-compact w-52 bg-gray-300 dark:bg-gray-900 shadow-lg"
                   >
                     <div className="card-body">
-                      <span className="text-lg font-bold text-textDark">
+                      <span className="text-lg font-bold ">
                         {cartDisplay} Items
                       </span>
                       <span className="text-primary font-semibold text-md">Subtotal: ${cartAmount}</span>
                       <div className="card-actions">
                         <button
-                          className="btn btn-primary btn-block bg-primary text-textDark hover:bg-primary/90"
+                          className="btn btn-primary btn-block bg-primary  hover:bg-primary/90"
                           onClick={() => router.push("/cart")}
                         >
                           View cart
                         </button>
                         <button
-                          className="btn btn-primary btn-block bg-primary text-textDark hover:bg-primary/90"
+                          className="btn btn-primary btn-block bg-primary  hover:bg-primary/90"
+                          onClick={() => router.push("/order")}
+                        >
+                          Orders
+                        </button>
+                        <button
+                          className="btn btn-primary btn-block bg-primary  hover:bg-primary/90"
                           onClick={() => router.push("/account")}
                         >
                           Account
@@ -240,14 +246,14 @@ function Navbar() {
               isAdminView ? (
                 <NeonButton
                   onClick={handleLinkClick("/")}
-                  className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
+                  className=" text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
                 >
                   Client view
                 </NeonButton>
               ) : (
                 <NeonButton
                   onClick={handleLinkClick("/admin-view")}
-                  className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
+                  className=" text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
                 >
                   Admin View
                 </NeonButton>
@@ -257,7 +263,7 @@ function Navbar() {
             {isAuthUser ? (
               <NeonButton
                 onClick={handleLogout}
-                className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
+                className="text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
               >
                 Logout
               </NeonButton>
@@ -279,14 +285,14 @@ function Navbar() {
                 />
                 <span className="sr-only">Open main menu</span>
                 <svg
-                  className="swap-off fill-current text-textDark w-6 h-6 sm:w-8 sm:h-8"
+                  className="swap-off fill-current  w-6 h-6 sm:w-8 sm:h-8"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
                 >
                   <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
                 </svg>
                 <svg
-                  className="swap-on fill-current text-textDark w-6 h-6 sm:w-8 sm:h-8"
+                  className="swap-on fill-current  w-6 h-6 sm:w-8 sm:h-8"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
                 >

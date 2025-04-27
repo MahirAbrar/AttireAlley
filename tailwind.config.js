@@ -23,4 +23,20 @@ module.exports = {
     },
   },
   plugins: ["prettier-plugin-tailwindcss", require("daisyui")],
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["light"],
+          primary: "#57a7a8",
+          secondary: "#ff7e67",
+          accent: "#ffd166",
+          neutral: "#f8fbfc",
+          "base-100": "#ffffff",
+          "base-200": "#f8fbfc",
+          "base-300": "#f1f5f9",
+        },
+      },
+    ],
+  },
 };

@@ -20,7 +20,7 @@ const AdminCommonListing = ({ user, onDelete }) => {
   };
 
   return (
-    <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col bg-base-100 shadow-xl transition duration-500 ease-in-out hover:scale-105">
+    <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col border border-gray-200 dark:shadow-md dark:shadow-primary shadow-xl transition duration-500 ease-in-out hover:scale-105">
       <figure>
         <Link href={`/products/${user._id}`}>
           <Image

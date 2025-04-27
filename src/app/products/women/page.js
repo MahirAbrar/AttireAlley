@@ -6,7 +6,7 @@ import ClientCommonListing from "@/components/CommonListingClient";
 import { toast } from "react-toastify";
 import LoaderBig from "@/components/LoaderBig";
 
-const PRODUCTS_PER_PAGE = 5;
+const PRODUCTS_PER_PAGE = 10;
 
 const Women = () => {
   const [loading, setLoading] = useState(true);

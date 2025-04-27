@@ -13,6 +13,7 @@ const nextConfig = {
         hostname: 'firebasestorage.googleapis.com',
       }
     ],
+    domains: ['firebasestorage.googleapis.com', 'localhost'],
   },
   // webpack: (config, { dev, isServer }) => {
   //   const serverSideOrProd = isServer || !dev;
