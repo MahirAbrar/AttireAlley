@@ -39,7 +39,7 @@ const AllProducts = () => {
   };
 
   const handleDelete = async (id) => {
-    await deleteProduct(id);
+    await deleteProduct(id, user._id);
     fetchProducts(); // Fetch the products again after deleting one
   };
 

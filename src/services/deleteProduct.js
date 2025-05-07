@@ -1,11 +1,10 @@
 import Cookies from "js-cookie";
 
 // Frontend will send to Backend API to delete a product
-export const deleteProduct = async (productId) => {
+export const deleteProduct = async (productId, userID) => {
   console.log("deleting from services");
   try {
-    const response = await fetch(`/api/admin/delete-product?id=${productId}`, {
-      // Assuming ID is passed as a URL parameter
+    const response = await fetch(`/api/admin/delete-product?id=${productId}&userID=${userID}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

@@ -10,7 +10,7 @@ export const addNewProduct = async (formData) => {
       JSON.stringify(formData),
     );
 
-    const response = await fetch("/api/admin/add-product", {
+    const response = await fetch(`/api/admin/add-product?userID=${formData.user}`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

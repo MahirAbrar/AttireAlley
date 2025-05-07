@@ -32,9 +32,9 @@ const AddProduct = () => {
   useEffect(() => {
     // Redirect if not authenticated or not an admin
     if (isAuthUser === false || user?.role !== "admin") {
-      router.push("/some-other-site");
+      router.push("/");
     } else {
-      setFormData({ ...formData, user: user?.name });
+      setFormData({ ...formData, user: user?._id });
     }
   }, [isAuthUser, user, router]);
 
@@ -204,7 +204,7 @@ const AddProduct = () => {
 
   return (
     <div className="my-8 card w-full max-w-sm shrink-0  p-4 shadow-2xl bg-base-100">
-      <div className=" p-2 text-base-content">
+      <div className=" p-2 text-black">
         {uploadedCount} Image{uploadedCount !== 1 ? "s" : ""} Uploaded
       </div>
 
@@ -212,7 +212,7 @@ const AddProduct = () => {
         <input
           type="file"
           multiple
-          className="file-input file-input-bordered w-full max-w-xs bg-white"
+          className="file-input file-input-bordered w-full max-w-xs text-black"
           accept="image/*"
           onChange={handleImage}
         />
@@ -220,14 +220,14 @@ const AddProduct = () => {
 
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text">
+          <span className="label-text text-black">
             Available Sizes <span className="text-red-500">*</span>
           </span>
         </div>
-        <ul className="menu menu-horizontal rounded-box bg-white">
+        <ul className="menu menu-horizontal rounded-box">
           <li>
             <a
-              className={formData.sizes.includes("S") ? "active bg-primary text-white" : "bg-white"}
+              className={`text-black ${formData.sizes.includes("S") ? "bg-primary" : ""}`}
               onClick={() => handleSizeClick("S")}
             >
               S
@@ -235,7 +235,7 @@ const AddProduct = () => {
           </li>
           <li>
             <a
-              className={formData.sizes.includes("M") ? "active bg-primary text-white" : "bg-white"}
+              className={`text-black ${formData.sizes.includes("M") ? "bg-primary" : ""}`}
               onClick={() => handleSizeClick("M")}
             >
               M
@@ -243,7 +243,7 @@ const AddProduct = () => {
           </li>
           <li>
             <a
-              className={formData.sizes.includes("L") ? "active bg-primary text-white" : "bg-white"}
+              className={`text-black ${formData.sizes.includes("L") ? "bg-primary" : ""}`}
               onClick={() => handleSizeClick("L")}
             >
               L
@@ -253,38 +253,38 @@ const AddProduct = () => {
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">
+          <span className="label-text text-black">
             Name of Product <span className="text-red-500">*</span>
           </span>
         </div>
         <input
           type="text"
           placeholder="Enter name"
-          className="input input-bordered w-full bg-white"
+          className="input input-bordered w-full text-black"
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">
+          <span className="label-text text-black">
             Price of Product <span className="text-red-500">*</span>
           </span>
         </div>
         <input
           type="number"
           placeholder="Enter price"
-          className="input input-bordered w-full bg-white"
+          className="input input-bordered w-full text-black"
           onChange={(e) => setFormData({ ...formData, price: e.target.value })}
         />
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">Description of Product</span>
+          <span className="label-text text-black">Description of Product</span>
         </div>
         <input
           type="text"
           placeholder="Enter description"
-          className="input input-bordered w-full bg-white"
+          className="input input-bordered w-full text-black"
           onChange={(e) =>
             setFormData({ ...formData, description: e.target.value })
           }
@@ -292,29 +292,29 @@ const AddProduct = () => {
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">Category</span>
+          <span className="label-text text-black">Category</span>
         </div>
 
         <select
           onChange={(e) =>
             setFormData({ ...formData, category: e.target.value })
           }
-          className="select select-bordered bg-white"
+          className="select select-bordered text-black"
         >
-          <option value="Kids">Everyone</option>
-          <option value="Men">Men</option>
-          <option value="Women">Women</option>
-          <option value="Kids">Kids</option>
+          <option value="Kids" className="text-black">Everyone</option>
+          <option value="Men" className="text-black">Men</option>
+          <option value="Women" className="text-black">Women</option>
+          <option value="Kids" className="text-black">Kids</option>
         </select>
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">Delivery Info</span>
+          <span className="label-text text-black">Delivery Info</span>
         </div>
         <input
           type="text"
           placeholder="Enter delivery info"
-          className="input input-bordered w-full bg-white"
+          className="input input-bordered w-full text-black"
           onChange={(e) =>
             setFormData({ ...formData, deliveryInfo: e.target.value })
           }
@@ -322,26 +322,26 @@ const AddProduct = () => {
       </label>
       <label className="form-control w-full ">
         <div className="label">
-          <span className="label-text">On Sale</span>
+          <span className="label-text text-black">On Sale</span>
         </div>
         <select
           onChange={(e) => setFormData({ ...formData, onSale: e.target.value })}
-          className="select select-bordered bg-white"
+          className="select select-bordered text-black"
         >
-          <option value="No">No</option>
-          <option value="Yes">Yes</option>
+          <option value="No" className="text-black">No</option>
+          <option value="Yes" className="text-black">Yes</option>
         </select>
       </label>
 
       {formData.onSale === "Yes" && (
         <label className="form-control w-full ">
           <div className="label">
-            <span className="label-text">Price Drop</span>
+            <span className="label-text text-black">Price Drop</span>
           </div>
           <input
             type="number"
             placeholder="Enter Price Drop"
-            className="input input-bordered w-full bg-white"
+            className="input input-bordered w-full text-black"
             onChange={(e) =>
               setFormData({ ...formData, priceDrop: e.target.value })
             }

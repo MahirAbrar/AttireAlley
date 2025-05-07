@@ -28,7 +28,9 @@ const AdminCommonListing = ({ user, onDelete }) => {
             alt={user.name}
             width={500}
             height={240}
+            priority={true}
             className="h-60 w-full cursor-pointer rounded-xl object-cover"
+            style={{ width: 'auto', height: 'auto' }}
           />
         </Link>
       </figure>
