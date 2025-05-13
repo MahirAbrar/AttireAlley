@@ -15,6 +15,30 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [pulseCircles, setPulseCircles] = useState([]);
   const scrollWrapperRef = useRef(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images = [
+    {
+      src: "/landingpage/seconddiv1.jpg",
+      alt: "Army Girl"
+    },
+    {
+      src: "/landingpage/seconddiv2.jpg",
+      alt: "Third Collection"
+    },
+    {
+      src: "/landingpage/seconddiv3.jpg",
+      alt: "Grok Collection"
+    }
+  ];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -174,52 +198,66 @@ export default function Home() {
             />
           ))}
           <div className="w-full h-full flex flex-col justify-center px-4 relative z-20">
-            {/* Image Accordion */}
-            <div className="flex flex-col md:flex-row h-[40vh] gap-8 mb-12 items-center justify-center">
-              {/* Army Collection */}
-              <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
-                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
-                  <Image
-                    src="/landingpage/seconddiv1.jpg"
-                    alt="Army Girl"
-                    width={500}
-                    height={500}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+            {/* Image Accordion/Slider */}
+            <div className="flex flex-col md:flex-row h-[40vh] gap-8 mb-12 items-center justify-center relative">
+              {/* Mobile Navigation Arrows - Only visible on small screens */}
+              <button 
+                onClick={prevImage}
+                className="lg:hidden absolute left-4 z-30 p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-all border border-white/20"
+                aria-label="Previous image"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button 
+                onClick={nextImage}
+                className="lg:hidden absolute right-4 z-30 p-3 rounded-full bg-white/10 backdrop-blur-md text-white hover:bg-white/20 transition-all border border-white/20"
+                aria-label="Next image"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+
+              {/* Mobile Slider - Only visible on small screens */}
+              <div className="lg:hidden w-full flex justify-center">
+                <div className="group relative w-[90vw] h-[60vw] max-w-[500px] max-h-[500px] transition-all duration-500">
+                  <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
+                    <Image
+                      src={images[currentImageIndex].src}
+                      alt={images[currentImageIndex].alt}
+                      width={500}
+                      height={500}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  </div>
+                  <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
                 </div>
-                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
               </div>
-              {/* Third Collection */}
-              <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
-                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
-                  <Image
-                    src="/landingpage/seconddiv2.jpg"
-                    alt="Third Collection"
-                    width={500}
-                    height={500}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
-              </div>
-              {/* Grok Collection */}
-              <div className="group relative w-80 h-80 md:w-96 md:h-96 transition-all duration-500 hover:w-[28rem] hover:h-[28rem]">
-                <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
-                  <Image
-                    src="/landingpage/seconddiv3.jpg"
-                    alt="Grok Collection"
-                    width={500}
-                    height={500}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
+
+              {/* Desktop View - Only visible on large screens and up */}
+              <div className="hidden lg:flex flex-row gap-8 w-[95vw] justify-center">
+                {images.map((image, index) => (
+                  <div key={index} className="group relative w-[30vw] h-[30vw] min-w-[300px] min-h-[300px] max-w-[600px] max-h-[600px] transition-all duration-500 hover:w-[32vw] hover:h-[32vw]">
+                    <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={600}
+                        height={600}
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                    <div className="absolute bottom-[-1.5rem] left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left shadow-[0_0_10px_rgba(0,0,0,0.3)] dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
+                  </div>
+                ))}
               </div>
             </div>
 
             {/* Main Heading */}
             <div className="text-center mb-12">
-              <HoverText text="Elevate Your Style" className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary mb-4" />
+              <HoverText text="Elevate Your Style" className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary mb-4" />
               <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Discover collections that speak to your unique style and personality
               </p>
