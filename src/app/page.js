@@ -6,9 +6,9 @@ import LoaderBig from "@/components/LoaderBig";
 import Image from "next/image";
 import HoverText from "@/components/HoverText";
 import NeonButton from "@/components/NeonButton";
-import CollectionsSlider from "@/components/CollectionsSlider";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
+import AnimatedSection from "@/components/AnimatedSection";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -19,12 +19,10 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [pulseCircles, setPulseCircles] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Create refs for each section
   const firstSectionRef = useRef(null);
   const secondSectionRef = useRef(null);
-  const collectionsSliderRef = useRef(null);
 
   const images = [
     {
@@ -315,14 +313,8 @@ export default function Home() {
       {/* divider 2 */}
       <div className="dark:from-accentDark dark:via-secondaryDark dark:to-primaryDark h-1 w-full bg-gradient-to-r from-accent via-secondary to-primary"></div>
 
-      {/* Collections Slider Section */}
-      <div ref={collectionsSliderRef}>
-        <CollectionsSlider
-          firstSectionRef={firstSectionRef}
-          secondSectionRef={secondSectionRef}
-          collectionsSliderRef={collectionsSliderRef}
-        />
-      </div>
+      {/* Animated Section */}
+      <AnimatedSection />
     </main>
   );
 }
