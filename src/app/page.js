@@ -1,20 +1,16 @@
 "use client";
 
-import { useContext, useEffect, useState, useRef } from "react";
+import {  useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import LoaderBig from "@/components/LoaderBig";
 import Image from "next/image";
-import { getClientProducts } from "@/services/getClientProducts";
-import ClientCommonListing from "@/components/CommonListingClient";
 import HoverText from "@/components/HoverText";
 import NeonButton from "@/components/NeonButton";
-import ExactCollectionsSlider from "@/components/ExactCollectionsSlider";
+import CollectionsSlider from "@/components/CollectionsSlider";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState([]);
   const [pulseCircles, setPulseCircles] = useState([]);
-  const scrollWrapperRef = useRef(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const images = [
@@ -73,42 +69,8 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const collections = [
-
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1698815614885-97a1b2d29669?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      altText: "Womens Collection",
-      title: "Women",
-      linkHref: "/products/women",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1558541983-39b080b84d16?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      altText: "Mens Collection",
-      title: "Mens",
-      linkHref: "/products/men",
-    },
-    {
-      imageSrc:
-        "https://images.unsplash.com/photo-1625657332021-9b714782dde0?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      altText: "Kids Collection",
-      title: "Kids",
-      linkHref: "/products/kids",
-    }
-  ];
-
   const fetchProducts = async () => {
-    console.log("Fetching products");
-    const res = await getClientProducts("all");
-    console.log("Products fetched");
-    if (res?.data?.data) {
-      console.log("Product data:", res.data.data);
-      setProducts(res.data.data);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
   if (loading) {
@@ -239,7 +201,7 @@ export default function Home() {
               {/* Desktop View - Only visible on large screens and up */}
               <div className="hidden lg:flex flex-row gap-8 w-[95vw] justify-center">
                 {images.map((image, index) => (
-                  <div key={index} className="group relative w-[30vw] h-[30vw] min-w-[300px] min-h-[300px] max-w-[600px] max-h-[600px] transition-all duration-500 hover:w-[32vw] hover:h-[32vw]">
+                  <div key={index} className="group relative w-[25vw] h-[25vw] min-w-[300px] min-h-[300px] max-w-[600px] max-h-[600px] transition-all duration-500 hover:w-[32vw] hover:h-[32vw]">
                     <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl shadow-black/50 dark:shadow-white/20 glass-container">
                       <Image
                         src={image.src}
@@ -257,7 +219,7 @@ export default function Home() {
 
             {/* Main Heading */}
             <div className="text-center mb-12">
-              <HoverText text="Elevate Your Style" className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary mb-4" />
+              <HoverText text="Elevate Your Style" className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-primary mb-4" />
               <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                 Discover collections that speak to your unique style and personality
               </p>
@@ -280,7 +242,15 @@ export default function Home() {
       ></div>
 
 {/* Collections Slider Section */}
-<ExactCollectionsSlider collections={collections}/>
+<div id="collections-section" className="w-full py-16 relative bg-gray-100 dark:bg-gray-900">
+  <div className="container mx-auto px-4">
+    <h2 className="text-4xl md:text-5xl font-bold text-center mb-8">Featured Collections</h2>
+    <p className="text-xl text-center text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-12">
+      Browse through our curated collections and find your perfect style
+    </p>
+    <CollectionsSlider />
+  </div>
+</div>
     </main>
   );
 }

@@ -18,7 +18,7 @@
     "browser-sync-webpack-plugin": "^2.3.0",
     "express": "^4.19.2",
     "firebase": "^10.11.0",
-    "gsap": "^3.12.5",
+    "gsap": "^3.13.0",
     "joi": "^17.12.3",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",

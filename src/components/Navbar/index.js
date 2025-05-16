@@ -13,6 +13,7 @@ import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import DarkModeToggle from "../DarkModeToggle";
 import NeonButton from "../NeonButton";
 import "@/styles/navbar.css";
+import { clearConfigCache } from "prettier";
 
 function Navbar() {
   const {
@@ -22,10 +23,8 @@ function Navbar() {
     user,
     setIsAuthUser,
     setUser,
-    cartItemsCount,
     navbarUpdateTrigger,
     isDark,
-    setIsDark,
   } = useContext(GlobalContext);
 
   const [cartDisplay, setCartDisplay] = useState(0);
@@ -46,10 +45,14 @@ function Navbar() {
     const controlNavbar = () => {
       if (typeof window !== 'undefined') {
         const currentScrollY = window.scrollY;
+        console.log('Current Scroll Y:', currentScrollY);
+        const SCROLL_THRESHOLD = 30; // Adjust this value as needed
         
-        if (currentScrollY > lastScrollY) { // scrolling down
+        if (currentScrollY < 85) { // At the top of the page
+          setIsVisible(true);
+        } else if (currentScrollY > lastScrollY) { // scrolling down
           setIsVisible(false);
-        } else { // scrolling up
+        } else if (lastScrollY - currentScrollY > SCROLL_THRESHOLD) { // scrolling up by a significant amount
           setIsVisible(true);
         }
         
