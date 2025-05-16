@@ -4,11 +4,12 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
-import Link from "next/link";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { TextPlugin } from "gsap/TextPlugin";
 
 // Register the Observer plugin
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(Observer);
+  gsap.registerPlugin(Observer, ScrollToPlugin, TextPlugin);
 }
 
 const collections = [
@@ -35,19 +36,25 @@ const collections = [
   },
 ];
 
-export default function CollectionsSlider() {
+export default function CollectionsSlider({
+  firstSectionRef,
+  secondSectionRef,
+  collectionsSliderRef,
+}) {
   const sliderRef = useRef(null);
   const countRef = useRef(null);
 
   useEffect(() => {
-    if (!sliderRef.current) return;
+    // Use collectionsSliderRef value if provided, otherwise use local ref
+    const sliderElement = collectionsSliderRef?.current || sliderRef.current;
+    if (!sliderElement) return;
 
     const sections = gsap.utils.toArray(".slide");
     const images = gsap.utils.toArray(".image").reverse();
     const slideImages = gsap.utils.toArray(".slide__img");
     const outerWrappers = gsap.utils.toArray(".slide__outer");
     const innerWrappers = gsap.utils.toArray(".slide__inner");
-    const count = document.querySelector(".count");
+    const count = document.querySelector(".overlay__count");
     const wrap = gsap.utils.wrap(0, sections.length);
     let animating;
     let currentIndex = 0;
@@ -59,21 +66,41 @@ export default function CollectionsSlider() {
     gsap.set(".slide:nth-of-type(1) .slide__inner", { xPercent: 0 });
 
     function gotoSection(index, direction) {
+      // Set animating flag to true to prevent multiple animations at once
       animating = true;
+
+      // Wrap the index to ensure it stays within bounds (0 to sections.length-1)
+      // If index becomes negative or exceeds the number of sections, it cycles back
       index = wrap(index);
 
+      console.log(`Changing to slide: ${index + 1} of ${sections.length}`);
+
+      // Check if this is the last slide
+      if (index === sections.length - 1) {
+        console.log("This is the last slide");
+      }
+
+      // Create a GSAP timeline for coordinating multiple animations
+      // All animations in this timeline will run in parallel unless specified otherwise
       let tl = gsap.timeline({
-        defaults: { duration: 1, ease: "expo.inOut" },
+        defaults: { duration: 1, ease: "expo.inOut" }, // Default animation settings
         onComplete: () => {
+          // Re-enable scrolling when animation completes
           animating = false;
+          console.log(
+            `Animation complete - Current slide: ${currentIndex + 1}`,
+          );
         },
       });
 
+      // Get references to the current and next section elements
       let currentSection = sections[currentIndex];
       let heading = currentSection.querySelector(".slide__heading");
       let nextSection = sections[index];
       let nextHeading = nextSection.querySelector(".slide__heading");
 
+      // Set up initial states for all elements
+      // This sets z-index and visibility for proper layering during animation
       gsap.set([sections, images], { zIndex: 0, autoAlpha: 0 });
       gsap.set([sections[currentIndex], images[index]], {
         zIndex: 1,
@@ -84,77 +111,80 @@ export default function CollectionsSlider() {
         autoAlpha: 1,
       });
 
-      tl.set(count, { text: index + 1 }, 0.32)
+      // Start timeline animation sequence
+      // The timeline runs multiple animations in parallel (with position parameter 0)
+      tl.set(count, { text: index + 1 }, 0.32) // Update slide counter text
         .fromTo(
           outerWrappers[index],
           {
-            xPercent: 100 * direction,
+            xPercent: 100 * direction, // Start position (100% right or left)
           },
-          { xPercent: 0 },
-          0,
+          { xPercent: 0 }, // End position (centered)
+          0, // Position in timeline (0 = start together)
         )
         .fromTo(
           innerWrappers[index],
           {
-            xPercent: -100 * direction,
+            xPercent: -100 * direction, // Start position (opposite direction)
           },
-          { xPercent: 0 },
-          0,
+          { xPercent: 0 }, // End position (centered)
+          0, // Position in timeline
         )
         .to(
           heading,
           {
-            "--width": 800,
-            xPercent: 30 * direction,
+            "--width": 800, // CSS variable animation
+            xPercent: 30 * direction, // Move current heading away
           },
-          0,
+          0, // Position in timeline
         )
         .fromTo(
           nextHeading,
           {
             "--width": 800,
-            xPercent: -30 * direction,
+            xPercent: -30 * direction, // Start position for next heading
           },
           {
             "--width": 200,
-            xPercent: 0,
+            xPercent: 0, // End position (centered)
           },
-          0,
+          0, // Position in timeline
         )
         .fromTo(
           images[index],
           {
-            xPercent: 125 * direction,
+            xPercent: 125 * direction, // Start position for next image
             scaleX: 1.5,
             scaleY: 1.3,
           },
-          { xPercent: 0, scaleX: 1, scaleY: 1, duration: 1 },
-          0,
+          { xPercent: 0, scaleX: 1, scaleY: 1, duration: 1 }, // End position (centered, normal scale)
+          0, // Position in timeline
         )
         .fromTo(
           images[currentIndex],
-          { xPercent: 0, scaleX: 1, scaleY: 1 },
+          { xPercent: 0, scaleX: 1, scaleY: 1 }, // Start position for current image
           {
-            xPercent: -125 * direction,
+            xPercent: -125 * direction, // Move current image away
             scaleX: 1.5,
             scaleY: 1.3,
           },
-          0,
+          0, // Position in timeline
         )
         .fromTo(
           slideImages[index],
           {
-            scale: 2,
+            scale: 2, // Start with larger scale
           },
-          { scale: 1 },
-          0,
+          { scale: 1 }, // End with normal scale
+          0, // Position in timeline
         )
-        .timeScale(0.8);
+        .timeScale(0.8); // Slow down the entire animation to 80% speed
 
+      // Update the currentIndex to the new index
+      // This is important for the next animation to know which slide is active
       currentIndex = index;
     }
 
-    // Create observer with target explicitly set to the slider element
     const observerInstance = Observer.create({
       type: "wheel,touch,pointer",
       preventDefault: true,
@@ -165,10 +195,18 @@ export default function CollectionsSlider() {
       },
       onDown: () => {
         if (animating || !observerActive) return;
+
+        // If we're at the last slide, scroll to footer instead of trying to go to next slide
+        if (currentIndex === sections.length - 1) {
+          console.log("At last slide, cycling back to first slide");
+          gotoSection(0, -1); // Go to first slide when at the last slide
+          return;
+        }
+
         gotoSection(currentIndex - 1, -1);
       },
       tolerance: 10,
-      target: sliderRef.current,
+      target: sliderElement,
     });
 
     // Initially disable the observer
@@ -189,14 +227,16 @@ export default function CollectionsSlider() {
 
     // Function to check and update observer state
     function updateObserverState() {
-      const shouldBeActive = isElementMostlyInViewport(sliderRef.current);
+      const shouldBeActive = isElementMostlyInViewport(sliderElement);
 
       if (shouldBeActive && !observerActive) {
         observerInstance.enable();
         observerActive = true;
+        console.log("Observer enabled - Current slide:", currentIndex + 1);
       } else if (!shouldBeActive && observerActive) {
         observerInstance.disable();
         observerActive = false;
+        console.log("Observer disabled - Last slide:", currentIndex + 1);
       }
     }
 
@@ -223,6 +263,7 @@ export default function CollectionsSlider() {
 
     // Initial check
     updateObserverState();
+    console.log(`Initial slide: ${currentIndex + 1} of ${sections.length}`);
 
     document.addEventListener("keydown", handleKeyDown);
 
@@ -237,8 +278,12 @@ export default function CollectionsSlider() {
 
   return (
     <div
-      className="collections-slider relative h-[100vh] w-[100vw] overflow-hidden"
-      ref={sliderRef}
+      className="relative h-[100vh] w-[100vw] overflow-hidden"
+      ref={(el) => {
+        // Set both the local ref and the passed ref if it exists
+        sliderRef.current = el;
+        if (collectionsSliderRef) collectionsSliderRef.current = el;
+      }}
     >
       <style jsx>{`
         @import url("https://fonts.googleapis.com/css2?family=Sora&display=swap");
@@ -270,11 +315,10 @@ export default function CollectionsSlider() {
 
         .slide__container {
           position: relative;
-          max-width: 1400px;
+
           width: 100vw;
           margin: 0 auto;
           height: 90vh;
-          margin-bottom: 10vh;
           display: grid;
           grid-template-columns: repeat(10, 1fr);
           grid-template-rows: repeat(10, 1fr);
@@ -462,6 +506,7 @@ export default function CollectionsSlider() {
               />
             ))}
           </figure>
+          <p className="overlay__count">1</p>
         </div>
       </section>
 

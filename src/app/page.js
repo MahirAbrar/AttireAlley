@@ -13,6 +13,11 @@ export default function Home() {
   const [pulseCircles, setPulseCircles] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Create refs for each section
+  const firstSectionRef = useRef(null);
+  const secondSectionRef = useRef(null);
+  const collectionsSliderRef = useRef(null);
+
   const images = [
     {
       src: "/landingpage/seconddiv1.jpg",
@@ -86,7 +91,10 @@ export default function Home() {
   return (
     <main className="-mt-6 w-full">
       {/* First Section */}
-      <div className="relative h-screen w-full overflow-hidden">
+      <div
+        ref={firstSectionRef}
+        className="relative h-screen w-full overflow-hidden"
+      >
         <div
           className="absolute inset-0 h-full w-full bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out"
           style={{
@@ -148,7 +156,10 @@ export default function Home() {
       <div className="h-1 w-full bg-gradient-to-r from-secondary to-accent dark:from-primary dark:via-secondary  dark:to-accent"></div>
 
       {/* 2nd section */}
-      <div className="relative h-screen w-full overflow-hidden bg-gray-300/50 backdrop-blur-sm dark:bg-backgroundDark/50">
+      <div
+        ref={secondSectionRef}
+        className="relative h-screen w-full overflow-hidden bg-gray-300/50 backdrop-blur-sm dark:bg-backgroundDark/50"
+      >
         {/* Pulse Circles Background */}
         {pulseCircles.map((circle) => (
           <div
@@ -272,8 +283,13 @@ export default function Home() {
       <div className="dark:from-accentDark dark:via-secondaryDark dark:to-primaryDark h-1 w-full bg-gradient-to-r from-accent via-secondary to-primary"></div>
 
       {/* Collections Slider Section */}
-
-      <CollectionsSlider />
+      <div ref={collectionsSliderRef}>
+        <CollectionsSlider
+          firstSectionRef={firstSectionRef}
+          secondSectionRef={secondSectionRef}
+          collectionsSliderRef={collectionsSliderRef}
+        />
+      </div>
     </main>
   );
 }
