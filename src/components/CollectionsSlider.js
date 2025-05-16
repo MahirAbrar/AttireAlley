@@ -191,6 +191,7 @@ export default function CollectionsSlider({
       wheelSpeed: -1,
       onUp: () => {
         if (animating || !observerActive) return;
+        console.log("Scrolling DOWN - Going to next slide");
         gotoSection(currentIndex + 1, +1);
       },
       onDown: () => {
@@ -203,6 +204,7 @@ export default function CollectionsSlider({
           return;
         }
 
+        console.log("Scrolling UP - Going to previous slide");
         gotoSection(currentIndex - 1, -1);
       },
       tolerance: 10,

@@ -43,27 +43,29 @@ function Navbar() {
 
   useEffect(() => {
     const controlNavbar = () => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const currentScrollY = window.scrollY;
-        console.log('Current Scroll Y:', currentScrollY);
         const SCROLL_THRESHOLD = 30; // Adjust this value as needed
-        
-        if (currentScrollY < 85) { // At the top of the page
+
+        if (currentScrollY < 85) {
+          // At the top of the page
           setIsVisible(true);
-        } else if (currentScrollY > lastScrollY) { // scrolling down
+        } else if (currentScrollY > lastScrollY) {
+          // scrolling down
           setIsVisible(false);
-        } else if (lastScrollY - currentScrollY > SCROLL_THRESHOLD) { // scrolling up by a significant amount
+        } else if (lastScrollY - currentScrollY > SCROLL_THRESHOLD) {
+          // scrolling up by a significant amount
           setIsVisible(true);
         }
-        
+
         setLastScrollY(currentScrollY);
       }
     };
 
-    window.addEventListener('scroll', controlNavbar);
+    window.addEventListener("scroll", controlNavbar);
 
     return () => {
-      window.removeEventListener('scroll', controlNavbar);
+      window.removeEventListener("scroll", controlNavbar);
     };
   }, [lastScrollY]);
 
@@ -119,28 +121,30 @@ function Navbar() {
 
   return (
     <>
-      <nav 
+      <nav
         className={`${
-          mounted && isDark ? 'bg-backgroundDark' : 'bg-gray-300'
-        } sticky top-0 z-50 shadow-lg px-2 sm:px-6 py-6 border-b-2 border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] transition-all duration-300 transform ${
-          isVisible ? 'translate-y-0' : '-translate-y-full'
-        } ${mounted && isDark ? 'dark' : ''}`}
+          mounted && isDark ? "bg-backgroundDark" : "bg-gray-300"
+        } sticky top-0 z-50 transform border-b-2 border-primary/20 px-2 py-6 shadow-lg transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] sm:px-6 ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        } ${mounted && isDark ? "dark" : ""}`}
       >
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className={`flex items-center gap-2.5 text-xl sm:text-2xl 2xl:text-4xl font-bold ${
-              isDark ? 'text-textDark' : 'text-text'
+            className={`flex items-center gap-2.5 text-xl font-bold sm:text-2xl 2xl:text-4xl ${
+              isDark ? "text-textDark" : "text-text"
             } no-underline transition-all duration-300 ${
-              isDark 
-                ? 'hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)] hover:scale-105' 
-                : 'hover:border-primary hover:scale-[1.03] hover:shadow-[0_0_0_2px_rgba(0,173,181,0.5)]'
-            } border-2 border-transparent rounded-lg px-4 py-2`}
+              isDark
+                ? "hover:scale-105 hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)]"
+                : "hover:scale-[1.03] hover:border-primary hover:shadow-[0_0_0_2px_rgba(0,173,181,0.5)]"
+            } rounded-lg border-2 border-transparent px-4 py-2`}
             onClick={handleLinkClick("/")}
           >
-            <ShoppingBagIcon className={`h-6 sm:h-8 2xl:h-12 w-6 sm:w-8 2xl:w-12 ${
-              isDark ? 'dark:text-primary' : ''
-            } transition-all duration-300`} />
+            <ShoppingBagIcon
+              className={`h-6 w-6 sm:h-8 sm:w-8 2xl:h-12 2xl:w-12 ${
+                isDark ? "dark:text-primary" : ""
+              } transition-all duration-300`}
+            />
             <span>AttireAlley</span>
           </Link>
 
@@ -152,10 +156,8 @@ function Navbar() {
                       <Link
                         href={item.path}
                         className={`nav-link text-lg 2xl:text-xl ${
-                          isDark ? 'text-textDark' : 'text-text'
-                        } font-medium px-4 py-2 ${
-                          item.active ? "active" : ""
-                        }`}
+                          isDark ? "text-textDark" : "text-text"
+                        } px-4 py-2 font-medium ${item.active ? "active" : ""}`}
                         onClick={() => handleLinkClick(item.path)}
                       >
                         {item.label}
@@ -167,10 +169,8 @@ function Navbar() {
                       <Link
                         href={item.path}
                         className={`nav-link text-lg 2xl:text-xl ${
-                          isDark ? 'text-textDark' : 'text-text'
-                        } font-medium px-4 py-2 ${
-                          item.active ? "active" : ""
-                        }`}
+                          isDark ? "text-textDark" : "text-text"
+                        } px-4 py-2 font-medium ${item.active ? "active" : ""}`}
                         onClick={() => handleLinkClick(item.path)}
                       >
                         {item.label}
@@ -192,7 +192,7 @@ function Navbar() {
                   <div className="indicator">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 2xl:h-8 w-6 2xl:w-8  transition-colors duration-300"
+                      className="h-6 w-6 transition-colors duration-300  2xl:h-8 2xl:w-8"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -204,7 +204,7 @@ function Navbar() {
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    <span className="badge indicator-item badge-sm 2xl:badge-md  border-1 border-backgroundDark">
+                    <span className="border-1 badge indicator-item badge-sm  border-backgroundDark 2xl:badge-md">
                       {cartDisplay}
                     </span>
                   </div>
@@ -212,13 +212,15 @@ function Navbar() {
                 <div className="relative z-[1000]">
                   <div
                     tabIndex={0}
-                    className="card dropdown-content card-compact w-52 bg-gray-300 dark:bg-gray-900 shadow-lg"
+                    className="card dropdown-content card-compact w-52 bg-gray-300 shadow-lg dark:bg-gray-900"
                   >
                     <div className="card-body">
                       <span className="text-lg font-bold ">
                         {cartDisplay} Items
                       </span>
-                      <span className="text-primary font-semibold text-md">Subtotal: ${cartAmount}</span>
+                      <span className="text-md font-semibold text-primary">
+                        Subtotal: ${cartAmount}
+                      </span>
                       <div className="card-actions">
                         <button
                           className="btn btn-primary btn-block bg-primary  hover:bg-primary/90"
@@ -249,14 +251,14 @@ function Navbar() {
               isAdminView ? (
                 <NeonButton
                   onClick={handleLinkClick("/")}
-                  className=" text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
+                  className=" px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
                 >
                   Client view
                 </NeonButton>
               ) : (
                 <NeonButton
                   onClick={handleLinkClick("/admin-view")}
-                  className=" text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
+                  className=" px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
                 >
                   Admin View
                 </NeonButton>
@@ -266,13 +268,13 @@ function Navbar() {
             {isAuthUser ? (
               <NeonButton
                 onClick={handleLogout}
-                className="text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
+                className="px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
               >
                 Logout
               </NeonButton>
             ) : (
               <NeonButton
-                className="text-textDark text-sm sm:text-base px-2 sm:px-4 py-1 sm:py-2"
+                className="text-textDark px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
                 onClick={handleLinkClick("/login")}
               >
                 Login
@@ -288,14 +290,14 @@ function Navbar() {
                 />
                 <span className="sr-only">Open main menu</span>
                 <svg
-                  className="swap-off fill-current  w-6 h-6 sm:w-8 sm:h-8"
+                  className="swap-off h-6  w-6 fill-current sm:h-8 sm:w-8"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
                 >
                   <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
                 </svg>
                 <svg
-                  className="swap-on fill-current  w-6 h-6 sm:w-8 sm:h-8"
+                  className="swap-on h-6  w-6 fill-current sm:h-8 sm:w-8"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
                 >
