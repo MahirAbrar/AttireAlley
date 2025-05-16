@@ -185,6 +185,7 @@ export default function CollectionsSlider({
       currentIndex = index;
     }
 
+    //TODO: FIX ONUP AND ONDOWN FOR SLIDES
     const observerInstance = Observer.create({
       type: "wheel,touch,pointer",
       preventDefault: true,

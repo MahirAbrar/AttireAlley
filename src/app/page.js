@@ -7,11 +7,19 @@ import Image from "next/image";
 import HoverText from "@/components/HoverText";
 import NeonButton from "@/components/NeonButton";
 import CollectionsSlider from "@/components/CollectionsSlider";
+import { gsap } from "gsap";
+import { Observer } from "gsap/Observer";
+
+// Register GSAP plugins
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(Observer);
+}
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [pulseCircles, setPulseCircles] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Create refs for each section
   const firstSectionRef = useRef(null);
@@ -73,7 +81,32 @@ export default function Home() {
       }, newCircle.duration * 1000);
     }, 3000);
 
-    return () => clearInterval(interval);
+    // Add GSAP Observer to track scroll direction
+    let lastY = window.scrollY;
+    const scrollObserver = Observer.create({
+      type: "wheel,touch,scroll,pointer",
+      wheelSpeed: -1,
+      onUp: () => {
+        const currentY = window.scrollY;
+        console.log(
+          `GSAP Scroll: Y=${currentY}, Direction=DOWN (${currentY - lastY}px)`,
+        );
+        lastY = currentY;
+      },
+      onDown: () => {
+        const currentY = window.scrollY;
+        console.log(
+          `GSAP Scroll: Y=${currentY}, Direction=UP (${lastY - currentY}px)`,
+        );
+        lastY = currentY;
+      },
+      tolerance: 10,
+    });
+
+    return () => {
+      clearInterval(interval);
+      if (scrollObserver) scrollObserver.kill();
+    };
   }, []);
 
   const fetchProducts = async () => {
