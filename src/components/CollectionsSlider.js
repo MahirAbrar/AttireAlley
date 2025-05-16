@@ -14,31 +14,34 @@ if (typeof window !== "undefined") {
 const collections = [
   {
     imgSrc1: "/landingpage/coverpagewoman.jpg",
-    imgSrc2: "https://images.unsplash.com/photo-1698815614885-97a1b2d29669?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    imgSrc2:
+      "https://images.unsplash.com/photo-1698815614885-97a1b2d29669?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     title: "Women",
     linkHref: "/products/women",
   },
   {
     imgSrc1: "/landingpage/coverpageman3.png",
-    imgSrc2: "https://images.unsplash.com/photo-1558603668-6570496b66f8?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NjMyMDUzOA&ixlib=rb-1.2.1&q=85&w=400",
+    imgSrc2:
+      "https://images.unsplash.com/photo-1558603668-6570496b66f8?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NjMyMDUzOA&ixlib=rb-1.2.1&q=85&w=400",
     title: "Mens",
     linkHref: "/products/men",
   },
   {
     imgSrc1: "/landingpage/coverpagekids3.png",
-    imgSrc2: "https://images.unsplash.com/photo-1589271243958-d61e12b61b97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NjMyMDU4NA&ixlib=rb-1.2.1&q=80&w=400",
+    imgSrc2:
+      "https://images.unsplash.com/photo-1589271243958-d61e12b61b97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY0NjMyMDU4NA&ixlib=rb-1.2.1&q=80&w=400",
     title: "Kids",
     linkHref: "/products/kids",
-  }
+  },
 ];
 
-export default function CollectionsSlider( ) {
+export default function CollectionsSlider() {
   const sliderRef = useRef(null);
   const countRef = useRef(null);
-        
+
   useEffect(() => {
     if (!sliderRef.current) return;
-    
+
     const sections = gsap.utils.toArray(".slide");
     const images = gsap.utils.toArray(".image").reverse();
     const slideImages = gsap.utils.toArray(".slide__img");
@@ -49,79 +52,84 @@ export default function CollectionsSlider( ) {
     let animating;
     let currentIndex = 0;
     let observerActive = false;
-    
+
     gsap.set(outerWrappers, { xPercent: 100 });
     gsap.set(innerWrappers, { xPercent: -100 });
     gsap.set(".slide:nth-of-type(1) .slide__outer", { xPercent: 0 });
     gsap.set(".slide:nth-of-type(1) .slide__inner", { xPercent: 0 });
-    
+
     function gotoSection(index, direction) {
       animating = true;
       index = wrap(index);
-      
+
       let tl = gsap.timeline({
         defaults: { duration: 1, ease: "expo.inOut" },
         onComplete: () => {
           animating = false;
-        }
+        },
       });
-      
+
       let currentSection = sections[currentIndex];
       let heading = currentSection.querySelector(".slide__heading");
       let nextSection = sections[index];
       let nextHeading = nextSection.querySelector(".slide__heading");
-      
+
       gsap.set([sections, images], { zIndex: 0, autoAlpha: 0 });
-      gsap.set([sections[currentIndex], images[index]], { zIndex: 1, autoAlpha: 1 });
-      gsap.set([sections[index], images[currentIndex]], { zIndex: 2, autoAlpha: 1 });
-      
-      tl
-        .set(count, { text: index + 1 }, 0.32)
+      gsap.set([sections[currentIndex], images[index]], {
+        zIndex: 1,
+        autoAlpha: 1,
+      });
+      gsap.set([sections[index], images[currentIndex]], {
+        zIndex: 2,
+        autoAlpha: 1,
+      });
+
+      tl.set(count, { text: index + 1 }, 0.32)
         .fromTo(
           outerWrappers[index],
           {
-            xPercent: 100 * direction
+            xPercent: 100 * direction,
           },
           { xPercent: 0 },
-          0
+          0,
         )
         .fromTo(
           innerWrappers[index],
           {
-            xPercent: -100 * direction
+            xPercent: -100 * direction,
           },
           { xPercent: 0 },
-          0
+          0,
         )
         .to(
           heading,
           {
             "--width": 800,
-            xPercent: 30 * direction
+            xPercent: 30 * direction,
           },
-          0
+          0,
         )
         .fromTo(
           nextHeading,
           {
             "--width": 800,
-            xPercent: -30 * direction
+            xPercent: -30 * direction,
           },
           {
             "--width": 200,
-            xPercent: 0
+            xPercent: 0,
           },
-          0
+          0,
         )
         .fromTo(
           images[index],
           {
             xPercent: 125 * direction,
             scaleX: 1.5,
-            scaleY: 1.3
+            scaleY: 1.3,
           },
           { xPercent: 0, scaleX: 1, scaleY: 1, duration: 1 },
-          0
+          0,
         )
         .fromTo(
           images[currentIndex],
@@ -129,23 +137,23 @@ export default function CollectionsSlider( ) {
           {
             xPercent: -125 * direction,
             scaleX: 1.5,
-            scaleY: 1.3
+            scaleY: 1.3,
           },
-          0
+          0,
         )
         .fromTo(
           slideImages[index],
           {
-            scale: 2
+            scale: 2,
           },
           { scale: 1 },
-          0
+          0,
         )
         .timeScale(0.8);
-      
+
       currentIndex = index;
     }
-    
+
     // Create observer with target explicitly set to the slider element
     const observerInstance = Observer.create({
       type: "wheel,touch,pointer",
@@ -160,27 +168,29 @@ export default function CollectionsSlider( ) {
         gotoSection(currentIndex - 1, -1);
       },
       tolerance: 10,
-      target: sliderRef.current
+      target: sliderRef.current,
     });
-    
+
     // Initially disable the observer
     observerInstance.disable();
-    
+
     // Helper function to check if element is mostly in viewport
     function isElementMostlyInViewport(el) {
       if (!el) return false;
       const rect = el.getBoundingClientRect();
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+      const windowHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+      const visibleHeight =
+        Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
       const elementHeight = rect.bottom - rect.top;
-      
+
       return visibleHeight > elementHeight * 0.7; // 70% visibility threshold
     }
-    
+
     // Function to check and update observer state
     function updateObserverState() {
       const shouldBeActive = isElementMostlyInViewport(sliderRef.current);
-      
+
       if (shouldBeActive && !observerActive) {
         observerInstance.enable();
         observerActive = true;
@@ -189,11 +199,11 @@ export default function CollectionsSlider( ) {
         observerActive = false;
       }
     }
-    
+
     // Key handler that only works when the slider is active
     function handleKeyDown(e) {
       if (!observerActive) return;
-      
+
       if ((e.code === "ArrowUp" || e.code === "ArrowLeft") && !animating) {
         gotoSection(currentIndex - 1, -1);
       }
@@ -207,18 +217,18 @@ export default function CollectionsSlider( ) {
         gotoSection(currentIndex + 1, 1);
       }
     }
-    
+
     // Add scroll listener to update observer state
-    window.addEventListener('scroll', updateObserverState);
-    
+    window.addEventListener("scroll", updateObserverState);
+
     // Initial check
     updateObserverState();
-    
+
     document.addEventListener("keydown", handleKeyDown);
-    
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener('scroll', updateObserverState);
+      window.removeEventListener("scroll", updateObserverState);
       if (observerInstance) {
         observerInstance.disable();
       }
@@ -226,16 +236,12 @@ export default function CollectionsSlider( ) {
   }, []);
 
   return (
-    <div className="collections-slider" ref={sliderRef}>
+    <div
+      className="collections-slider relative h-[100vh] w-[100vw] overflow-hidden"
+      ref={sliderRef}
+    >
       <style jsx>{`
         @import url("https://fonts.googleapis.com/css2?family=Sora&display=swap");
-
-        .collections-slider {
-          overflow: hidden;
-          height: 100vh;
-          position: relative;
-          width: 100%;
-        }
 
         .slide {
           height: 100%;
@@ -426,9 +432,9 @@ export default function CollectionsSlider( ) {
                 <div className="slide__container">
                   <h2 className="slide__heading">{collection.title}</h2>
                   <figure className="slide__img-cont">
-                    <Image 
-                      className="slide__img" 
-                      src={collection.imgSrc1} 
+                    <Image
+                      className="slide__img"
+                      src={collection.imgSrc1}
                       alt={`${collection.title} Collection`}
                       width={400}
                       height={400}
@@ -446,10 +452,10 @@ export default function CollectionsSlider( ) {
         <div className="overlay__content">
           <figure className="overlay__img-cont">
             {collections.map((collection, index) => (
-              <Image 
+              <Image
                 key={index}
-                className="image" 
-                src={collection.imgSrc2} 
+                className="image"
+                src={collection.imgSrc2}
                 alt={`${collection.title} Collection`}
                 width={800}
                 height={600}
@@ -463,8 +469,6 @@ export default function CollectionsSlider( ) {
       <footer className="collections-footer">
         <p>Attire Alley Collection</p>
       </footer>
-
-      
     </div>
   );
-} 
+}
