@@ -101,9 +101,9 @@ const ContactPage = () => {
               mounted && isDark ? "text-white/80" : "text-black/80"
             }`}
           >
-            I'd love to hear from you! Whether you have a project in mind, want
-            to collaborate, or just want to say hello, feel free to reach out
-            through any of these channels.
+            I&apos;d love to hear from you! Whether you have a project in mind,
+            want to collaborate, or just want to say hello, feel free to reach
+            out through any of these channels.
           </p>
         </div>
 
@@ -171,8 +171,8 @@ const ContactPage = () => {
                 mounted && isDark ? "text-white/80" : "text-black/80"
               }`}
             >
-              I'm always open to discussing new opportunities, creative
-              projects, and innovative ideas. Don't hesitate to reach out!
+              I&apos;m always open to discussing new opportunities, creative
+              projects, and innovative ideas. Don&apos;t hesitate to reach out!
             </p>
           </div>
         </div>

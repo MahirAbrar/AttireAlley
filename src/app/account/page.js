@@ -36,7 +36,7 @@ const Account = () => {
     if (userExist) {
       fetchAddresses(user._id);
       setFormData({ ...formData, userID: user._id });
-      console.log(user)
+      console.log(user);
     }
   }, [user]);
 
@@ -95,7 +95,7 @@ const Account = () => {
   };
 
   return (
-    <div className="container mx-4 border-2 rounded-lg my-4 text-lg border-primary border-opacity-50 bg-opacity-50 px-8 py-8 shadow-lg shadow-primary/30 dark:border-primaryDark dark:border-opacity-50 dark:shadow-primaryDark/30">
+    <div className="dark:border-primaryDark dark:shadow-primaryDark/30 container mx-4 my-4 rounded-lg border-2 border-primary border-opacity-50 bg-opacity-50 px-8 py-8 text-lg shadow-lg shadow-primary/30 dark:border-opacity-50">
       {user && <h3>{user.name}</h3>}
       {user && <h3>{user.email}</h3>}
       {user && user.role === "admin" && <h3>Admin</h3>}
@@ -110,7 +110,7 @@ const Account = () => {
       {addresses.map((address) => (
         <div
           key={address._id}
-          className="my-2 border-2  border-accent border-opacity-5 shadow-sm dark:border-accentDark  dark:border-opacity-5"
+          className="dark:border-accentDark my-2  border-2 border-accent border-opacity-5 shadow-sm  dark:border-opacity-5"
         >
           <h3>Full name: {address.fullName}</h3>
           <h3>Address: {address.address}</h3>
@@ -143,7 +143,7 @@ const Account = () => {
             <label
               htmlFor="fullName"
               className="mb-2 block text-sm font-medium  "
-              >
+            >
               Full Name
             </label>
             <input
@@ -152,7 +152,7 @@ const Account = () => {
               id="fullName"
               value={formData.name}
               onChange={handleChange}
-              className="dark:placeholder-gray-text block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder:text-text dark:focus:border-primary dark:focus:ring-primary"
+              className="dark:placeholder-gray-text dark:bg-accentDark dark:placeholder:text-text block w-full rounded-lg border border-gray-300  bg-white p-2.5 focus:border-primary focus:ring-primary dark:border-gray-600  dark:focus:border-primary dark:focus:ring-primary sm:text-sm"
               required
             />
           </div>
@@ -169,15 +169,12 @@ const Account = () => {
               id="address"
               value={formData.address}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="dark:bg-accentDark dark:placeholder-text block w-full rounded-lg border border-gray-300  bg-white p-2.5 focus:border-primary focus:ring-primary dark:border-gray-600  dark:focus:border-primary dark:focus:ring-primary sm:text-sm"
               required
             />
           </div>
           <div>
-            <label
-              htmlFor="city"
-              className="mb-2 block text-sm font-medium  "
-            >
+            <label htmlFor="city" className="mb-2 block text-sm font-medium  ">
               City
             </label>
             <input
@@ -186,7 +183,7 @@ const Account = () => {
               id="city"
               value={formData.city}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="dark:bg-accentDark dark:placeholder-text block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-gray-900 focus:border-primary focus:ring-primary dark:border-gray-600  dark:focus:border-primary dark:focus:ring-primary sm:text-sm"
               required
             />
           </div>
@@ -203,7 +200,7 @@ const Account = () => {
               id="country"
               value={formData.country}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="dark:bg-accentDark dark:placeholder-text block w-full rounded-lg border border-gray-300  bg-white p-2.5 focus:border-primary focus:ring-primary dark:border-gray-600  dark:focus:border-primary dark:focus:ring-primary sm:text-sm"
               required
             />
           </div>
@@ -220,7 +217,7 @@ const Account = () => {
               id="postalCode"
               value={formData.postalCode}
               onChange={handleChange}
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark  dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="dark:bg-accentDark dark:placeholder-text block w-full rounded-lg border border-gray-300  bg-white p-2.5 focus:border-primary focus:ring-primary dark:border-gray-600  dark:focus:border-primary dark:focus:ring-primary sm:text-sm"
               required
             />
           </div>
@@ -238,12 +235,12 @@ const Account = () => {
               value={formData.additionalDetails}
               onChange={handleChange}
               placeholder="Additional details - first floor, 2 on the lift, etc"
-              className="block w-full rounded-lg border border-gray-300 bg-white p-2.5  focus:border-primary focus:ring-primary sm:text-sm dark:border-gray-600 dark:bg-accentDark dark:text-textDark dark:placeholder-text dark:focus:border-primary dark:focus:ring-primary"
+              className="dark:bg-accentDark dark:text-textDark dark:placeholder-text block w-full rounded-lg border  border-gray-300 bg-white p-2.5 focus:border-primary focus:ring-primary dark:border-gray-600 dark:focus:border-primary dark:focus:ring-primary sm:text-sm"
             />
           </div>
           <button
             type="submit"
-            className="dark:btn-primaryDark btn btn-primary text-lg mt-4"
+            className="dark:btn-primaryDark btn btn-primary mt-4 text-lg"
           >
             Add Address {addLoading ? <Loader /> : ""}
           </button>

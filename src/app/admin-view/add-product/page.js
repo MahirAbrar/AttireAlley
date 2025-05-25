@@ -203,7 +203,7 @@ const AddProduct = () => {
   }
 
   return (
-    <div className="my-8 card w-full max-w-sm shrink-0  p-4 shadow-2xl bg-base-100">
+    <div className="card my-8 w-full max-w-sm shrink-0  bg-base-100 p-4 shadow-2xl">
       <div className=" p-2 text-black">
         {uploadedCount} Image{uploadedCount !== 1 ? "s" : ""} Uploaded
       </div>
@@ -301,10 +301,18 @@ const AddProduct = () => {
           }
           className="select select-bordered text-black"
         >
-          <option value="Kids" className="text-black">Everyone</option>
-          <option value="Men" className="text-black">Men</option>
-          <option value="Women" className="text-black">Women</option>
-          <option value="Kids" className="text-black">Kids</option>
+          <option value="Kids" className="text-black">
+            Everyone
+          </option>
+          <option value="Men" className="text-black">
+            Men
+          </option>
+          <option value="Women" className="text-black">
+            Women
+          </option>
+          <option value="Kids" className="text-black">
+            Kids
+          </option>
         </select>
       </label>
       <label className="form-control w-full ">
@@ -328,8 +336,12 @@ const AddProduct = () => {
           onChange={(e) => setFormData({ ...formData, onSale: e.target.value })}
           className="select select-bordered text-black"
         >
-          <option value="No" className="text-black">No</option>
-          <option value="Yes" className="text-black">Yes</option>
+          <option value="No" className="text-black">
+            No
+          </option>
+          <option value="Yes" className="text-black">
+            Yes
+          </option>
         </select>
       </label>
 
