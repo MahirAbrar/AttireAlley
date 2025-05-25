@@ -8,11 +8,12 @@ import HoverText from "@/components/HoverText";
 import NeonButton from "@/components/NeonButton";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedSection from "@/components/AnimatedSection";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(Observer);
+  gsap.registerPlugin(Observer, ScrollTrigger);
 }
 
 export default function Home() {
@@ -22,7 +23,7 @@ export default function Home() {
 
   // Create refs for each section
   const firstSectionRef = useRef(null);
-  const secondSectionRef = useRef(null);
+  const imageRefs = useRef([]);
 
   const images = [
     {
@@ -107,6 +108,19 @@ export default function Home() {
     };
   }, []);
 
+  // Separate useEffect for GSAP animations after refs are set
+  useEffect(() => {
+    // GSAP Timeline for desktop images animation
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1024px)", () => {
+      // Wait for refs to be populated
+      if (imageRefs.current.length > 0) {
+        // No animations
+      }
+    });
+  }, [images]); // Run when images change
+
   const fetchProducts = async () => {
     setLoading(false);
   };
@@ -187,11 +201,8 @@ export default function Home() {
       <div className="h-1 w-full bg-gradient-to-r from-secondary to-accent dark:from-primary dark:via-secondary  dark:to-accent"></div>
 
       {/* 2nd section */}
-      <div
-        ref={secondSectionRef}
-        className="relative h-screen w-full overflow-hidden bg-gray-300/50 backdrop-blur-sm dark:bg-backgroundDark/50"
-      >
-        {/* Pulse Circles Background */}
+      <div className="relative h-screen w-full overflow-hidden bg-gray-300/50 backdrop-blur-sm dark:bg-backgroundDark/50">
+        {/* Pulse Circles Background decoration*/}
         {pulseCircles.map((circle) => (
           <div
             key={circle.id}
@@ -207,70 +218,59 @@ export default function Home() {
           />
         ))}
         <div className="relative z-20 flex h-full w-full flex-col justify-center px-4">
-          {/* Image Accordion/Slider */}
-          <div className="relative mb-12 flex h-[40vh] flex-col items-center justify-center gap-8 md:flex-row">
-            {/* Mobile Navigation Arrows - Only visible on small screens */}
-            <button
-              onClick={prevImage}
-              className="absolute left-4 z-30 rounded-full border border-white/20 bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20 lg:hidden"
-              aria-label="Previous image"
+          {/* Mobile Navigation Arrows - Only visible on small screens */}
+          <button
+            onClick={prevImage}
+            className="absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20 lg:hidden"
+            aria-label="Previous image"
+          >
+            <svg
+              className="h-8 w-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <svg
-                className="h-8 w-8"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={nextImage}
-              className="absolute right-4 z-30 rounded-full border border-white/20 bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20 lg:hidden"
-              aria-label="Next image"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-3 text-white backdrop-blur-md transition-all hover:bg-white/20 lg:hidden"
+            aria-label="Next image"
+          >
+            <svg
+              className="h-8 w-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <svg
-                className="h-8 w-8"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
 
-            {/* Mobile Slider - Only visible on small screens */}
-            <div className="flex w-full justify-center lg:hidden">
-              <div className="group relative h-[60vw] max-h-[500px] w-[90vw] max-w-[500px] transition-all duration-500">
-                <div className="glass-container absolute inset-0 overflow-hidden rounded-full shadow-2xl shadow-black/50 dark:shadow-white/20">
-                  <Image
-                    src={images[currentImageIndex].src}
-                    alt={images[currentImageIndex].alt}
-                    width={500}
-                    height={500}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="absolute bottom-[-1.5rem] left-0 h-1 w-full origin-left scale-x-0 transform bg-primary shadow-[0_0_10px_rgba(0,0,0,0.3)] transition-transform duration-500 group-hover:scale-x-100 dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
-              </div>
-            </div>
-
-            {/* Desktop View - Only visible on large screens and up */}
-            <div className="hidden w-[95vw] flex-row justify-center gap-8 lg:flex">
+          {/* Unified Image Layout */}
+          <div className="image-container relative mb-12 flex h-[40vh] items-center justify-center">
+            <div className="flex w-full justify-center gap-8 lg:w-[95vw]">
               {images.map((image, index) => (
                 <div
                   key={index}
-                  className="group relative h-[25vw] max-h-[600px] min-h-[300px] w-[25vw] min-w-[300px] max-w-[600px] transition-all duration-500 hover:h-[32vw] hover:w-[32vw]"
+                  ref={(el) => (imageRefs.current[index] = el)}
+                  className={`group relative transition-all duration-500 ${
+                    // Mobile: Show only current image, hide others
+                    index === currentImageIndex
+                      ? "h-[60vw] max-h-[500px] w-[90vw] max-w-[500px] lg:h-[25vw] lg:max-h-[600px] lg:min-h-[300px] lg:w-[25vw] lg:min-w-[300px] lg:max-w-[600px]"
+                      : "hidden lg:block lg:h-[25vw] lg:max-h-[600px] lg:min-h-[300px] lg:w-[25vw] lg:min-w-[300px] lg:max-w-[600px]"
+                  } lg:hover:h-[30vw] lg:hover:w-[30vw]`}
                 >
                   <div className="glass-container absolute inset-0 overflow-hidden rounded-full shadow-2xl shadow-black/50 dark:shadow-white/20">
                     <Image
@@ -279,6 +279,7 @@ export default function Home() {
                       width={600}
                       height={600}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      priority={index === 0}
                     />
                   </div>
                   <div className="absolute bottom-[-1.5rem] left-0 h-1 w-full origin-left scale-x-0 transform bg-primary shadow-[0_0_10px_rgba(0,0,0,0.3)] transition-transform duration-500 group-hover:scale-x-100 dark:shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
