@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -11,220 +11,171 @@ if (typeof window !== "undefined") {
 }
 
 const AnimatedSection = () => {
-  const image1Ref = useRef(null);
-  const image2Ref = useRef(null);
-  const image3Ref = useRef(null);
-  const decorative1Ref = useRef(null);
-  const decorative3Ref = useRef(null);
-  const decorative4Ref = useRef(null);
+  const containerRef = useRef(null);
+  const imageRefs = useRef([]);
+  const [masonryLayout, setMasonryLayout] = useState([]);
+
+  const images = [
+    {
+      src: "/landingpage/coverpageman3.png",
+      alt: "Fashion model 1",
+      height: 400,
+    },
+    {
+      src: "/landingpage/coverpagewoman.jpg",
+      alt: "Fashion model 2",
+      height: 300,
+    },
+    {
+      src: "/landingpage/coverpagekids3.png",
+      alt: "Fashion model 3",
+      height: 450,
+    },
+    {
+      src: "/landingpage/threewoman.png",
+      alt: "Fashion model 4",
+      height: 350,
+    },
+    {
+      src: "/landingpage/ap lifestyle v2.png",
+      alt: "Fashion model 5",
+      height: 380,
+    },
+    {
+      src: "/landingpage/threekids.png",
+      alt: "Fashion model 6",
+      height: 320,
+    },
+  ];
+
+  const calculateMasonryLayout = () => {
+    if (!containerRef.current) return;
+
+    const containerWidth = containerRef.current.offsetWidth;
+    const columns = window.innerWidth >= 1024 ? 3 : 2;
+    const gap = 8; // 8px gap between images
+    const columnWidth = (containerWidth - gap * (columns - 1)) / columns;
+    const columnHeights = new Array(columns).fill(0);
+    const layout = [];
+
+    images.forEach((image, index) => {
+      const shortestColumn = columnHeights.indexOf(Math.min(...columnHeights));
+      const x = shortestColumn * (columnWidth + gap);
+      const y = columnHeights[shortestColumn];
+
+      layout.push({
+        x,
+        y,
+        width: columnWidth,
+        height: image.height,
+        index,
+      });
+
+      columnHeights[shortestColumn] += image.height + gap;
+    });
+
+    setMasonryLayout(layout);
+  };
 
   useEffect(() => {
-    const image1 = image1Ref.current;
-    const image2 = image2Ref.current;
-    const image3 = image3Ref.current;
-    const decorative1 = decorative1Ref.current;
-    const decorative3 = decorative3Ref.current;
-    const decorative4 = decorative4Ref.current;
+    calculateMasonryLayout();
 
-    // Infinite bouncing animations for decorative elements
-    gsap.to(decorative1, {
-      y: -20,
-      duration: 2,
-      ease: "power2.inOut",
-      yoyo: true,
-      repeat: -1,
+    const handleResize = () => {
+      calculateMasonryLayout();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (masonryLayout.length === 0) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Position images based on masonry layout
+    masonryLayout.forEach((item, index) => {
+      const img = imageRefs.current[index];
+      if (img) {
+        gsap.set(img, {
+          position: "absolute",
+          left: item.x,
+          top: item.y,
+          width: item.width,
+          height: item.height,
+        });
+      }
     });
 
-    gsap.to(decorative3, {
-      y: -15,
-      duration: 1.8,
-      ease: "power2.inOut",
-      yoyo: true,
-      repeat: -1,
-      delay: 1,
-    });
+    // Set container height
+    const maxHeight = Math.max(
+      ...masonryLayout.map((item) => item.y + item.height),
+    );
+    gsap.set(container, { height: maxHeight });
 
-    gsap.to(decorative4, {
-      y: -25,
-      duration: 3,
-      ease: "power2.inOut",
-      yoyo: true,
-      repeat: -1,
-      delay: 1.5,
-    });
-
-    // Create matchMedia instances
-    const mm = gsap.matchMedia();
-
-    // Desktop animations (sm and above)
-    // mm.add("(min-width: 640px)", () => {
-    //   // First image animation
-    //   const tl1 = gsap.timeline({
-    //     scrollTrigger: {
-    //       trigger: image1,
-    //       start: "top 90%",
-    //       end: "+=300",
-    //       markers: true,
-    //       scrub: 1,
-    //     },
-    //   });
-
-    //   tl1.to(image1, {
-    //     x: "-100%",
-    //     ease: "none",
-    //   });
-
-    //   // Second image animation
-    //   const tl2 = gsap.timeline({
-    //     scrollTrigger: {
-    //       trigger: image2,
-    //       start: "top 70%",
-    //       end: "+=300",
-    //       markers: true,
-    //       scrub: 1,
-    //     },
-    //   });
-
-    //   tl2.to(image2, {
-    //     x: "-100%",
-    //     ease: "none",
-    //   });
-
-    //   // Third image animation
-    //   const tl3 = gsap.timeline({
-    //     scrollTrigger: {
-    //       trigger: image3,
-    //       start: "top 50%",
-    //       end: "+=300",
-    //       markers: true,
-    //       scrub: 1,
-    //     },
-    //   });
-
-    //   tl3.to(image3, {
-    //     x: "-100%",
-    //     ease: "none",
-    //   });
-    // });
-
-    // Mobile animations (below sm)
-    mm.add("(max-width: 639px)", () => {
-      // First image animation
-      const tl1 = gsap.timeline({
-        scrollTrigger: {
-          trigger: image1,
-          start: "top 90%",
-          end: "+=300",
-          markers: true,
-          scrub: 1,
+    // Create animations for each image
+    const imageElements = container.querySelectorAll(".image-item");
+    imageElements.forEach((img, index) => {
+      gsap.fromTo(
+        img,
+        {
+          opacity: 0,
+          scale: 0.8,
+          filter: "blur(10px)",
+          y: 30,
+          x: -20,
         },
-      });
-
-      tl1.from(image1, {
-        x: 100,
-        opacity: 0,
-        duration: 1,
-      });
-
-      // Second image animation
-      const tl2 = gsap.timeline({
-        scrollTrigger: {
-          trigger: image2,
-          start: "top 90%",
-          end: "+=300",
-          markers: true,
-          scrub: 1,
+        {
+          opacity: 1,
+          scale: 1,
+          filter: "blur(0px)",
+          y: 0,
+          x: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          delay: index * 0.15,
+          scrollTrigger: {
+            trigger: img,
+            start: "top 90%",
+            toggleActions: "play none none none",
+          },
         },
-      });
-
-      tl2.from(image2, {
-        x: -100,
-        opacity: 0,
-        duration: 1,
-      });
-
-      // Third image animation
-      const tl3 = gsap.timeline({
-        scrollTrigger: {
-          trigger: image3,
-          start: "top 90%",
-          end: "+=300",
-          markers: true,
-          scrub: 1,
-        },
-      });
-
-      tl3.from(image3, {
-        x: 100,
-        opacity: 0,
-        duration: 1,
-      });
+      );
     });
 
     return () => {
-      mm.revert(); // Clean up matchMedia
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, []);
+  }, [masonryLayout]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-b from-background to-secondary/30 py-10 dark:from-black dark:to-secondary/30">
-      {/* Decorative Background Elements */}
-      <div
-        ref={decorative1Ref}
-        className="absolute left-[10%] top-[15%] h-16 w-16 rounded-full bg-primary blur-sm"
-      />
-      {/* right background */}
-      <div className="absolute right-[-10%] top-[-5%] h-[120vh] w-[50vw] rotate-12 rounded-lg bg-primary/30 blur-sm dark:bg-primary/10" />
-      <div
-        ref={decorative3Ref}
-        className="absolute bottom-[20%] left-[20%] h-20 w-20 rounded-full bg-primary blur-sm"
-      />
-      <div
-        ref={decorative4Ref}
-        className="absolute bottom-[25%] left-[9%] h-12 w-12 rounded-lg bg-accent blur-sm"
-      />
-
-      {/* Unified Layout - Responsive Images */}
-      <div className="relative min-h-screen w-full sm:h-screen">
-        {/* First image - main focal point, centered */}
-        <div
-          ref={image1Ref}
-          className="relative mx-4 mb-8 h-[60vh] w-auto overflow-hidden rounded-lg sm:absolute sm:left-[50%] sm:top-[50%] sm:mx-0 sm:mb-0 sm:h-[90vh] sm:w-[55vw] sm:-translate-x-1/2 sm:-translate-y-1/2"
-        >
-          <Image
-            src="/landingpage/coverpageman3.png"
-            alt="Fashion model 1"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        {/* Second image - smaller, top left */}
-        <div
-          ref={image2Ref}
-          className="relative mx-4 mb-8 h-[50vh] w-auto overflow-hidden rounded-lg sm:absolute sm:left-[2%] sm:top-[5%] sm:z-10 sm:mx-0 sm:mb-0 sm:h-[55vh] sm:w-[40vw]"
-        >
-          <Image
-            src="/landingpage/threewoman.png"
-            alt="Fashion model 2"
-            fill
-            className="object-contain"
-          />
-        </div>
-
-        {/* Third image - medium size, bottom right */}
-        <div
-          ref={image3Ref}
-          className="relative mx-4 mb-8 h-[45vh] w-auto overflow-hidden rounded-lg sm:absolute sm:bottom-[5%] sm:right-[2%] sm:z-20 sm:mx-0 sm:mb-0 sm:h-[60vh] sm:w-[45vw]"
-        >
-          <Image
-            src="/landingpage/threekids.png"
-            alt="Fashion model 3"
-            fill
-            className="object-contain"
-          />
-        </div>
+    <section className="relative w-full overflow-hidden bg-gradient-to-b from-background to-secondary/30 py-10 dark:from-black dark:to-secondary/10">
+      <div ref={containerRef} className="relative w-full px-4">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            ref={(el) => (imageRefs.current[index] = el)}
+            className="image-item overflow-hidden rounded-lg"
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 45vw, (max-width: 768px) 45vw, 35vw"
+              priority={index < 3}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+        <h2 className="mb-4 text-[7rem] font-bold text-zinc-800/90 dark:text-zinc-100/90">
+          Fashion is the armor to survive everyday life
+        </h2>
+        <p className="text-xl text-zinc-700/80 dark:text-zinc-200/80">
+          Express yourself through style that speaks your truth
+        </p>
       </div>
     </section>
   );

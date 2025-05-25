@@ -33,7 +33,11 @@ body {
 .pulse-circle {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(87, 167, 168, 0.8) 0%, rgba(87, 167, 168, 0) 70%);
+  background: radial-gradient(
+    circle,
+    rgba(87, 167, 168, 0.8) 0%,
+    rgba(87, 167, 168, 0) 80%
+  );
   transform: scale(0);
   animation: pulse 8s ease-out infinite;
   mix-blend-mode: multiply;
@@ -46,7 +50,7 @@ body {
     opacity: 0.8;
   }
   100% {
-    transform: scale(3);
+    transform: scale(2);
     opacity: 0;
   }
 }
@@ -102,4 +106,3 @@ body {
   transform: translateY(-50%);
   left: 0;
 }
-
