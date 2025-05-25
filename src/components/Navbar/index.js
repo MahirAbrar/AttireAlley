@@ -123,7 +123,7 @@ function Navbar() {
     <>
       <nav
         className={`${
-          mounted && isDark ? "bg-backgroundDark" : "bg-gray-300"
+          mounted && isDark ? "bg-backgroundDark" : "bg-gray-100"
         } sticky top-0 z-50 transform border-b-2 border-primary/20 px-2 py-6 shadow-lg transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] sm:px-6 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${mounted && isDark ? "dark" : ""}`}

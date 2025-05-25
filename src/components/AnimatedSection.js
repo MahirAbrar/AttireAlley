@@ -105,6 +105,46 @@ const AnimatedSection = () => {
           width: item.width,
           height: item.height,
         });
+
+        // Add hover animations
+        img.addEventListener("mouseenter", () => {
+          const imageElement = img.querySelector("img");
+          gsap.to(img, {
+            scale: 1.15,
+            duration: 0.4,
+            ease: "power2.out",
+            zIndex: 20,
+          });
+
+          if (imageElement) {
+            // Create a larger container effect by scaling the image itself
+            gsap.to(imageElement, {
+              scale: 1.2,
+              objectFit: "contain",
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          }
+        });
+
+        img.addEventListener("mouseleave", () => {
+          const imageElement = img.querySelector("img");
+          gsap.to(img, {
+            scale: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            zIndex: 0,
+          });
+
+          if (imageElement) {
+            gsap.to(imageElement, {
+              scale: 1,
+              objectFit: "cover",
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          }
+        });
       }
     });
 
@@ -150,26 +190,31 @@ const AnimatedSection = () => {
   }, [masonryLayout]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-b from-background to-secondary/30 py-10 dark:from-black dark:to-secondary/10">
-      <div ref={containerRef} className="relative w-full px-4">
+    <section className="relative min-h-screen w-full overflow-hidden bg-gradient-to-b from-background to-secondary/30 py-10 dark:from-black dark:to-secondary/10">
+      <div
+        ref={containerRef}
+        className="relative min-h-[80vh] w-full overflow-visible px-4"
+      >
         {images.map((image, index) => (
           <div
             key={index}
             ref={(el) => (imageRefs.current[index] = el)}
-            className="image-item overflow-hidden rounded-lg"
+            className="image-item overflow-visible rounded-lg bg-white/5 backdrop-blur-sm"
           >
-            <Image
-              src={image.src}
-              alt={image.alt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 45vw, (max-width: 768px) 45vw, 35vw"
-              priority={index < 3}
-            />
+            <div className="relative h-full w-full overflow-visible">
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                className="duration-400 object-cover transition-all ease-out"
+                sizes="(max-width: 640px) 45vw, (max-width: 768px) 45vw, 35vw"
+                priority={index < 3}
+              />
+            </div>
           </div>
         ))}
       </div>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 select-none text-center">
         <h2 className="mb-4 text-[7rem] font-bold text-zinc-800/90 dark:text-zinc-100/90">
           Fashion is the armor to survive everyday life
         </h2>

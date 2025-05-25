@@ -32,11 +32,12 @@ const Footer = () => {
           >
             About us
           </Link>
-          <a
+          <Link
+            href="/contact"
             className={`link-hover link ${mounted && isDark ? "hover:text-primary" : "hover:text-primary"}`}
           >
             Contact
-          </a>
+          </Link>
         </nav>
         <nav>
           <h6
@@ -89,6 +90,13 @@ const Footer = () => {
             </a>
           </div>
         </nav>
+      </div>
+      <div className="mt-8 text-center">
+        <p
+          className={`text-sm ${mounted && isDark ? "text-textDark/60" : "text-text/60"}`}
+        >
+          © {new Date().getFullYear()} mahirabrar.net. All rights reserved.
+        </p>
       </div>
     </footer>
   );
