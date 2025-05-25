@@ -164,7 +164,7 @@ const ContactPage = () => {
                 mounted && isDark ? "text-white" : "text-black"
               }`}
             >
-              Let's Build Something Amazing Together
+              Let&apos;s Build Something Amazing Together
             </h3>
             <p
               className={`text-lg ${
