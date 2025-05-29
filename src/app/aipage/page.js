@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { GlobalContext } from "@/context";
+import { getAiClothSuggestions } from "@/services/ai";
 
 const AIPage = () => {
   const { isDark } = useContext(GlobalContext);
@@ -19,6 +20,8 @@ const AIPage = () => {
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const fileInputRef = useRef(null);
   const canvasRef = useRef(null);
+  const [aiSuggestions, setAiSuggestions] = useState("");
+  const [isLoadingAiSuggestions, setIsLoadingAiSuggestions] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -156,8 +159,33 @@ const AIPage = () => {
       hairColor: "",
       skinColor: "",
     });
+    setAiSuggestions("");
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
+    }
+  };
+
+  const handleAiMatch = async () => {
+    if (
+      !userColors.eyeColor ||
+      !userColors.hairColor ||
+      !userColors.skinColor
+    ) {
+      alert("Please select eye, hair, and skin colors first.");
+      return;
+    }
+    setIsLoadingAiSuggestions(true);
+    setAiSuggestions(""); // Clear previous suggestions
+
+    try {
+      // Use the service function
+      const data = await getAiClothSuggestions(userColors);
+      setAiSuggestions(data.suggestions);
+    } catch (error) {
+      console.error("Error fetching AI suggestions:", error);
+      setAiSuggestions(`Error: ${error.message}`);
+    } finally {
+      setIsLoadingAiSuggestions(false);
     }
   };
 
@@ -454,18 +482,18 @@ const AIPage = () => {
               {/* Action Buttons */}
               <div className="mt-8 space-y-4">
                 <button
-                  onClick={() => {
-                    // TODO: Implement AI matching logic
-                    alert("AI matching feature coming soon!");
-                  }}
+                  onClick={handleAiMatch}
                   disabled={
                     !userColors.eyeColor ||
                     !userColors.hairColor ||
-                    !userColors.skinColor
+                    !userColors.skinColor ||
+                    isLoadingAiSuggestions
                   }
                   className="w-full rounded-lg bg-primary px-6 py-3 text-lg font-semibold text-white transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:bg-gray-400"
                 >
-                  Find My Perfect Colors
+                  {isLoadingAiSuggestions
+                    ? "Getting Suggestions..."
+                    : "Find My Perfect Colors"}
                 </button>
                 <button
                   onClick={resetForm}
@@ -481,6 +509,32 @@ const AIPage = () => {
             </div>
           </div>
         </div>
+
+        {/* AI Suggestions Display */}
+        {aiSuggestions && (
+          <div
+            className={`mt-12 w-full max-w-7xl rounded-xl border-2 p-8 ${
+              mounted && isDark
+                ? "border-primary/20 bg-gray-800"
+                : "border-primary/20 bg-white"
+            }`}
+          >
+            <h2
+              className={`mb-6 text-2xl font-semibold ${
+                mounted && isDark ? "text-white" : "text-black"
+              }`}
+            >
+              AI Color Suggestions
+            </h2>
+            <div
+              className={`whitespace-pre-line ${
+                mounted && isDark ? "text-white/90" : "text-black/90"
+              }`}
+            >
+              {aiSuggestions}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
