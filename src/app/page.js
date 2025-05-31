@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import LoaderBig from "@/components/LoaderBig";
 import Image from "next/image";
@@ -16,6 +16,68 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(Observer, ScrollTrigger);
 }
 
+// AnimatedText component for letter-by-letter animation
+const AnimatedText = ({
+  text,
+  className,
+  delay = 0,
+  stagger = 0.01,
+  wordStagger = 0.1,
+  as = "h1",
+  onComplete = null,
+}) => {
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    if (textRef.current) {
+      const letters = textRef.current.querySelectorAll(".letter");
+
+      // Set initial state
+      gsap.set(letters, { opacity: 0, y: 50, rotationX: -90 });
+
+      // Animate in
+      gsap.to(letters, {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: 0.8,
+        delay: delay,
+        stagger: stagger,
+        ease: "back.out(1.7)",
+        onComplete: letters.length <= 1 ? onComplete : undefined,
+        onCompleteAll: letters.length > 1 ? onComplete : undefined,
+      });
+    }
+  }, [delay, stagger, onComplete]);
+
+  const Component = as;
+
+  // Split text into words, then letters
+  const words = text.split(" ");
+
+  return (
+    <Component ref={textRef} className={className}>
+      {words.map((word, wordIndex) => (
+        <span key={wordIndex} className="mr-2 inline-block">
+          {word.split("").map((char, charIndex) => (
+            <span
+              key={`${wordIndex}-${charIndex}`}
+              className="letter"
+              style={{
+                display: "inline-block",
+                transformOrigin: "50% 50% -50px",
+                transformStyle: "preserve-3d",
+              }}
+            >
+              {char}
+            </span>
+          ))}
+        </span>
+      ))}
+    </Component>
+  );
+};
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [pulseCircles, setPulseCircles] = useState([]);
@@ -24,6 +86,26 @@ export default function Home() {
   // Create refs for each section
   const firstSectionRef = useRef(null);
   const imageRefs = useRef([]);
+
+  // Memoized callback for scroll down animation
+  const handleScrollDownAnimation = useCallback(() => {
+    // Animate scroll down section after paragraph completes
+    gsap.fromTo(
+      ".scroll-down",
+      {
+        opacity: 0,
+        y: 30,
+        scale: 0.8,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1,
+        ease: "elastic.out(1, 0.8)",
+      },
+    );
+  }, []);
 
   const images = [
     {
@@ -163,18 +245,28 @@ export default function Home() {
                 if (bg) bg.style.transform = "scale(1)";
               }}
             >
-              <h1 className="mb-6 text-5xl font-bold text-white drop-shadow-lg md:text-7xl">
-                &quot;Style is a way to say who you are without having to
-                speak&quot;
-              </h1>
-              <p className="text-xl text-white/90 drop-shadow-md md:text-2xl">
-                At Attire Alley, we believe in making fashion speak volumes
-                about your unique personality
-              </p>
+              <AnimatedText
+                text='"Style is a way to say who you are without having to speak"'
+                className="mb-6 text-5xl font-bold text-white drop-shadow-lg md:text-7xl"
+                delay={0.3}
+                stagger={0.01}
+                as="h1"
+              />
+              <AnimatedText
+                text="At Attire Alley, we believe in making fashion speak volumes about your unique personality"
+                className="text-xl text-white/90 drop-shadow-md md:text-2xl"
+                delay={0.7}
+                stagger={0.005}
+                as="p"
+                onComplete={handleScrollDownAnimation}
+              />
             </div>
           </div>
         </div>
-        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 transform flex-col items-center gap-2">
+        <div
+          className="scroll-down absolute bottom-8 left-1/2 flex -translate-x-1/2 transform flex-col items-center gap-2"
+          style={{ opacity: 0 }}
+        >
           <p className="text-lg text-white drop-shadow-md">
             Scroll down to explore
           </p>
