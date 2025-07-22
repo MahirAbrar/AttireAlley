@@ -3,6 +3,7 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { GlobalContext } from "@/context";
 import { getAiClothSuggestions } from "@/services/ai";
+import { toast } from "react-toastify";
 
 const AIPage = () => {
   const { isDark } = useContext(GlobalContext);
@@ -149,6 +150,7 @@ const AIPage = () => {
       ...prev,
       [colorType]: selectedColor,
     }));
+    toast.success(`${colorType.charAt(0).toUpperCase() + colorType.slice(1).replace('Color', ' color')} assigned successfully!`);
   };
 
   const resetForm = () => {
@@ -171,7 +173,7 @@ const AIPage = () => {
       !userColors.hairColor ||
       !userColors.skinColor
     ) {
-      alert("Please select eye, hair, and skin colors first.");
+      toast.error("Please select all three colors first!");
       return;
     }
     setIsLoadingAiSuggestions(true);
@@ -181,9 +183,11 @@ const AIPage = () => {
       // Use the service function
       const data = await getAiClothSuggestions(userColors);
       setAiSuggestions(data.suggestions);
+      toast.success("AI suggestions generated successfully!");
     } catch (error) {
       console.error("Error fetching AI suggestions:", error);
-      setAiSuggestions(`Error: ${error.message}`);
+      toast.error("Failed to generate suggestions. Please try again.");
+      setAiSuggestions("");
     } finally {
       setIsLoadingAiSuggestions(false);
     }
@@ -191,147 +195,124 @@ const AIPage = () => {
 
   return (
     <div
-      className={`min-h-screen transition-all duration-300 ${
+      className={`min-h-screen ${
         mounted && isDark
           ? "bg-backgroundDark text-white"
-          : "bg-background text-black"
+          : "bg-gray-50 text-black"
       }`}
+      style={{
+        backgroundImage: `radial-gradient(circle, rgba(87, 167, 168, 0.08) 2px, transparent 2px)`,
+        backgroundSize: '30px 30px',
+        backgroundPosition: '0 0',
+      }}
     >
-      <div className="container mx-auto flex flex-col items-center justify-center px-4 py-16">
-        {/* Header Section */}
-        <div className="mb-12 text-center">
-          <h1
-            className={`mb-6 text-5xl font-bold md:text-6xl ${
-              mounted && isDark ? "text-white" : "text-black"
-            }`}
-          >
-            AI Match Outfit
-          </h1>
-          <p
-            className={`mx-auto max-w-3xl text-xl md:text-2xl ${
-              mounted && isDark ? "text-white/80" : "text-black/80"
-            }`}
-          >
-            Upload your photo and let AI help you find the perfect outfit colors
-            that complement your features.
-          </p>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-transparent to-secondary/10 dark:from-primary/20 dark:via-backgroundDark dark:to-secondary/20 py-20">
+        <div className="absolute inset-0">
+          <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-primary/20 blur-3xl animate-pulse" />
+          <div className="absolute -right-20 bottom-20 h-72 w-72 rounded-full bg-secondary/20 blur-3xl animate-pulse animation-delay-2000" />
         </div>
+        
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <h1 className="mb-6 text-5xl font-bold text-gray-900 dark:text-white md:text-6xl lg:text-7xl">
+            AI Style
+            <span className="block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Color Matcher
+            </span>
+          </h1>
+          <p className="mx-auto max-w-3xl text-xl text-gray-600 dark:text-gray-300 md:text-2xl">
+            Upload your photo and let AI analyze your features to recommend the perfect outfit colors that complement your unique style
+          </p>
+          
+          {/* Scroll indicator */}
+          <div className="mt-12 animate-bounce">
+            <svg className="mx-auto h-8 w-8 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 py-16 max-w-7xl lg:px-8 xl:max-w-full xl:px-12">
 
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {/* Left Side - Image Upload and Color Picker */}
-            <div
-              className={`rounded-xl border-2 p-8 ${
-                mounted && isDark
-                  ? "border-primary/20 bg-gray-800"
-                  : "border-primary/20 bg-white"
-              }`}
-            >
-              <h2
-                className={`mb-6 text-2xl font-semibold ${
-                  mounted && isDark ? "text-white" : "text-black"
-                }`}
-              >
-                Upload Your Photo
-              </h2>
+            <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Upload Your Photo
+                </h2>
+                <div className="flex items-center gap-2">
+                  <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Ready</span>
+                </div>
+              </div>
 
               {/* Upload Area */}
               <div
-                className={`mb-6 rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
-                  mounted && isDark
-                    ? "border-primary/30 bg-gray-700/50 hover:border-primary/50"
-                    : "border-primary/30 bg-gray-50 hover:border-primary/50"
-                }`}
+                className={`mb-6 rounded-xl border-2 border-dashed p-8 text-center transition-all cursor-pointer
+                  ${uploadedImage 
+                    ? 'border-primary/50 bg-primary/5 dark:bg-primary/10' 
+                    : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 hover:border-primary/50 hover:bg-primary/5'
+                  }`}
+                onClick={() => !uploadedImage && fileInputRef.current?.click()}
               >
                 {!uploadedImage ? (
-                  <div>
-                    <svg
-                      className="mx-auto mb-4 h-12 w-12 text-primary"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      />
-                    </svg>
-                    <p
-                      className={`mb-2 text-lg ${
-                        mounted && isDark ? "text-white" : "text-black"
-                      }`}
-                    >
-                      Click to upload or drag and drop
+                  <div className="py-8">
+                    <div className="mb-4 flex justify-center">
+                      <div className="rounded-full bg-primary/10 p-4">
+                        <svg
+                          className="h-12 w-12 text-primary"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                      Drop your photo here
                     </p>
-                    <p
-                      className={`text-sm ${
-                        mounted && isDark ? "text-white/60" : "text-black/60"
-                      }`}
-                    >
-                      PNG, JPG or JPEG (MAX. 10MB)
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      or click to browse • PNG, JPG, JPEG (max 10MB)
                     </p>
                   </div>
                 ) : (
                   <div className="relative">
                     {/* Zoom Controls */}
-                    <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
+                    <div className="absolute right-2 top-2 z-10 flex gap-1 bg-white/90 dark:bg-gray-800/90 rounded-lg p-1 backdrop-blur-sm">
                       <button
                         onClick={zoomIn}
-                        className="rounded bg-primary/80 p-2 text-white hover:bg-primary"
+                        className="rounded p-2 text-gray-700 dark:text-gray-300 hover:bg-primary/10 transition-colors"
                         title="Zoom In"
                       >
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                          />
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
                       </button>
                       <button
                         onClick={zoomOut}
-                        className="rounded bg-primary/80 p-2 text-white hover:bg-primary"
+                        className="rounded p-2 text-gray-700 dark:text-gray-300 hover:bg-primary/10 transition-colors"
                         title="Zoom Out"
                       >
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M18 12H6"
-                          />
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 12H6" />
                         </svg>
                       </button>
                       <button
                         onClick={resetZoom}
-                        className="rounded bg-primary/80 p-2 text-white hover:bg-primary"
-                        title="Reset Zoom"
+                        className="rounded p-2 text-gray-700 dark:text-gray-300 hover:bg-primary/10 transition-colors"
+                        title="Reset"
                       >
-                        <svg
-                          className="h-4 w-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                          />
+                        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                         </svg>
                       </button>
                     </div>
@@ -344,27 +325,36 @@ const AIPage = () => {
                       onMouseUp={handleMouseUp}
                       onMouseLeave={handleMouseUp}
                       onWheel={handleWheel}
-                      className={`mx-auto max-h-96 rounded-lg border-2 border-gray-300 ${
+                      className={`mx-auto rounded-lg shadow-inner ${
                         isDragging ? "cursor-grabbing" : "cursor-crosshair"
                       }`}
                       width={400}
                       height={300}
                     />
-                    <div className="mt-2 flex justify-between text-sm">
-                      <p
-                        className={`${
-                          mounted && isDark ? "text-white/70" : "text-black/70"
-                        }`}
-                      >
-                        Click to pick colors • Drag to pan • Scroll to zoom
-                      </p>
-                      <p
-                        className={`${
-                          mounted && isDark ? "text-white/70" : "text-black/70"
-                        }`}
-                      >
-                        Zoom: {Math.round(zoomLevel * 100)}%
-                      </p>
+                    <div className="mt-3 flex items-center justify-between rounded-lg bg-gray-100 dark:bg-gray-700 p-3">
+                      <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2z" />
+                          </svg>
+                          Click to pick
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+                          </svg>
+                          Drag to pan
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                          </svg>
+                          Scroll to zoom
+                        </span>
+                      </div>
+                      <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                        {Math.round(zoomLevel * 100)}%
+                      </span>
                     </div>
                   </div>
                 )}
@@ -385,34 +375,24 @@ const AIPage = () => {
 
               {/* Selected Color Display */}
               {selectedColor && (
-                <div className="mb-6">
-                  <h3
-                    className={`mb-3 text-lg font-semibold ${
-                      mounted && isDark ? "text-white" : "text-black"
-                    }`}
-                  >
-                    Selected Color
-                  </h3>
-                  <div className="flex items-center gap-4">
-                    <div
-                      className="h-16 w-16 rounded-lg border-2 border-gray-300"
-                      style={{ backgroundColor: selectedColor }}
-                    ></div>
-                    <div>
-                      <p
-                        className={`font-mono text-lg ${
-                          mounted && isDark ? "text-white" : "text-black"
-                        }`}
-                      >
-                        {selectedColor}
-                      </p>
-                      <p
-                        className={`text-sm ${
-                          mounted && isDark ? "text-white/70" : "text-black/70"
-                        }`}
-                      >
-                        Click on your photo to pick colors
-                      </p>
+                <div className="mt-6">
+                  <div className="rounded-xl bg-gradient-to-r from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20 p-4">
+                    <h3 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                      Selected Color
+                    </h3>
+                    <div className="flex items-center gap-4">
+                      <div
+                        className="h-20 w-20 rounded-xl shadow-lg ring-4 ring-white dark:ring-gray-700"
+                        style={{ backgroundColor: selectedColor }}
+                      ></div>
+                      <div>
+                        <p className="font-mono text-2xl font-bold text-gray-900 dark:text-white">
+                          {selectedColor}
+                        </p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          Ready to assign to a feature
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -420,67 +400,75 @@ const AIPage = () => {
             </div>
 
             {/* Right Side - Color Assignment */}
-            <div
-              className={`rounded-xl border-2 p-8 ${
-                mounted && isDark
-                  ? "border-primary/20 bg-gray-800"
-                  : "border-primary/20 bg-white"
-              }`}
-            >
-              <h2
-                className={`mb-6 text-2xl font-semibold ${
-                  mounted && isDark ? "text-white" : "text-black"
-                }`}
-              >
-                Your Color Profile
-              </h2>
+            <div className="rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-200 dark:border-gray-700 p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Your Color Profile
+                </h2>
+                <div className="flex -space-x-2">
+                  {Object.values(userColors).filter(Boolean).map((color, i) => (
+                    <div
+                      key={i}
+                      className="h-8 w-8 rounded-full border-2 border-white dark:border-gray-700"
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                </div>
+              </div>
 
-              {/* Color Assignment Buttons */}
-              <div className="space-y-6">
+              {/* Color Assignment Cards */}
+              <div className="space-y-4">
                 {[
-                  { key: "eyeColor", label: "Eye Color", icon: "👁️" },
-                  { key: "hairColor", label: "Hair Color", icon: "💇" },
-                  { key: "skinColor", label: "Skin Color", icon: "✋" },
+                  { key: "eyeColor", label: "Eye Color", icon: "👁️", desc: "Select your eye color" },
+                  { key: "hairColor", label: "Hair Color", icon: "💇", desc: "Select your hair color" },
+                  { key: "skinColor", label: "Skin Tone", icon: "✋", desc: "Select your skin tone" },
                 ].map((item) => (
-                  <div key={item.key} className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label
-                        className={`flex items-center gap-2 text-lg font-medium ${
-                          mounted && isDark ? "text-white" : "text-black"
-                        }`}
-                      >
-                        <span>{item.icon}</span>
-                        {item.label}
-                      </label>
-                      <button
-                        onClick={() => handleColorAssignment(item.key)}
-                        disabled={!selectedColor}
-                        className="rounded-lg bg-primary px-4 py-2 text-sm text-white transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:bg-gray-400"
-                      >
-                        Assign Color
-                      </button>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="h-12 w-12 rounded-lg border-2 border-gray-300"
-                        style={{
-                          backgroundColor: userColors[item.key] || "#f3f4f6",
-                        }}
-                      ></div>
-                      <span
-                        className={`font-mono text-sm ${
-                          mounted && isDark ? "text-white/70" : "text-black/70"
-                        }`}
-                      >
-                        {userColors[item.key] || "Not selected"}
-                      </span>
+                  <div
+                    key={item.key}
+                    className={`rounded-xl border transition-all ${
+                      userColors[item.key]
+                        ? 'border-primary/50 bg-primary/5 dark:bg-primary/10'
+                        : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50'
+                    } p-4`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl">{item.icon}</span>
+                        <div>
+                          <h4 className="font-semibold text-gray-900 dark:text-white">
+                            {item.label}
+                          </h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </div>
+                      {userColors[item.key] ? (
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="h-10 w-10 rounded-lg shadow-md ring-2 ring-white dark:ring-gray-700"
+                            style={{ backgroundColor: userColors[item.key] }}
+                          />
+                          <code className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {userColors[item.key]}
+                          </code>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleColorAssignment(item.key)}
+                          disabled={!selectedColor}
+                          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500"
+                        >
+                          Assign
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Action Buttons */}
-              <div className="mt-8 space-y-4">
+              <div className="mt-8 space-y-3">
                 <button
                   onClick={handleAiMatch}
                   disabled={
@@ -489,21 +477,25 @@ const AIPage = () => {
                     !userColors.skinColor ||
                     isLoadingAiSuggestions
                   }
-                  className="w-full rounded-lg bg-primary px-6 py-3 text-lg font-semibold text-white transition-colors hover:bg-primary/80 disabled:cursor-not-allowed disabled:bg-gray-400"
+                  className="w-full rounded-xl bg-gradient-to-r from-primary to-secondary px-6 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] disabled:cursor-not-allowed disabled:from-gray-400 disabled:to-gray-500 disabled:hover:scale-100"
                 >
-                  {isLoadingAiSuggestions
-                    ? "Getting Suggestions..."
-                    : "Find My Perfect Colors"}
+                  {isLoadingAiSuggestions ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Analyzing Colors...
+                    </span>
+                  ) : (
+                    "Generate AI Recommendations"
+                  )}
                 </button>
                 <button
                   onClick={resetForm}
-                  className={`w-full rounded-lg border-2 px-6 py-3 text-lg font-semibold transition-colors ${
-                    mounted && isDark
-                      ? "border-gray-600 text-white hover:bg-gray-700"
-                      : "border-gray-300 text-black hover:bg-gray-50"
-                  }`}
+                  className="w-full rounded-xl border-2 border-gray-300 dark:border-gray-600 px-6 py-3 font-semibold text-gray-700 dark:text-gray-300 transition-all hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
-                  Reset
+                  Start Over
                 </button>
               </div>
             </div>
@@ -512,29 +504,84 @@ const AIPage = () => {
 
         {/* AI Suggestions Display */}
         {aiSuggestions && (
-          <div
-            className={`mt-12 w-full max-w-7xl rounded-xl border-2 p-8 ${
-              mounted && isDark
-                ? "border-primary/20 bg-gray-800"
-                : "border-primary/20 bg-white"
-            }`}
-          >
-            <h2
-              className={`mb-6 text-2xl font-semibold ${
-                mounted && isDark ? "text-white" : "text-black"
-              }`}
-            >
-              AI Color Suggestions
-            </h2>
-            <div
-              className={`whitespace-pre-line ${
-                mounted && isDark ? "text-white/90" : "text-black/90"
-              }`}
-            >
-              {aiSuggestions}
+          <div className="mt-12 w-full max-w-7xl">
+            <div className="rounded-2xl bg-gradient-to-br from-primary/5 via-white to-secondary/5 dark:from-primary/10 dark:via-gray-800 dark:to-secondary/10 p-1">
+              <div className="rounded-2xl bg-white dark:bg-gray-800 p-8">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    Your Personalized Color Recommendations
+                  </h2>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(aiSuggestions);
+                      toast.success("Recommendations copied to clipboard!");
+                    }}
+                    className="flex items-center gap-2 rounded-lg bg-gray-100 dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+                <div className="prose prose-gray dark:prose-invert max-w-none">
+                  <div className="whitespace-pre-line text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {aiSuggestions}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
+
+        {/* Examples Section */}
+        <div className="mt-16 w-full max-w-7xl">
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8">
+            Example Color Combinations
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Cool Tones",
+                colors: ["#2E5090", "#5B8FB9", "#B6D5E1", "#F5F5F5"],
+                desc: "Perfect for blue eyes and cool skin tones"
+              },
+              {
+                title: "Warm Earth",
+                colors: ["#8B4513", "#D2691E", "#F4A460", "#FFDAB9"],
+                desc: "Ideal for brown eyes and warm skin tones"
+              },
+              {
+                title: "Neutral Classic",
+                colors: ["#2F4F4F", "#708090", "#C0C0C0", "#F0F8FF"],
+                desc: "Versatile for any complexion"
+              }
+            ].map((combo, i) => (
+              <div key={i} className="rounded-xl bg-white dark:bg-gray-800 shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                <div className="h-24 flex">
+                  {combo.colors.map((color, j) => (
+                    <div key={j} className="flex-1" style={{ backgroundColor: color }} />
+                  ))}
+                </div>
+                <div className="p-6">
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">
+                    {combo.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    {combo.desc}
+                  </p>
+                  <div className="flex gap-2">
+                    {combo.colors.map((color, j) => (
+                      <code key={j} className="text-xs font-mono text-gray-600 dark:text-gray-400">
+                        {color}
+                      </code>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

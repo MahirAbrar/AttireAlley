@@ -56,7 +56,7 @@ const Footer = () => {
                     />
                   </svg>
                 </div>
-                <span className="text-xl lg:text-2xl xl:text-3xl font-bold text-gray-900 transition-colors group-hover:text-primary dark:text-white">
+                <span className="text-xl font-bold text-gray-900 transition-colors group-hover:text-primary dark:text-white lg:text-2xl xl:text-3xl">
                   AttireAlley
                 </span>
               </Link>
@@ -86,14 +86,6 @@ const Footer = () => {
                     className="text-gray-600 transition-colors hover:text-primary dark:text-gray-400"
                   >
                     Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/careers"
-                    className="text-gray-600 transition-colors hover:text-primary dark:text-gray-400"
-                  >
-                    Careers
                   </Link>
                 </li>
               </ul>
@@ -156,7 +148,7 @@ const Footer = () => {
 
           {/* Copyright */}
           <div className="border-t border-gray-200 pt-8 text-center dark:border-gray-700">
-            <p className="text-sm lg:text-base xl:text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-gray-600 dark:text-gray-400 lg:text-base xl:text-lg">
               © {new Date().getFullYear()} AttireAlley. All rights reserved.
               Made with ❤️ by mahirabrar
             </p>

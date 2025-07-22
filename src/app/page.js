@@ -275,7 +275,10 @@ export default function Home() {
   }, [images]); // Run when images change
 
   const fetchProducts = async () => {
-    setLoading(false);
+    // Add a small delay to ensure all components and animations are ready
+    setTimeout(() => {
+      setLoading(false);
+    }, 800);
   };
 
   if (loading) {

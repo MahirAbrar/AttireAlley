@@ -63,7 +63,7 @@ const MensHero = () => {
       <div ref={textRef} className="relative z-10 flex h-full items-center justify-center px-4">
         <div className="text-center">
           <h1 className="mb-4 text-5xl font-bold text-white drop-shadow-lg md:text-6xl lg:text-7xl">
-            Men's
+            Men&apos;s
             <span className="block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               Collection
             </span>
