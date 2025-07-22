@@ -9,7 +9,9 @@ import NeonButton from "@/components/NeonButton";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+// ScrollToPlugin import removed - will use custom implementation
 import AnimatedSection from "@/components/AnimatedSection";
+import InteractiveStyleSection from "@/components/InteractiveStyleSection";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -82,10 +84,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [pulseCircles, setPulseCircles] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentSection, setCurrentSection] = useState(0);
 
   // Create refs for each section
   const firstSectionRef = useRef(null);
+  const secondSectionRef = useRef(null);
+  const thirdSectionRef = useRef(null);
   const imageRefs = useRef([]);
+  const sectionsRef = useRef([]);
 
   // Memoized callback for scroll down animation
   const handleScrollDownAnimation = useCallback(() => {
@@ -132,6 +138,59 @@ export default function Home() {
 
   useEffect(() => {
     fetchProducts();
+    
+    // Setup smooth scrolling between sections
+    const setupSmoothScroll = () => {
+      let isScrolling = false;
+      
+      const scrollToSection = (index) => {
+        if (isScrolling || !sectionsRef.current[index]) return;
+        isScrolling = true;
+        setCurrentSection(index);
+        
+        const targetElement = sectionsRef.current[index];
+        if (targetElement) {
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+          setTimeout(() => {
+            isScrolling = false;
+          }, 1200);
+        }
+      };
+      
+      // Scroll observer for section snapping
+      ScrollTrigger.create({
+        trigger: document.body,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          const scroll = self.scroll();
+          const windowHeight = window.innerHeight;
+          const newSection = Math.round(scroll / windowHeight);
+          if (newSection !== currentSection && newSection >= 0 && newSection < 3) {
+            setCurrentSection(newSection);
+          }
+        }
+      });
+      
+      // Keyboard navigation
+      const handleKeydown = (e) => {
+        if (e.key === "ArrowDown" && currentSection < 2) {
+          scrollToSection(currentSection + 1);
+        } else if (e.key === "ArrowUp" && currentSection > 0) {
+          scrollToSection(currentSection - 1);
+        }
+      };
+      
+      window.addEventListener("keydown", handleKeydown);
+      return () => window.removeEventListener("keydown", handleKeydown);
+    };
+    
+    const cleanup = setupSmoothScroll();
+    
     // Create initial pulse circles (reduced from 5 to 3)
     const initialCircles = Array.from({ length: 3 }, (_, i) => ({
       id: i,
@@ -187,7 +246,19 @@ export default function Home() {
     return () => {
       clearInterval(interval);
       if (scrollObserver) scrollObserver.kill();
+      if (cleanup) cleanup();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
+  }, [currentSection]);
+
+  // Setup section refs after mount
+  useEffect(() => {
+    sectionsRef.current = [firstSectionRef.current, secondSectionRef.current, thirdSectionRef.current];
+    
+    // Refresh ScrollTrigger to ensure animations work properly
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 500);
   }, []);
 
   // Separate useEffect for GSAP animations after refs are set
@@ -220,6 +291,7 @@ export default function Home() {
       {/* First Section */}
       <div
         ref={firstSectionRef}
+        id="section-1"
         className="relative h-screen w-full overflow-hidden"
       >
         <div
@@ -290,10 +362,15 @@ export default function Home() {
       </div>
 
       {/* Divider */}
-      <div className="h-1 w-full bg-gradient-to-r from-secondary to-accent dark:from-primary dark:via-secondary  dark:to-accent"></div>
+      <div className="h-1 w-full bg-gradient-to-r from-primary via-primary/50 to-transparent"></div>
 
-      {/* 2nd section */}
-      <div className="relative h-screen w-full overflow-hidden bg-gray-300/50 backdrop-blur-sm dark:bg-backgroundDark/50">
+      {/* 2nd section - Interactive Style Section */}
+      <div ref={secondSectionRef} id="section-2">
+        <InteractiveStyleSection />
+      </div>
+      
+      {/* Old 2nd section - Hidden but kept for reference */}
+      <div className="hidden relative h-screen w-full overflow-hidden bg-gray-300/50 backdrop-blur-sm dark:bg-backgroundDark/50">
         {/* Pulse Circles Background decoration*/}
         {pulseCircles.map((circle) => (
           <div
@@ -404,10 +481,37 @@ export default function Home() {
       </div>
 
       {/* divider 2 */}
-      <div className="dark:from-accentDark dark:via-secondaryDark dark:to-primaryDark h-1 w-full bg-gradient-to-r from-accent via-secondary to-primary"></div>
+      <div className="h-1 w-full bg-gradient-to-r from-transparent via-primary/50 to-primary"></div>
 
       {/* Animated Section */}
-      <AnimatedSection />
+      <div ref={thirdSectionRef} id="section-3">
+        <AnimatedSection />
+      </div>
+      
+      {/* Navigation Dots */}
+      <div className="fixed right-8 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-4">
+        {[0, 1, 2].map((index) => (
+          <button
+            key={index}
+            onClick={() => {
+              const section = sectionsRef.current[index];
+              if (section) {
+                const targetPosition = section.getBoundingClientRect().top + window.pageYOffset;
+                window.scrollTo({
+                  top: targetPosition,
+                  behavior: 'smooth'
+                });
+              }
+            }}
+            className={`h-3 w-3 rounded-full transition-all duration-300 ${
+              currentSection === index
+                ? "scale-125 bg-primary"
+                : "bg-gray-400 hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-400"
+            }`}
+            aria-label={`Go to section ${index + 1}`}
+          />
+        ))}
+      </div>
     </main>
   );
 }

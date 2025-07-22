@@ -1,8 +1,12 @@
 import Cookies from "js-cookie";
 
+// Landing apge
+// TODO: featured collection images
+
 // TODO: Eslint
 // TODO 9 11 40
 // TODO Need to hook up with frontend
+// TODO: Delete all clothes and add new specific clothes
 // Need to do order processing logic
 export const createNewOrder = async (formData) => {
   try {
