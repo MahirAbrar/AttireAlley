@@ -89,6 +89,35 @@ body {
   animation: float 20s ease-in-out infinite;
 }
 
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-text-animated {
+  background: linear-gradient(
+    to right,
+    #57a7a8,
+    #00D9FF,
+    #57a7a8,
+    #FFE66D,
+    #57a7a8
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 3s ease infinite;
+}
+
 /* Partial Left Border */
 .partial-left-border {
   position: relative; /* Needed for absolute positioning of pseudo-element */

@@ -4,6 +4,7 @@ import { getClientProducts } from "@/services/getClientProducts";
 import ClientCommonListing from "@/components/CommonListingClient";
 import { toast } from "react-toastify";
 import LoaderBig from "@/components/LoaderBig";
+import SimpleProductsHero from "@/components/SimpleProductsHero";
 
 const PRODUCTS_PER_PAGE = 20;
 
@@ -50,8 +51,23 @@ const Products = () => {
 
   return (
     <>
-      {/* Pagination */}
-        <div className="join mt-8 mb-4 flex justify-center">
+      {/* Hero Section */}
+      <SimpleProductsHero />
+      
+      {/* Products Section */}
+      <div className="min-h-screen bg-white dark:bg-backgroundDark">
+        {/* Section Title */}
+        <div className="mx-auto max-w-7xl px-4 pt-12 text-center">
+          <h2 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+            All Products
+          </h2>
+          <p className="mb-8 text-lg text-gray-600 dark:text-gray-400">
+            {products.length} items available
+          </p>
+        </div>
+        
+        {/* Pagination */}
+        <div className="join mb-4 flex justify-center">
           {Array.from({ length: numberOfPages }, (_, index) => (
             <button
               key={index}
@@ -94,6 +110,7 @@ const Products = () => {
           </p>
         </div>
       )}
+      </div>
     </>
   );
 };

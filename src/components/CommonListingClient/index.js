@@ -10,7 +10,7 @@ import Loader from "../Loader";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
-const ClientCommonListing = ({ product, params }) => {
+const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
@@ -62,6 +62,71 @@ const ClientCommonListing = ({ product, params }) => {
     }
   };
 
+  if (viewMode === "list") {
+    return (
+      <div className="flex w-full items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-md transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
+        <figure onClick={() => router.push(redirectLink)} className="cursor-pointer">
+          <Image
+            src={Array.isArray(product.imageURL) ? product.imageURL[0] : product.imageURL}
+            alt={product.name}
+            width={150}
+            height={150}
+            className="h-32 w-32 rounded-lg object-cover"
+          />
+        </figure>
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="flex items-start justify-between">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                {product.name}
+                {product.onSale === "Yes" && (
+                  <span className="ml-2 rounded-full bg-red-100 px-2 py-1 text-xs text-red-600">
+                    SALE
+                  </span>
+                )}
+              </h2>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Category: {product.category}
+              </p>
+            </div>
+            <div className="text-right">
+              {product.onSale === "Yes" ? (
+                <div>
+                  <p className="text-sm text-gray-500 line-through">${product.price}</p>
+                  <p className="text-xl font-bold text-red-600">
+                    ${product.price - product.priceDrop}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xl font-bold text-gray-900 dark:text-white">
+                  ${product.price}
+                </p>
+              )}
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {product.description.slice(0, 150)}...
+          </p>
+          <div className="mt-2 flex gap-2">
+            <button
+              className="rounded-lg bg-primary px-4 py-2 text-white transition-all hover:bg-primary/90"
+              onClick={() => addItemToCart(product)}
+            >
+              Add to Cart {loading && <Loader />}
+            </button>
+            <button
+              className="rounded-lg border border-primary px-4 py-2 text-primary transition-all hover:bg-primary/10"
+              onClick={() => router.push(redirectLink)}
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Grid view (default)
   return (
     <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col shadow-xl hover:shadow-blue-500/30 border-b border-b-primary hover:ring-primary transition duration-500 ease-in-out hover:scale-105 partial-left-border">
       <div className="middle-line"></div>

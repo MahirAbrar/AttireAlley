@@ -10,7 +10,7 @@ import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 // ScrollToPlugin import removed - will use custom implementation
-import AnimatedSection from "@/components/AnimatedSection";
+import ImprovedAnimatedSection from "@/components/ImprovedAnimatedSection";
 import InteractiveStyleSection from "@/components/InteractiveStyleSection";
 
 // Register GSAP plugins
@@ -485,7 +485,7 @@ export default function Home() {
 
       {/* Animated Section */}
       <div ref={thirdSectionRef} id="section-3">
-        <AnimatedSection />
+        <ImprovedAnimatedSection />
       </div>
       
       {/* Navigation Dots */}
