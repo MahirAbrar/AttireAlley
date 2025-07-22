@@ -124,28 +124,25 @@ function Navbar() {
       <nav
         className={`${
           mounted && isDark ? "bg-backgroundDark" : "bg-gray-100"
-        } sticky top-0 z-50 transform border-b-2 border-primary/20 px-2 py-6 shadow-lg transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(0,173,181,0.3)] sm:px-6 ${
+        } sticky top-0 z-50 transform border-b-2 border-primary/20 px-2 py-6 shadow-lg transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(87,167,168,0.3)] sm:px-6 ${
           isVisible ? "translate-y-0" : "-translate-y-full"
         } ${mounted && isDark ? "dark" : ""}`}
       >
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className={`flex items-center gap-2.5 text-xl font-bold sm:text-2xl 2xl:text-4xl ${
-              isDark ? "text-textDark" : "text-text"
-            } no-underline transition-all duration-300 ${
-              isDark
-                ? "hover:scale-105 hover:text-primary hover:drop-shadow-[0_0_15px_rgba(0,173,181,0.5)]"
-                : "hover:scale-[1.03] hover:border-primary hover:shadow-[0_0_0_2px_rgba(0,173,181,0.5)]"
-            } rounded-lg border-2 border-transparent px-4 py-2`}
+            className="group flex items-center gap-3 text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white transition-all duration-300 hover:scale-105"
             onClick={handleLinkClick("/")}
           >
-            <ShoppingBagIcon
-              className={`h-6 w-6 sm:h-8 sm:w-8 2xl:h-12 2xl:w-12 ${
-                isDark ? "dark:text-primary" : ""
-              } transition-all duration-300`}
-            />
-            <span>AttireAlley</span>
+            <div className="relative">
+              <div className="absolute inset-0 bg-primary rounded-xl blur-lg opacity-0 group-hover:opacity-75 transition-opacity"></div>
+              <div className="relative bg-primary p-2.5 lg:p-3 xl:p-3.5 rounded-xl group-hover:shadow-[0_0_15px_rgba(87,167,168,0.5)] transition-all">
+                <ShoppingBagIcon className="h-7 w-7 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-white" />
+              </div>
+            </div>
+            <span className="text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-300">
+              AttireAlley
+            </span>
           </Link>
 
           <div className="hidden lg:flex">
@@ -155,12 +152,11 @@ function Navbar() {
                     <li key={item.id}>
                       <Link
                         href={item.path}
-                        className={`nav-link text-lg 2xl:text-xl ${
-                          isDark ? "text-textDark" : "text-text"
-                        } px-4 py-2 font-medium ${item.active ? "active" : ""}`}
+                        className="relative text-gray-700 dark:text-gray-300 px-4 py-2 font-medium text-lg xl:text-xl 2xl:text-2xl transition-all duration-300 hover:text-primary dark:hover:text-primary group"
                         onClick={() => handleLinkClick(item.path)}
                       >
                         {item.label}
+                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                       </Link>
                     </li>
                   ))
@@ -168,12 +164,11 @@ function Navbar() {
                     <li key={item.id}>
                       <Link
                         href={item.path}
-                        className={`nav-link text-lg 2xl:text-xl ${
-                          isDark ? "text-textDark" : "text-text"
-                        } px-4 py-2 font-medium ${item.active ? "active" : ""}`}
+                        className="relative text-gray-700 dark:text-gray-300 px-4 py-2 font-medium text-lg xl:text-xl 2xl:text-2xl transition-all duration-300 hover:text-primary dark:hover:text-primary group"
                         onClick={() => handleLinkClick(item.path)}
                       >
                         {item.label}
+                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                       </Link>
                     </li>
                   ))}
@@ -187,12 +182,12 @@ function Navbar() {
                 <div
                   tabIndex={0}
                   role="button"
-                  className="relative z-[1001] transition-all duration-300 hover:scale-110 [&>div>svg]:hover:text-primary"
+                  className="relative z-[1001] transition-all duration-300 hover:scale-110"
                 >
                   <div className="indicator">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 transition-colors duration-300  2xl:h-8 2xl:w-8"
+                      className="h-6 w-6 text-gray-700 dark:text-gray-300 transition-colors duration-300 hover:text-primary 2xl:h-8 2xl:w-8"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -204,41 +199,45 @@ function Navbar() {
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                       />
                     </svg>
-                    <span className="border-1 badge indicator-item badge-sm  border-backgroundDark 2xl:badge-md">
-                      {cartDisplay}
-                    </span>
+                    {cartDisplay > 0 && (
+                      <span className="badge indicator-item badge-sm bg-primary text-white border-0 2xl:badge-md">
+                        {cartDisplay}
+                      </span>
+                    )}
                   </div>
                 </div>
-                <div className="relative z-[1000]">
+                <div className="relative z-[1000] mt-2">
                   <div
                     tabIndex={0}
-                    className="card dropdown-content card-compact w-52 bg-gray-300 shadow-lg dark:bg-gray-900"
+                    className="card dropdown-content card-compact w-64 bg-white dark:bg-gray-800 shadow-xl border border-gray-200 dark:border-gray-700"
                   >
                     <div className="card-body">
-                      <span className="text-lg font-bold ">
-                        {cartDisplay} Items
-                      </span>
-                      <span className="text-md font-semibold text-primary">
-                        Subtotal: ${cartAmount}
-                      </span>
-                      <div className="card-actions">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-lg font-bold text-gray-900 dark:text-white">
+                          Cart ({cartDisplay})
+                        </span>
+                        <span className="text-md font-semibold text-primary">
+                          ${cartAmount}
+                        </span>
+                      </div>
+                      <div className="space-y-2">
                         <button
-                          className="btn btn-primary btn-block bg-primary  hover:bg-primary/90"
+                          className="w-full btn bg-primary text-white border-0 hover:bg-primary/90 hover:shadow-[0_0_15px_rgba(87,167,168,0.3)] transition-all"
                           onClick={() => router.push("/cart")}
                         >
-                          View cart
+                          View Cart
                         </button>
                         <button
-                          className="btn btn-primary btn-block bg-primary  hover:bg-primary/90"
+                          className="w-full btn btn-outline border-primary text-primary hover:bg-primary hover:text-white"
                           onClick={() => router.push("/order")}
                         >
-                          Orders
+                          My Orders
                         </button>
                         <button
-                          className="btn btn-primary btn-block bg-primary  hover:bg-primary/90"
+                          className="w-full btn btn-ghost text-gray-700 dark:text-gray-300"
                           onClick={() => router.push("/account")}
                         >
-                          Account
+                          My Account
                         </button>
                       </div>
                     </div>
@@ -249,36 +248,36 @@ function Navbar() {
 
             {user?.role === "admin" ? (
               isAdminView ? (
-                <NeonButton
+                <button
                   onClick={handleLinkClick("/")}
-                  className=" px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
+                  className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
                 >
-                  Client view
-                </NeonButton>
+                  Client View
+                </button>
               ) : (
-                <NeonButton
+                <button
                   onClick={handleLinkClick("/admin-view")}
-                  className=" px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
+                  className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
                 >
                   Admin View
-                </NeonButton>
+                </button>
               )
             ) : null}
 
             {isAuthUser ? (
-              <NeonButton
+              <button
                 onClick={handleLogout}
-                className="px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
+                className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-all duration-300"
               >
                 Logout
-              </NeonButton>
+              </button>
             ) : (
-              <NeonButton
-                className="text-textDark px-2 py-1 text-sm sm:px-4 sm:py-2 sm:text-base"
+              <button
+                className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium bg-primary text-white rounded-lg hover:bg-primary/90 hover:shadow-[0_0_15px_rgba(87,167,168,0.3)] transition-all duration-300"
                 onClick={handleLinkClick("/login")}
               >
                 Login
-              </NeonButton>
+              </button>
             )}
 
             <div className="lg:hidden">
