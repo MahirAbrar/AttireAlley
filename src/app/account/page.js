@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { GlobalContext } from "@/context";
 import { useContext } from "react";
 import {
@@ -20,25 +20,24 @@ const Account = () => {
   const [deleteLoading, setDeleteLoading] = useState({});
   const [fetchLoading, setFetchLoading] = useState(true);
 
-  const fetchAddresses = async (userID) => {
+  const fetchAddresses = useCallback(async (userID) => {
     const { success, data } = await getAllAddresses(userID);
     console.log("fetching addresses");
     if (success) {
       setAddresses(data.data);
-      console.log(addresses);
     }
     setFetchLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     // check if user exists
     let userExist = user ? true : false;
     if (userExist) {
       fetchAddresses(user._id);
-      setFormData({ ...formData, userID: user._id });
+      setFormData(prevFormData => ({ ...prevFormData, userID: user._id }));
       console.log(user);
     }
-  }, [user]);
+  }, [user, fetchAddresses]);
 
   const updateAddressHandler = (address) => {
     console.log("Update address", address);

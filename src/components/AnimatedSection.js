@@ -17,32 +17,32 @@ const AnimatedSection = () => {
 
   const images = [
     {
-      src: "/landingpage/coverpageman3.png",
+      src: "/landingpage/coverpageman3.webp",
       alt: "Fashion model 1",
       height: 400,
     },
     {
-      src: "/landingpage/coverpagewoman.jpg",
+      src: "/landingpage/coverpagewoman.webp",
       alt: "Fashion model 2",
       height: 300,
     },
     {
-      src: "/landingpage/coverpagekids3.png",
+      src: "/landingpage/coverpagekids3.webp",
       alt: "Fashion model 3",
       height: 450,
     },
     {
-      src: "/landingpage/threewoman.png",
+      src: "/landingpage/threewoman.webp",
       alt: "Fashion model 4",
       height: 350,
     },
     {
-      src: "/landingpage/ap lifestyle v2.png",
+      src: "/landingpage/ap lifestyle v2.webp",
       alt: "Fashion model 5",
       height: 380,
     },
     {
-      src: "/landingpage/threekids.png",
+      src: "/landingpage/threekids.webp",
       alt: "Fashion model 6",
       height: 320,
     },

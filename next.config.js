@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-
 const nextConfig = {
   images: {
     remotePatterns: [
