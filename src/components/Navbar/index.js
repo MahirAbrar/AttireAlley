@@ -78,8 +78,6 @@ function Navbar() {
           // Token has expired, update state variables
           setIsAuthUser(false);
           setUser(null);
-          localStorage.removeItem("user");
-          Cookies.remove("token");
         } else if (success) {
           setCartDisplay(data.length);
           setCartAmount(
@@ -96,12 +94,21 @@ function Navbar() {
     fetchCartItems();
   }, [isAuthUser, user, navbarUpdateTrigger, setIsAuthUser, setUser]);
 
-  const handleLogout = useCallback(() => {
-    setIsAuthUser(false);
-    Cookies.remove("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    router.push("/");
+  const handleLogout = useCallback(async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      
+      if (response.ok) {
+        setIsAuthUser(false);
+        setUser(null);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
     toast.success("Logged out successfully");
   }, [setIsAuthUser, setUser, router]);
 

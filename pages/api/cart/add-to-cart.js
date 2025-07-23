@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       message: "Token expired, please log in again.",
       isExpired: true,
     });
-  } else if (user.id != req.body.userID) {
+  } else if (user.id !== req.body.userID) {
     return res.status(403).json({
       success: false,
       message:
@@ -35,11 +35,8 @@ export default async function handler(req, res) {
 
   try {
     await connectToDB();
-    console.log("Database connected successfully");
-    console.log("req.body is ", req.body);
 
     const { productID, userID, quantity } = req.body;
-    console.log("Adding to cart:", { productID, userID, quantity });
 
     const user = await User.findById(userID);
     if (!user) {
@@ -54,7 +51,6 @@ export default async function handler(req, res) {
     );
 
     if (itemExistInCart) {
-      console.log("Item already exists in cart:", itemExistInCart);
       return res.status(400).json({
         success: false,
         message:
@@ -68,8 +64,6 @@ export default async function handler(req, res) {
     });
 
     await user.save();
-
-    console.log("Product added to user's cart:", user.cart);
 
     return res.status(200).json({
       success: true,

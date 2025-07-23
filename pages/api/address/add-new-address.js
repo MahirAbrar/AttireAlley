@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       message: "Token expired, please log in again.",
       isExpired: true,
     });
-  } else if (user.id != req.body.userID) {
+  } else if (user.id !== req.body.userID) {
     return res.status(403).json({
       success: false,
       message:
@@ -35,8 +35,6 @@ export default async function handler(req, res) {
   // post method taking body data
   try {
     await connectToDB();
-    console.log("Database connected successfully");
-    console.log("req.body is ", req.body);
 
     const {
       userID,
@@ -47,15 +45,6 @@ export default async function handler(req, res) {
       postalCode,
       additionalDetails,
     } = req.body;
-    console.log("Adding new address:", {
-      userID,
-      fullName,
-      address,
-      city,
-      country,
-      postalCode,
-      additionalDetails,
-    });
 
     const user = await User.findById(userID);
     if (!user) {
@@ -78,8 +67,6 @@ export default async function handler(req, res) {
 
     user.address.push(newAddress._id);
     await user.save();
-
-    console.log("New address added and associated with user:", newAddress);
 
     return res.status(200).json({
       success: true,

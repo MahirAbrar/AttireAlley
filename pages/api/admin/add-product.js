@@ -33,9 +33,6 @@ export default async function handler(req, res, next) {
     await connectToDB();
 
     const user = await AuthUser(req);
-    console.log("Auth user:", user);
-    console.log("Query userID:", req.query.userID);
-    console.log("Types - user.id:", typeof user.id, "req.query.userID:", typeof req.query.userID);
 
     if (!user) {
       return res.status(401).json({
@@ -49,8 +46,7 @@ export default async function handler(req, res, next) {
         message: "Token expired, please log in again.",
         isExpired: true,
       });
-    } else if (user.id != req.query.userID) {
-      console.log("ID mismatch - user.id:", user.id, "req.query.userID:", req.query.userID);
+    } else if (user.id !== req.query.userID) {
       return res.status(403).json({
         success: false,
         message: "Forbidden, you are not allowed to perform this action from this account.",
@@ -58,7 +54,6 @@ export default async function handler(req, res, next) {
     }
 
     if (user.role === "admin") {
-      console.log("Admin user. Add product");
 
       const data = req.body;
 

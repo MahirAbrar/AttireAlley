@@ -1,13 +1,10 @@
-import Cookies from "js-cookie";
-import { useContext } from "react";
-
 export const getCartItems = async (userID) => {
   try {
     const response = await fetch(`/api/cart/all-cart-items?userID=${userID}`, {
       method: "GET",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     });
 

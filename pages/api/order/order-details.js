@@ -37,7 +37,6 @@ export default async function handler(req, res) {
       });
     }
 
-    console.log("Retrieving order details for order:", orderID);
 
     const orderDetails = await Order.findById(orderID).populate(
       "orderItems.productID",

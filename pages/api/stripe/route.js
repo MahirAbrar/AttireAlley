@@ -4,7 +4,6 @@ import AuthUser from "@/middleware/AuthUser";
 export const dynamic = "force-dynamic";
 
 export default async function handler(req, res) {
-  console.log("striping");
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,

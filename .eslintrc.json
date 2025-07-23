@@ -1,3 +1,57 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "rules": {
+    // React Hooks
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    
+    // General JavaScript
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "prefer-const": "warn",
+    "no-var": "error",
+    
+    // Security
+    "no-eval": "error",
+    "no-implied-eval": "error",
+    "no-new-func": "error",
+    
+    // Code Quality
+    "eqeqeq": ["warn", "always"],
+    "no-duplicate-imports": "warn",
+    "no-unreachable": "error",
+    "no-undef": "error",
+    
+    // React Specific
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-key": "error",
+    "react/no-unescaped-entities": "warn",
+    
+    // Next.js Specific
+    "@next/next/no-html-link-for-pages": "error",
+    "@next/next/no-img-element": "warn"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    ".next/",
+    "out/",
+    "build/",
+    "dist/",
+    "*.min.js"
+  ]
 }

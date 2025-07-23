@@ -4,6 +4,7 @@ import connectToDB from "@/database";
 import User from "@/models/user";
 import { hash } from "bcryptjs";
 import Joi from "joi";
+import { withRateLimit, authLimiter } from "@/middleware/RateLimitMiddleware";
 
 const schema = Joi.object({
   name: Joi.string().required(),
@@ -14,7 +15,7 @@ const schema = Joi.object({
 
 export const dynamic = "force-dynamic";
 
-export default async function handler(req, res) {
+async function registerHandler(req, res) {
   await connectToDB();
   const { name, email, password, role } = req.body;
   //validate the schema
@@ -65,3 +66,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default withRateLimit(authLimiter)(registerHandler);

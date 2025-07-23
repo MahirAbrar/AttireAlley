@@ -72,8 +72,6 @@ const Login = () => {
       setUser(res.data.user);
       setFormState({ email: "", password: "" });
       router.push("/");
-      Cookies.set("token", res?.data?.token);
-      localStorage.setItem("user", JSON.stringify(res?.data?.user));
     } else {
       toast.error(res.message, {
         position: "top-right",

@@ -1,5 +1,4 @@
 "use client";
-import Cookies from "js-cookie";
 import "../app/globals.css";
 
 import { createContext, useEffect, useState } from "react";
@@ -21,6 +20,7 @@ export default function GlobalState({ children }) {
   const [cartitemsCount, setCartItemsCount] = useState(0);
   const [navbarUpdateTrigger, setNavbarUpdateTrigger] = useState(0);
   const [isDark, setIsDark] = useState(false);
+  const [pageLevel, setPageLevel] = useState("Customer");
 
   // Updates the cart in the navbar
   const triggerNavbarUpdate = () => {
@@ -68,17 +68,31 @@ export default function GlobalState({ children }) {
   }, []);
 
   useEffect(() => {
-    const token = Cookies.get("token");
-    const user = localStorage.getItem("user");
-
-    if (token && user) {
-      setIsAuthUser(true);
-      setUser(JSON.parse(user));
-    } else {
-      setIsAuthUser(false);
-      setUser(null);
-      localStorage.removeItem("user");
-    }
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/check", {
+          method: "GET",
+          credentials: "include",
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setIsAuthUser(true);
+          setUser(data.user);
+          setPageLevel(data.user.role);
+        } else {
+          setIsAuthUser(false);
+          setUser(null);
+          setPageLevel("Customer");
+        }
+      } catch (error) {
+        setIsAuthUser(false);
+        setUser(null);
+        setPageLevel("Customer");
+      }
+    };
+    
+    checkAuth();
   }, [setIsAuthUser, setUser]);
 
   return (
@@ -102,6 +116,8 @@ export default function GlobalState({ children }) {
         triggerNavbarUpdate,
         isDark,
         setIsDark,
+        pageLevel,
+        setPageLevel,
       }}
     >
       {children}

@@ -46,7 +46,20 @@ const UpdateProduct = () => {
     imageURL: updateItem?.imageURL || "",
   });
 
-  console.log(formData);
+  const handleSizeClick = (size) => {
+    if (formData.sizes.includes(size)) {
+      setFormData({
+        ...formData,
+        sizes: formData.sizes.filter((s) => s !== size),
+      });
+    } else {
+      setFormData({
+        ...formData,
+        sizes: [...formData.sizes, size],
+      });
+    }
+  };
+
   async function handleImage(event) {
     setImageUploading(true);
     const extractImageUrl = await imageUploadHelper(event.target.files[0]);

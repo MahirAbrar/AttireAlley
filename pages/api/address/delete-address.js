@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       message: "Token expired, please log in again.",
       isExpired: true,
     });
-  } else if (user.id != req.query.userID) {
+  } else if (user.id !== req.query.userID) {
     return res.status(403).json({
       success: false,
       message:
@@ -33,11 +33,8 @@ export default async function handler(req, res) {
 
   try {
     await connectToDB();
-    console.log("Database connected successfully");
-    console.log("req.query is ", req.query);
 
     const { userID, addressID } = req.query;
-    console.log("Deleting address:", { userID, addressID });
 
     const user = await User.findById(userID);
     if (!user) {
@@ -57,8 +54,6 @@ export default async function handler(req, res) {
 
     user.address = user.address.filter((id) => id.toString() !== addressID);
     await user.save();
-
-    console.log("Address deleted and removed from user");
 
     return res
       .status(200)

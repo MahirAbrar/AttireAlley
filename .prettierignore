@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Production build
+.next/
+out/
+build/
+dist/
+
+# Environment files
+.env
+.env.*
+
+# Package files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+*.generated.js
+*.generated.ts
+
+# Minified files
+*.min.js
+*.min.css
+
+# Images and media
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.svg
+*.ico
+
+# Other
+.DS_Store
+coverage/

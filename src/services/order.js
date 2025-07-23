@@ -2,6 +2,23 @@ import Cookies from "js-cookie";
 
 // Landing apge
 // TODO: featured collection images
+// Critical (Fix Immediately):
+// 1. ✅ Hardcoded JWT secret
+// 2. ✅ Exposed credentials in .env.local
+// 3. ❌ JWT in localStorage (move to httpOnly cookies)
+// 4. ❌ No rate limiting on auth endpoints
+
+// High Priority:
+// 1. ❌ File upload validation
+// 2. ❌ Stripe webhook verification
+// 3. ❌ Security headers implementation
+// 4. ❌ Input validation on all endpoints
+
+// Medium Priority:
+// 1. ❌ API versioning
+// 2. ❌ Request logging
+// 3. ❌ Token refresh mechanism
+// 4. ❌ Content Security Policy
 
 // TODO: Eslint
 // TODO 9 11 40

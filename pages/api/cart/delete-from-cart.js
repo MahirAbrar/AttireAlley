@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       message: "Token expired, please log in again.",
       isExpired: true,
     });
-  } else if (user.id != req.query.userID) {
+  } else if (user.id !== req.query.userID) {
     return res.status(403).json({
       success: false,
       message:
@@ -34,12 +34,6 @@ export default async function handler(req, res) {
   try {
     await connectToDB();
     const { userID, productID } = req.query;
-    console.log(
-      "Deleting cart item for user:",
-      userID,
-      "productID:",
-      productID,
-    );
 
     const dbUser = await User.findById(userID);
     if (!dbUser) {

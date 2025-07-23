@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       message: "Token expired, please log in again.",
       isExpired: true,
     });
-  } else if (user.id != req.query.userID) {
+  } else if (user.id !== req.query.userID) {
     return res.status(403).json({
       success: false,
       message:
@@ -33,8 +33,6 @@ export default async function handler(req, res) {
 
   try {
     await connectToDB();
-    console.log("Database connected successfully");
-    console.log("req.body is ", req.body);
 
     const {
       userID,
@@ -46,16 +44,6 @@ export default async function handler(req, res) {
       postalCode,
       additionalDetails,
     } = req.body;
-    console.log("Updating address:", {
-      userID,
-      addressID,
-      fullName,
-      address,
-      city,
-      country,
-      postalCode,
-      additionalDetails,
-    });
 
     const user = await User.findById(userID);
     if (!user) {
@@ -79,8 +67,6 @@ export default async function handler(req, res) {
     addressToUpdate.additionalDetails = additionalDetails;
 
     await addressToUpdate.save();
-
-    console.log("Address updated:", addressToUpdate);
 
     return res.status(200).json({
       success: true,

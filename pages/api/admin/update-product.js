@@ -18,9 +18,6 @@ export default async function handler(req, res) {
 
     // Authentication and authorization logic here
     const user = await AuthUser(req);
-    console.log(user);
-    const que = req.query;
-    console.log(que);
     if (!user) {
       return res.status(401).json({
         success: false,

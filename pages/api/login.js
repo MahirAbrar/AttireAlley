@@ -4,13 +4,14 @@ import "@/app/auth/passport-config";
 
 import Joi from "joi";
 import jwt from "jsonwebtoken";
+import { withRateLimit, authLimiter } from "@/middleware/RateLimitMiddleware";
 
 const schema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().required(),
 });
 
-export default function handler(req, res, next) {
+async function loginHandler(req, res, next) {
   const { error } = schema.validate(req.body);
   if (error) {
     return res.status(400).json({
@@ -45,13 +46,17 @@ export default function handler(req, res, next) {
           // Generate JWT or any other post-login logic here
           const token = jwt.sign(
             { id: user._id, email: user.email, role: user.role },
-            "default_secret_key",
+            process.env.JWT_SECRET || "default_secret_key",
             { expiresIn: "1d" },
           );
+          
+          // Set token in httpOnly cookie
+          const isProduction = process.env.NODE_ENV === 'production';
+          res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${isProduction ? 'Secure;' : ''} SameSite=Strict; Path=/; Max-Age=86400`);
+          
           return res.status(200).json({
             success: true,
             message: "Login successful!",
-            token,
             user: {
               email: user.email,
               name: user.name,
@@ -70,3 +75,5 @@ export default function handler(req, res, next) {
       });
     });
 }
+
+export default withRateLimit(authLimiter)(loginHandler);

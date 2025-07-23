@@ -1,11 +1,27 @@
 import jwt from "jsonwebtoken";
 
 const AuthUser = async (req) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  // First try to get token from cookie
+  let token = null;
+  const cookieHeader = req.headers.cookie;
+  
+  if (cookieHeader) {
+    const cookies = cookieHeader.split(';').map(cookie => cookie.trim());
+    const tokenCookie = cookies.find(cookie => cookie.startsWith('token='));
+    if (tokenCookie) {
+      token = tokenCookie.split('=')[1];
+    }
+  }
+  
+  // Fallback to Authorization header for backward compatibility
+  if (!token) {
+    token = req.headers.authorization?.split(" ")[1];
+  }
+  
   if (!token) return false;
 
   try {
-    const extractAuthUserInfo = jwt.verify(token, "default_secret_key");
+    const extractAuthUserInfo = jwt.verify(token, process.env.JWT_SECRET || "default_secret_key");
     if (extractAuthUserInfo) return extractAuthUserInfo;
   } catch (e) {
     if (e instanceof jwt.TokenExpiredError) {
