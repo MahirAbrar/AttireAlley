@@ -15,6 +15,8 @@ const ImprovedAnimatedSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [showCTA, setShowCTA] = useState(false);
   const hasShownCTARef = useRef(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const totalImages = 10;
 
   const fashionItems = [
     {
@@ -90,17 +92,22 @@ const ImprovedAnimatedSection = () => {
   ];
 
   useEffect(() => {
+    // Ensure GSAP is loaded and registered
+    if (typeof window === "undefined" || !gsap || !ScrollTrigger) return;
+    
     const section = sectionRef.current;
     if (!section) return;
 
-    // Create staggered entrance animations
-    const items = section.querySelectorAll(".fashion-item");
-    
-    gsap.set(items, {
-      opacity: 0,
-      y: 100,
-      scale: 0.8
-    });
+    // Wait for images to be in DOM
+    const initAnimations = () => {
+      const items = section.querySelectorAll(".fashion-item");
+      if (items.length === 0) return;
+      
+      gsap.set(items, {
+        opacity: 0,
+        y: 100,
+        scale: 0.8
+      });
 
     ScrollTrigger.create({
       trigger: section,
@@ -187,7 +194,13 @@ const ImprovedAnimatedSection = () => {
       }
     });
 
+    };
+
+    // Initialize animations after a short delay to ensure DOM is ready
+    const timeoutId = setTimeout(initAnimations, 100);
+
     return () => {
+      clearTimeout(timeoutId);
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
@@ -228,7 +241,11 @@ const ImprovedAnimatedSection = () => {
               key={index}
               className={`fashion-item group relative overflow-hidden rounded-xl bg-white shadow-md transition-all duration-500 hover:shadow-2xl hover:z-10 dark:bg-gray-800 ${
                 item.size === "large" ? "col-span-2 row-span-2" : ""
-              }`}
+              } ${imagesLoaded >= totalImages ? "animate-fadeIn" : ""}`}
+              style={{
+                opacity: imagesLoaded < totalImages ? 1 : undefined,
+                transform: imagesLoaded < totalImages ? "translateY(0)" : undefined
+              }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
@@ -242,6 +259,13 @@ const ImprovedAnimatedSection = () => {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                    priority={index < 4}
+                    quality={85}
+                    onLoad={() => setImagesLoaded(prev => prev + 1)}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${item.src}`, e);
+                      setImagesLoaded(prev => prev + 1);
+                    }}
                   />
                   
                   {/* Overlay gradient */}
