@@ -2,10 +2,11 @@ import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Order from "@/models/order";
 import User from "@/models/user";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({
       success: false,
@@ -28,7 +29,13 @@ export default async function handler(req, res) {
         paymentMethod: data.paymentMethod || "Stripe",
         totalPrice: data.totalPrice,
         isPaid: data.isPaid || false,
-        isProcessing: data.isProcessing || true
+        isProcessing: data.isProcessing || true,
+        orderStatus: "pending",
+        statusHistory: [{
+          status: "pending",
+          timestamp: new Date(),
+          note: "Order created, awaiting payment"
+        }]
       });
 
       if (saveNewOrder) {
@@ -57,3 +64,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default withApiMiddleware(handler);

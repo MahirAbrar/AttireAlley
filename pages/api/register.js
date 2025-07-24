@@ -4,7 +4,8 @@ import connectToDB from "@/database";
 import User from "@/models/user";
 import { hash } from "bcryptjs";
 import Joi from "joi";
-import { withRateLimit, authLimiter } from "@/middleware/RateLimitMiddleware";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
+import { authLimiter } from "@/middleware/RateLimitMiddleware";
 
 const schema = Joi.object({
   name: Joi.string().required(),
@@ -67,4 +68,4 @@ async function registerHandler(req, res) {
   }
 }
 
-export default withRateLimit(authLimiter)(registerHandler);
+export default withApiMiddleware(registerHandler, { customLimiter: authLimiter });

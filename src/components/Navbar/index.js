@@ -73,7 +73,6 @@ function Navbar() {
     const fetchCartItems = async () => {
       if (isAuthUser && user) {
         const { success, data, isExpired } = await getCartItems(user._id);
-        console.log(isExpired, success, data);
         if (isExpired) {
           // Token has expired, update state variables
           setIsAuthUser(false);
@@ -84,8 +83,8 @@ function Navbar() {
             data.reduce(
               (acc, item) =>
                 acc + (item.productID.price - item.productID.priceDrop),
-              0,
-            ),
+              0
+            )
           );
         }
       }
@@ -100,7 +99,7 @@ function Navbar() {
         method: "POST",
         credentials: "include",
       });
-      
+
       if (response.ok) {
         setIsAuthUser(false);
         setUser(null);
@@ -123,7 +122,7 @@ function Navbar() {
       e.preventDefault();
       router.push(path);
     },
-    [router],
+    [router]
   );
 
   return (
@@ -138,16 +137,16 @@ function Navbar() {
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="group flex items-center gap-3 text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 dark:text-white transition-all duration-300 hover:scale-105"
+            className="group flex items-center gap-3 text-2xl font-bold text-gray-900 transition-all duration-300 hover:scale-105 dark:text-white lg:text-3xl xl:text-4xl"
             onClick={handleLinkClick("/")}
           >
             <div className="relative">
-              <div className="absolute inset-0 bg-primary rounded-xl blur-lg opacity-0 group-hover:opacity-75 transition-opacity"></div>
-              <div className="relative bg-primary p-2.5 lg:p-3 xl:p-3.5 rounded-xl group-hover:shadow-[0_0_15px_rgba(87,167,168,0.5)] transition-all">
-                <ShoppingBagIcon className="h-7 w-7 lg:h-8 lg:w-8 xl:h-10 xl:w-10 text-white" />
+              <div className="absolute inset-0 rounded-xl bg-primary opacity-0 blur-lg transition-opacity group-hover:opacity-75"></div>
+              <div className="relative rounded-xl bg-primary p-2.5 transition-all group-hover:shadow-[0_0_15px_rgba(87,167,168,0.5)] lg:p-3 xl:p-3.5">
+                <ShoppingBagIcon className="h-7 w-7 text-white lg:h-8 lg:w-8 xl:h-10 xl:w-10" />
               </div>
             </div>
-            <span className="text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-300">
+            <span className="text-gray-900 transition-colors duration-300 group-hover:text-primary dark:text-white">
               AttireAlley
             </span>
           </Link>
@@ -159,11 +158,11 @@ function Navbar() {
                     <li key={item.id}>
                       <Link
                         href={item.path}
-                        className="relative text-gray-700 dark:text-gray-300 px-4 py-2 font-medium text-lg xl:text-xl 2xl:text-2xl transition-all duration-300 hover:text-primary dark:hover:text-primary group"
+                        className="group relative px-4 py-2 text-lg font-medium text-gray-700 transition-all duration-300 hover:text-primary dark:text-gray-300 dark:hover:text-primary xl:text-xl 2xl:text-2xl"
                         onClick={() => handleLinkClick(item.path)}
                       >
                         {item.label}
-                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100"></span>
                       </Link>
                     </li>
                   ))
@@ -171,11 +170,11 @@ function Navbar() {
                     <li key={item.id}>
                       <Link
                         href={item.path}
-                        className="relative text-gray-700 dark:text-gray-300 px-4 py-2 font-medium text-lg xl:text-xl 2xl:text-2xl transition-all duration-300 hover:text-primary dark:hover:text-primary group"
+                        className="group relative px-4 py-2 text-lg font-medium text-gray-700 transition-all duration-300 hover:text-primary dark:text-gray-300 dark:hover:text-primary xl:text-xl 2xl:text-2xl"
                         onClick={() => handleLinkClick(item.path)}
                       >
                         {item.label}
-                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                        <span className="absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 bg-primary transition-transform duration-300 group-hover:scale-x-100"></span>
                       </Link>
                     </li>
                   ))}
@@ -194,7 +193,7 @@ function Navbar() {
                   <div className="indicator">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 text-gray-700 dark:text-gray-300 transition-colors duration-300 hover:text-primary 2xl:h-8 2xl:w-8"
+                      className="h-6 w-6 text-gray-700 transition-colors duration-300 hover:text-primary dark:text-gray-300 2xl:h-8 2xl:w-8"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -207,19 +206,19 @@ function Navbar() {
                       />
                     </svg>
                     {cartDisplay > 0 && (
-                      <span className="badge indicator-item badge-sm bg-primary text-white border-0 2xl:badge-md">
+                      <span className="badge indicator-item badge-sm border-0 bg-primary text-white 2xl:badge-md">
                         {cartDisplay}
                       </span>
                     )}
                   </div>
                 </div>
-                <div className="relative z-[1000] mt-2">
+                <div className="relative z-[1000]">
                   <div
                     tabIndex={0}
-                    className="card dropdown-content card-compact w-64 bg-white dark:bg-gray-800 shadow-xl border border-gray-200 dark:border-gray-700"
+                    className="card dropdown-content card-compact w-64 border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-800"
                   >
                     <div className="card-body">
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="mb-4 flex items-center justify-between">
                         <span className="text-lg font-bold text-gray-900 dark:text-white">
                           Cart ({cartDisplay})
                         </span>
@@ -229,19 +228,19 @@ function Navbar() {
                       </div>
                       <div className="space-y-2">
                         <button
-                          className="w-full btn bg-primary text-white border-0 hover:bg-primary/90 hover:shadow-[0_0_15px_rgba(87,167,168,0.3)] transition-all"
+                          className="btn w-full border-0 bg-primary text-white transition-all hover:bg-primary/90 hover:shadow-[0_0_15px_rgba(87,167,168,0.3)]"
                           onClick={() => router.push("/cart")}
                         >
                           View Cart
                         </button>
                         <button
-                          className="w-full btn btn-outline border-primary text-primary hover:bg-primary hover:text-white"
+                          className="btn btn-outline w-full border-primary text-primary hover:bg-primary hover:text-white"
                           onClick={() => router.push("/order")}
                         >
                           My Orders
                         </button>
                         <button
-                          className="w-full btn btn-ghost text-gray-700 dark:text-gray-300"
+                          className="btn btn-ghost w-full text-gray-700 dark:text-gray-300"
                           onClick={() => router.push("/account")}
                         >
                           My Account
@@ -257,14 +256,14 @@ function Navbar() {
               isAdminView ? (
                 <button
                   onClick={handleLinkClick("/")}
-                  className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
+                  className="rounded-lg border border-primary px-4 py-2 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary hover:text-white lg:text-base xl:text-lg"
                 >
                   Client View
                 </button>
               ) : (
                 <button
                   onClick={handleLinkClick("/admin-view")}
-                  className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium text-primary border border-primary rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
+                  className="rounded-lg border border-primary px-4 py-2 text-sm font-medium text-primary transition-all duration-300 hover:bg-primary hover:text-white lg:text-base xl:text-lg"
                 >
                   Admin View
                 </button>
@@ -274,13 +273,13 @@ function Navbar() {
             {isAuthUser ? (
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium bg-secondary text-white rounded-lg hover:bg-secondary/90 transition-all duration-300"
+                className="rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-secondary/90 lg:text-base xl:text-lg"
               >
                 Logout
               </button>
             ) : (
               <button
-                className="px-4 py-2 text-sm lg:text-base xl:text-lg font-medium bg-primary text-white rounded-lg hover:bg-primary/90 hover:shadow-[0_0_15px_rgba(87,167,168,0.3)] transition-all duration-300"
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-primary/90 hover:shadow-[0_0_15px_rgba(87,167,168,0.3)] lg:text-base xl:text-lg"
                 onClick={handleLinkClick("/login")}
               >
                 Login

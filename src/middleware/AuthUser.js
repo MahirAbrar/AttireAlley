@@ -21,7 +21,14 @@ const AuthUser = async (req) => {
   if (!token) return false;
 
   try {
-    const extractAuthUserInfo = jwt.verify(token, process.env.JWT_SECRET || "default_secret_key");
+    // JWT_SECRET must be set in environment variables
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      console.error("JWT_SECRET is not set in environment variables!");
+      return false;
+    }
+    
+    const extractAuthUserInfo = jwt.verify(token, jwtSecret);
     if (extractAuthUserInfo) return extractAuthUserInfo;
   } catch (e) {
     if (e instanceof jwt.TokenExpiredError) {

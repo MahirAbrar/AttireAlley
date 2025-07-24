@@ -1,10 +1,11 @@
 import connectToDB from "@/database";
 import Product from "@/models/products";
 import CorsMiddleware from "@/middleware/CorsMiddleware";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   // Apply CORS middleware
   await CorsMiddleware(req, res, () => {});
 
@@ -73,3 +74,5 @@ export default async function handler(req, res) {
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
+
+export default withApiMiddleware(handler);

@@ -1,7 +1,6 @@
 export const registerNewUser = async (formData) => {
   try {
-    console.log("services/ register");
-    console.log(JSON.stringify(formData));
+    );
     const response = await fetch("/api/register", {
       method: "POST",
       headers: {
@@ -21,7 +20,6 @@ export const registerNewUser = async (formData) => {
 
     return { success: true, data };
   } catch (e) {
-    console.log("error in services/register", e);
     return { success: false, message: e.message };
   }
 };

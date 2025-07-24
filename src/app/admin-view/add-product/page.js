@@ -14,6 +14,7 @@ import Loader from "@/components/Loader";
 import { addNewProduct } from "@/services/addProduct";
 import { toast } from "react-toastify";
 import LoaderBig from "@/components/LoaderBig";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 // This is saved in the env.local file FIREBASE_STORAGE_URL=gs://next-js-ecomm-478a2.appspot.com how do i access it?
 const firebaseStorageUrl = process.env.FIREBASE_STORAGE_URL;
@@ -168,7 +169,7 @@ const AddProduct = () => {
       });
       // set to default
       setFormData({
-        user: "",
+        user: user?._id || "",
         name: "",
         description: "",
         price: 0,
@@ -176,9 +177,10 @@ const AddProduct = () => {
         sizes: [],
         deliveryInfo: "",
         onSale: "No",
-        imageURL: "",
+        imageURL: [],
         priceDrop: 0,
       });
+      setUploadedCount(0);
 
       // set timeout for 1.5 seconds
       setTimeout(() => {
@@ -203,172 +205,270 @@ const AddProduct = () => {
   }
 
   return (
-    <div className="card my-8 w-full max-w-sm shrink-0  bg-base-100 p-4 shadow-2xl">
-      <div className=" p-2 text-black">
-        {uploadedCount} Image{uploadedCount !== 1 ? "s" : ""} Uploaded
-      </div>
-
-      <label className="form-control w-full">
-        <input
-          type="file"
-          multiple
-          className="file-input file-input-bordered w-full max-w-xs text-black"
-          accept="image/*"
-          onChange={handleImage}
+    <div className="min-h-screen p-6">
+      <div className="max-w-6xl mx-auto">
+        <Breadcrumbs 
+          customPaths={{
+            "/admin-view": "Admin Dashboard",
+            "/admin-view/add-product": "Add Product"
+          }}
         />
-      </label>
-
-      <label className="form-control w-full">
-        <div className="label">
-          <span className="label-text text-black">
-            Available Sizes <span className="text-red-500">*</span>
-          </span>
+        
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">Add New Product</h1>
+          <button 
+            onClick={() => router.push('/admin-view')}
+            className="btn btn-outline"
+          >
+            Back to Dashboard
+          </button>
         </div>
-        <ul className="menu menu-horizontal rounded-box">
-          <li>
-            <a
-              className={`text-black ${formData.sizes.includes("S") ? "bg-primary" : ""}`}
-              onClick={() => handleSizeClick("S")}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Form Section */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold mb-6">Product Details</h2>
+
+            {/* Image Upload */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium mb-2">Product Images</label>
+              <input
+                type="file"
+                multiple
+                className="file-input file-input-bordered w-full"
+                accept="image/*"
+                onChange={handleImage}
+                disabled={imageUploading}
+              />
+              {imageUploading && (
+                <p className="text-sm text-primary mt-2">Uploading images...</p>
+              )}
+              {uploadedCount > 0 && (
+                <p className="text-sm text-success mt-2">
+                  {uploadedCount} image{uploadedCount !== 1 ? "s" : ""} uploaded successfully
+                </p>
+              )}
+            </div>
+
+            {/* Product Name */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">
+                Product Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter product name"
+                className="input input-bordered w-full"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+              {formData.name && formData.name.length < 5 && (
+                <p className="text-sm text-error mt-1">Name must be at least 5 characters</p>
+              )}
+            </div>
+            {/* Price */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">
+                Price <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                placeholder="Enter price"
+                className="input input-bordered w-full"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                min="0"
+                step="0.01"
+              />
+            </div>
+            {/* Description */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">Description</label>
+              <textarea
+                placeholder="Enter product description"
+                className="textarea textarea-bordered w-full h-24"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              />
+            </div>
+            {/* Category */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">Category</label>
+              <select
+                className="select select-bordered w-full"
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              >
+                <option value="Everyone">Everyone</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Kids">Kids</option>
+              </select>
+            </div>
+            {/* Available Sizes */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">
+                Available Sizes <span className="text-red-500">*</span>
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => handleSizeClick(size)}
+                    className={`btn btn-sm ${
+                      formData.sizes.includes(size) ? 'btn-primary' : 'btn-outline'
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+              {formData.sizes.length === 0 && (
+                <p className="text-sm text-error mt-1">Please select at least one size</p>
+              )}
+            </div>
+            {/* Delivery Info */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">Delivery Info</label>
+              <input
+                type="text"
+                placeholder="Enter delivery information"
+                className="input input-bordered w-full"
+                value={formData.deliveryInfo}
+                onChange={(e) => setFormData({ ...formData, deliveryInfo: e.target.value })}
+              />
+            </div>
+            {/* On Sale */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium mb-2">On Sale</label>
+              <select
+                className="select select-bordered w-full"
+                value={formData.onSale}
+                onChange={(e) => setFormData({ ...formData, onSale: e.target.value })}
+              >
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </div>
+
+            {/* Price Drop */}
+            {formData.onSale === "Yes" && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">Price Drop Amount</label>
+                <input
+                  type="number"
+                  placeholder="Enter discount amount"
+                  className="input input-bordered w-full"
+                  value={formData.priceDrop}
+                  onChange={(e) => setFormData({ ...formData, priceDrop: e.target.value })}
+                  min="0"
+                  step="0.01"
+                />
+                {formData.price > 0 && formData.priceDrop > 0 && (
+                  <p className="text-sm text-info mt-1">
+                    Sale Price: ${(formData.price - formData.priceDrop).toFixed(2)}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              className="btn btn-primary w-full mt-6"
+              onClick={handleAddProduct}
+              disabled={imageUploading || componentLoader.loading}
             >
-              S
-            </a>
-          </li>
-          <li>
-            <a
-              className={`text-black ${formData.sizes.includes("M") ? "bg-primary" : ""}`}
-              onClick={() => handleSizeClick("M")}
-            >
-              M
-            </a>
-          </li>
-          <li>
-            <a
-              className={`text-black ${formData.sizes.includes("L") ? "bg-primary" : ""}`}
-              onClick={() => handleSizeClick("L")}
-            >
-              L
-            </a>
-          </li>
-        </ul>
-      </label>
-      <label className="form-control w-full ">
-        <div className="label">
-          <span className="label-text text-black">
-            Name of Product <span className="text-red-500">*</span>
-          </span>
-        </div>
-        <input
-          type="text"
-          placeholder="Enter name"
-          className="input input-bordered w-full text-black"
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        />
-      </label>
-      <label className="form-control w-full ">
-        <div className="label">
-          <span className="label-text text-black">
-            Price of Product <span className="text-red-500">*</span>
-          </span>
-        </div>
-        <input
-          type="number"
-          placeholder="Enter price"
-          className="input input-bordered w-full text-black"
-          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-        />
-      </label>
-      <label className="form-control w-full ">
-        <div className="label">
-          <span className="label-text text-black">Description of Product</span>
-        </div>
-        <input
-          type="text"
-          placeholder="Enter description"
-          className="input input-bordered w-full text-black"
-          onChange={(e) =>
-            setFormData({ ...formData, description: e.target.value })
-          }
-        />
-      </label>
-      <label className="form-control w-full ">
-        <div className="label">
-          <span className="label-text text-black">Category</span>
-        </div>
-
-        <select
-          onChange={(e) =>
-            setFormData({ ...formData, category: e.target.value })
-          }
-          className="select select-bordered text-black"
-        >
-          <option value="Kids" className="text-black">
-            Everyone
-          </option>
-          <option value="Men" className="text-black">
-            Men
-          </option>
-          <option value="Women" className="text-black">
-            Women
-          </option>
-          <option value="Kids" className="text-black">
-            Kids
-          </option>
-        </select>
-      </label>
-      <label className="form-control w-full ">
-        <div className="label">
-          <span className="label-text text-black">Delivery Info</span>
-        </div>
-        <input
-          type="text"
-          placeholder="Enter delivery info"
-          className="input input-bordered w-full text-black"
-          onChange={(e) =>
-            setFormData({ ...formData, deliveryInfo: e.target.value })
-          }
-        />
-      </label>
-      <label className="form-control w-full ">
-        <div className="label">
-          <span className="label-text text-black">On Sale</span>
-        </div>
-        <select
-          onChange={(e) => setFormData({ ...formData, onSale: e.target.value })}
-          className="select select-bordered text-black"
-        >
-          <option value="No" className="text-black">
-            No
-          </option>
-          <option value="Yes" className="text-black">
-            Yes
-          </option>
-        </select>
-      </label>
-
-      {formData.onSale === "Yes" && (
-        <label className="form-control w-full ">
-          <div className="label">
-            <span className="label-text text-black">Price Drop</span>
+              {componentLoader.loading ? (
+                <>
+                  <span className="loading loading-spinner"></span>
+                  Adding Product...
+                </>
+              ) : (
+                'Add Product'
+              )}
+            </button>
           </div>
-          <input
-            type="number"
-            placeholder="Enter Price Drop"
-            className="input input-bordered w-full text-black"
-            onChange={(e) =>
-              setFormData({ ...formData, priceDrop: e.target.value })
-            }
-            value={formData.priceDrop}
-          />
-        </label>
-      )}
-      <button
-        className="btn btn-primary mt-2 w-full"
-        onClick={handleAddProduct}
-        disabled={imageUploading}
-      >
-        Add Product
-        {componentLoader.loading ? <Loader /> : null}
-      </button>
+
+          {/* Preview Section */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold mb-6">Preview</h2>
+            
+            {/* Image Preview */}
+            {formData.imageURL.length > 0 ? (
+              <div className="mb-6">
+                <p className="text-sm font-medium mb-2">Uploaded Images</p>
+                <div className="grid grid-cols-2 gap-4">
+                  {formData.imageURL.map((url, index) => (
+                    <div key={index} className="relative group">
+                      <img
+                        src={url}
+                        alt={`Product ${index + 1}`}
+                        className="w-full h-40 object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newUrls = formData.imageURL.filter((_, i) => i !== index);
+                          setFormData({ ...formData, imageURL: newUrls });
+                          setUploadedCount(newUrls.length);
+                        }}
+                        className="absolute top-2 right-2 btn btn-sm btn-circle btn-error opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="bg-gray-100 dark:bg-gray-700 rounded-lg h-64 flex items-center justify-center mb-6">
+                <p className="text-gray-500">No images uploaded yet</p>
+              </div>
+            )}
+
+            {/* Product Details Preview */}
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Product Name</p>
+                <p className="font-semibold">{formData.name || 'Not set'}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Price</p>
+                <p className="font-semibold">
+                  {formData.price ? `$${formData.price}` : 'Not set'}
+                  {formData.onSale === "Yes" && formData.priceDrop > 0 && (
+                    <span className="ml-2 line-through text-gray-500">
+                      ${(parseFloat(formData.price) + parseFloat(formData.priceDrop)).toFixed(2)}
+                    </span>
+                  )}
+                </p>
+              </div>
+              
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Category</p>
+                <p className="font-semibold">{formData.category}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Available Sizes</p>
+                <p className="font-semibold">
+                  {formData.sizes.length > 0 ? formData.sizes.join(', ') : 'No sizes selected'}
+                </p>
+              </div>
+              
+              {formData.description && (
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">Description</p>
+                  <p className="font-semibold">{formData.description}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

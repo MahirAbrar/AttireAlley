@@ -4,7 +4,8 @@ import "@/app/auth/passport-config";
 
 import Joi from "joi";
 import jwt from "jsonwebtoken";
-import { withRateLimit, authLimiter } from "@/middleware/RateLimitMiddleware";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
+import { authLimiter } from "@/middleware/RateLimitMiddleware";
 
 const schema = Joi.object({
   email: Joi.string().email().required(),
@@ -44,9 +45,18 @@ async function loginHandler(req, res, next) {
             });
           }
           // Generate JWT or any other post-login logic here
+          const jwtSecret = process.env.JWT_SECRET;
+          if (!jwtSecret) {
+            console.error("JWT_SECRET is not set in environment variables!");
+            return res.status(500).json({
+              success: false,
+              message: "Server configuration error",
+            });
+          }
+          
           const token = jwt.sign(
             { id: user._id, email: user.email, role: user.role },
-            process.env.JWT_SECRET || "default_secret_key",
+            jwtSecret,
             { expiresIn: "1d" },
           );
           
@@ -76,4 +86,4 @@ async function loginHandler(req, res, next) {
     });
 }
 
-export default withRateLimit(authLimiter)(loginHandler);
+export default withApiMiddleware(loginHandler, { customLimiter: authLimiter });

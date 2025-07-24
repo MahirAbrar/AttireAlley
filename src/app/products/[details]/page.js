@@ -62,11 +62,9 @@ const Page = ({ params }) => {
     } else {
       toast.error(res.message || "Error adding item to cart");
     }
-    console.log("res is ", res);
     setLoadingCart(false);
   }
 
-  console.log(productDetails);
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background dark:bg-backgroundDark">
@@ -78,8 +76,6 @@ const Page = ({ params }) => {
   if (!productDetails) {
     return <p>No product details available</p>; // Handling case when no product details are loaded
   }
-  console.log(productDetails);
-
   return (
     <div className="flex min-h-screen w-screen flex-col gap-4 p-4 md:flex-row">
       {/* left side */}

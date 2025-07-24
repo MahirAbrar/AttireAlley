@@ -50,6 +50,32 @@ const OrderSchema = new mongoose.Schema(
       required: true,
       default: true,
     },
+    orderStatus: {
+      type: String,
+      required: true,
+      default: "pending",
+      enum: ["pending", "paid", "confirmed", "processing", "shipped", "delivered", "cancelled"],
+    },
+    statusHistory: [{
+      status: {
+        type: String,
+        required: true,
+      },
+      timestamp: {
+        type: Date,
+        default: Date.now,
+      },
+      note: {
+        type: String,
+      },
+    }],
+    trackingNumber: {
+      type: String,
+    },
+    stripeSessionId: {
+      type: String,
+      sparse: true,
+    },
   },
   { timestamps: true },
 );

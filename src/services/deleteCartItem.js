@@ -2,7 +2,6 @@ import Cookies from "js-cookie";
 
 export const deleteCartItem = async (userID, productID) => {
   try {
-    console.log(userID, productID);
     const response = await fetch(
       `/api/cart/delete-from-cart?userID=${userID}&productID=${productID}`,
       {
@@ -43,7 +42,6 @@ export const deleteCartItem = async (userID, productID) => {
       message: data.message,
     };
   } catch (e) {
-    console.log("Error in delete cart item service", e);
     return {
       success: false,
       message: e.message,

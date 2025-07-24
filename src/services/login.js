@@ -1,11 +1,5 @@
 export const LoginUser = async (formData) => {
   try {
-    console.log(
-      "logging in from services",
-      "sending",
-      JSON.stringify(formData),
-    );
-
     const response = await fetch("/api/login", {
       method: "POST",
       headers: {
@@ -15,7 +9,6 @@ export const LoginUser = async (formData) => {
     });
 
     const data = await response.json();
-    console.log("This is the response", data);
 
     if (!response.ok) {
       return {
@@ -27,7 +20,6 @@ export const LoginUser = async (formData) => {
 
     return { success: true, data };
   } catch (e) {
-    console.log("error in services/login", e);
     return { success: false, message: e.message };
   }
 };

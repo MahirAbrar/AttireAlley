@@ -1,8 +1,9 @@
 import connectToDB from "@/database";
 import Order from "@/models/order";
 import AuthUser from "@/middleware/AuthUser";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({
       success: false,
@@ -66,4 +67,6 @@ export default async function handler(req, res) {
       error: e.message,
     });
   }
-} 
+}
+
+export default withApiMiddleware(handler);

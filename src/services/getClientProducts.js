@@ -4,8 +4,6 @@ export async function getClientProducts(category) {
     const baseUrl = process.env.NEXT_PUBLIC_API_URL || 
       (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
     
-    console.log("Fetching products from:", `${baseUrl}/api/client/get-client-product?category=${category}`);
-    
     const response = await fetch(
       `${baseUrl}/api/client/get-client-product?category=${category}`,
       {
@@ -26,8 +24,6 @@ export async function getClientProducts(category) {
     }
 
     const data = await response.json();
-    console.log("Products fetched successfully:", data);
-
     return {
       success: true,
       data: data,

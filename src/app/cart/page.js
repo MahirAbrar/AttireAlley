@@ -44,13 +44,9 @@ const Cart = () => {
   };
 
   const handleDelete = (item) => {
-    console.log("Delete current item", item.productID._id);
-    console.log("userID", user._id);
-
     deleteCartItem(user._id, item.productID._id)
       .then((response) => {
         if (response.success) {
-          console.log("Item deleted successfully");
           // Update the cart items after successful deletion
           fetchUserCartItems();
           triggerNavbarUpdate();

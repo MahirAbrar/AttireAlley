@@ -2,8 +2,9 @@ import connectToDB from "@/database";
 import User from "@/models/user";
 import Address from "@/models/address";
 import AuthUser from "@/middleware/AuthUser";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== "PUT") {
     return res
       .status(405)
@@ -82,3 +83,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default withApiMiddleware(handler);

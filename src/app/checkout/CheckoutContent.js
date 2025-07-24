@@ -37,25 +37,60 @@ const CheckoutContent = () => {
   useEffect(() => {
     const status = searchParams.get('status');
     const sessionId = searchParams.get('session_id');
-    const userId = searchParams.get('user_id');
     
-    if (status === 'success' && sessionId && userId && isAuthUser && user && user._id === userId) {
-      router.push('/order');
+    if (status === 'success' && sessionId && user) {
+      // Update the most recent order as paid
+      updateOrderPaymentStatus(sessionId);
     }
-  }, [searchParams, isAuthUser, user]);
+  }, [searchParams, user]);
+
+  const updateOrderPaymentStatus = async (sessionId) => {
+    try {
+      // Find and update the most recent order for this user
+      const response = await fetch('/api/order/update-payment-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          userId: user._id,
+          sessionId: sessionId
+        }),
+      });
+
+      if (response.ok) {
+        router.push('/order-success?status=success&session_id=' + sessionId);
+      } else {
+        console.error('Failed to update payment status');
+        router.push('/order-success?status=success&session_id=' + sessionId);
+      }
+    } catch (error) {
+      console.error('Error updating payment status:', error);
+      router.push('/order-success?status=success&session_id=' + sessionId);
+    }
+  };
 
   const fetchUserCartItems = async () => {
     setCartLoading(true);
     try {
       const response = await getCartItems(user._id);
-      setCartItems(response.data);
-      const totalItemCount = response.data.reduce(
-        (total, item) => total + item.quantity,
-        0,
-      );
-      setTotalItems(totalItemCount);
+      if (response.success && response.data) {
+        const items = Array.isArray(response.data) ? response.data : [];
+        setCartItems(items);
+        const totalItemCount = items.reduce(
+          (total, item) => total + item.quantity,
+          0,
+        );
+        setTotalItems(totalItemCount);
+      } else {
+        setCartItems([]);
+        setTotalItems(0);
+      }
     } catch (error) {
       console.error("Error fetching cart items:", error);
+      setCartItems([]);
+      setTotalItems(0);
     } finally {
       setCartLoading(false);
     }
@@ -65,11 +100,16 @@ const CheckoutContent = () => {
     setAddressLoading(true);
     try {
       const response = await getAllAddresses(user._id);
-      if (response.success) {
-        setAddresses(response.data.data);
+      if (response.success && response.data) {
+        // Ensure we always have an array
+        const addressData = response.data.data || response.data || [];
+        setAddresses(Array.isArray(addressData) ? addressData : []);
+      } else {
+        setAddresses([]);
       }
     } catch (error) {
       console.error("Error fetching addresses:", error);
+      setAddresses([]);
     } finally {
       setAddressLoading(false);
     }
@@ -112,8 +152,8 @@ const CheckoutContent = () => {
       };
 
       const orderResponse = await createNewOrder(orderData);
-      if (!orderResponse.success) {
-        throw new Error("Failed to create order");
+      if (!orderResponse.success || !orderResponse.data?._id) {
+        throw new Error("Failed to create order or get order ID");
       }
 
       const stripe = await stripePromise;
@@ -131,7 +171,10 @@ const CheckoutContent = () => {
         quantity: item.quantity,
       }));
 
-      const res = await callStripeSession({ createLineItems });
+      const res = await callStripeSession({ 
+        createLineItems,
+        orderId: orderResponse.data._id 
+      });
       
       if (!res || !res.id) {
         throw new Error("Failed to create Stripe session");
@@ -157,7 +200,10 @@ const CheckoutContent = () => {
           <h2 className="mb-4 text-xl font-bold">Cart Items</h2>
           <div className="space-y-4">
             {cartLoading && <Loader />}
-            {cartItems.map((item) => (
+            {!cartLoading && cartItems && cartItems.length === 0 && (
+              <p className="text-gray-500 my-4">Your cart is empty.</p>
+            )}
+            {cartItems && cartItems.length > 0 && cartItems.map((item) => (
               <div key={item._id} className="flex items-center space-x-2">
                 <Image
                   src={item.productID.imageURL[0]}
@@ -189,7 +235,10 @@ const CheckoutContent = () => {
           </h2>
 
           {addressLoading && <Loader />}
-          {addresses.map((address) => (
+          {!addressLoading && addresses && addresses.length === 0 && (
+            <p className="text-gray-500 my-4">No addresses found. Please add an address in your account settings.</p>
+          )}
+          {addresses && addresses.length > 0 && addresses.map((address) => (
             <div
               key={address._id}
               className={`mb-4 rounded border p-4 ${
@@ -245,14 +294,14 @@ const CheckoutContent = () => {
             <h3>Subtotal:</h3>
             <h3 className="font-bold">
               $
-              {cartItems.reduce(
+              {cartItems && cartItems.length > 0 ? cartItems.reduce(
                 (acc, item) =>
                   acc +
                   (item.productID.onSale === "Yes"
                     ? (item.productID.price - item.productID.priceDrop) * item.quantity
                     : item.productID.price * item.quantity),
                 0
-              )}
+              ) : 0}
             </h3>
           </div>
           <div className="flex justify-between">
@@ -262,14 +311,14 @@ const CheckoutContent = () => {
           <div className="mb-2 flex justify-between">
             <h3>Total:</h3>
             <h3 className="font-bold">
-              {cartItems.reduce(
+              {cartItems && cartItems.length > 0 ? cartItems.reduce(
                 (acc, item) =>
                   acc +
                   (item.productID.onSale === "Yes"
                     ? (item.productID.price - item.productID.priceDrop) * item.quantity
                     : item.productID.price * item.quantity),
                 0
-              )}
+              ) : 0}
             </h3>
           </div>
           <button

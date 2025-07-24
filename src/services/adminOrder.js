@@ -1,54 +1,23 @@
-import Cookies from "js-cookie";
+import { fetchWithAuth } from "@/utils/fetchWithAuth";
 
 export const getAllOrders = async () => {
-  try {
-    const res = await fetch("/api/admin/orders/get-all-orders", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-    });
-
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    console.log(e);
-    return { success: false, message: "Failed to fetch orders" };
-  }
+  const data = await fetchWithAuth("/api/admin/orders/get-all-orders", {
+    method: "GET",
+  });
+  return data;
 };
 
 export const getOrderDetails = async (orderId) => {
-  try {
-    const res = await fetch(`/api/admin/orders/get-order-details?orderId=${orderId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-    });
-
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    console.log(e);
-    return { success: false, message: "Failed to fetch order details" };
-  }
+  const data = await fetchWithAuth(`/api/admin/orders/get-order-details?orderId=${orderId}`, {
+    method: "GET",
+  });
+  return data;
 };
 
-export const updateOrderStatus = async (orderId, status) => {
-  try {
-    const res = await fetch("/api/admin/orders/update-order", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-      body: JSON.stringify({ orderId, status }),
-    });
-
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    console.log(e);
-    return { success: false, message: "Failed to update order status" };
-  }
+export const updateOrderStatus = async (orderId, status, trackingNumber = null, note = null) => {
+  const data = await fetchWithAuth("/api/admin/orders/update-order", {
+    method: "PUT",
+    body: JSON.stringify({ orderId, status, trackingNumber, note }),
+  });
+  return data;
 }; 

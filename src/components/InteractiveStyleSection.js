@@ -91,7 +91,6 @@ const InteractiveStyleSection = () => {
         trigger: sectionRef.current,
         start: "top 80%",
         onEnter: () => {
-          console.log("Animating title");
           gsap.to(titleRef.current, {
             opacity: 1,
             y: 0,
@@ -113,7 +112,6 @@ const InteractiveStyleSection = () => {
         trigger: sectionRef.current,
         start: "top 70%",
         onEnter: () => {
-          console.log("Animating cards");
           gsap.to(cardsRef.current, {
             opacity: 1,
             y: 0,
@@ -150,8 +148,7 @@ const InteractiveStyleSection = () => {
     // Refresh ScrollTrigger after component is fully mounted
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-      console.log("ScrollTrigger refreshed");
-    }, 500);
+      }, 500);
 
     return () => {
       clearTimeout(refreshTimer);
@@ -172,7 +169,6 @@ const InteractiveStyleSection = () => {
           background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, ${categories[activeCategory].color}40 0%, transparent 60%)`
         }}
       />
-
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-20">
         {/* Section Title */}

@@ -35,6 +35,11 @@ export const adminNavOptions = [
     label: "Add New Product",
     path: "/admin-view/add-product",
   },
+  {
+    id: "adminOrders",
+    label: "All Orders",
+    path: "/admin-view/all-orders",
+  },
 ];
 
 export const registrationFormControls = [

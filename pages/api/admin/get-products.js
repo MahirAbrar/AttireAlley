@@ -1,10 +1,11 @@
 import connectToDB from "@/database";
 import Product from "@/models/products";
 import AuthUser from "@/middleware/AuthUser";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
 
-export default async function handler(req, res, next) {
+async function handler(req, res, next) {
   if (req.method !== "GET") {
     return res.status(405).json({
       success: false,
@@ -72,3 +73,5 @@ export default async function handler(req, res, next) {
     });
   }
 }
+
+export default withApiMiddleware(handler);

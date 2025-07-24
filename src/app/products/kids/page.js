@@ -21,7 +21,6 @@ const Kids = () => {
   const fetchProducts = async () => {
     const res = await getClientProducts("kids");
     if (res?.data?.data) {
-      console.log("Product data:", res.data.data);
       setProducts(res.data.data);
       setLoading(false);
     } else {

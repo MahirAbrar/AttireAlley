@@ -14,6 +14,19 @@ const OrderPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const getStatusBadgeColor = (status) => {
+    switch (status) {
+      case "pending": return "badge-warning";
+      case "paid": return "badge-info";
+      case "confirmed": return "badge-info";
+      case "processing": return "badge-primary";
+      case "shipped": return "badge-secondary";
+      case "delivered": return "badge-success";
+      case "cancelled": return "badge-error";
+      default: return "badge-ghost";
+    }
+  };
+
   useEffect(() => {
     const fetchOrders = async () => {
       if (!isAuthUser) {
@@ -23,8 +36,6 @@ const OrderPage = () => {
 
       try {
         const response = await getAllOrdersForUser(user._id);
-        console.log('Order response:', response);
-        
         if (response.success) {
           // Sort orders by date, newest first
           const sortedOrders = response.data.sort((a, b) => 
@@ -101,17 +112,25 @@ const OrderPage = () => {
                   <p className="text-lg font-semibold">
                     Total: ${order.totalPrice.toFixed(2)}
                   </p>
-                  <div className="flex items-center gap-2">
-                    <p className={`text-sm ${
-                      order.isProcessing ? "text-yellow-600" : "text-green-600"
-                    }`}>
-                      Status: {order.isProcessing ? "Processing" : "Completed"}
+                  <div className="mt-2 space-y-1">
+                    <p className="text-sm">
+                      Status: <span className={`badge ${getStatusBadgeColor(order.orderStatus || 'pending')}`}>
+                        {order.orderStatus ? order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1) : 'Pending'}
+                      </span>
                     </p>
-                    <p className={`text-sm ${
-                      order.isPaid ? "text-green-600" : "text-red-600"
-                    }`}>
-                      Payment: {order.isPaid ? "Paid" : "Pending"}
+                    <p className="text-sm text-green-600 font-medium">
+                      Payment: Paid
                     </p>
+                    {order.statusHistory && order.statusHistory.length > 0 && (() => {
+                      const latestStatus = order.statusHistory.sort((a, b) => 
+                        new Date(b.timestamp) - new Date(a.timestamp)
+                      )[0];
+                      return latestStatus.note ? (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 italic">
+                          Note: {latestStatus.note}
+                        </p>
+                      ) : null;
+                    })()}
                   </div>
                 </div>
               </div>

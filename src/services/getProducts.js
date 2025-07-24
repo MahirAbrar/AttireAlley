@@ -12,8 +12,6 @@ export const getProducts = async () => {
     });
 
     const data = await response.json();
-    console.log("Success fetching products in services/products");
-
     if (!response.ok) {
       return {
         success: false,
@@ -24,7 +22,6 @@ export const getProducts = async () => {
 
     return { success: true, data };
   } catch (e) {
-    console.log("Error fetching products in services/products", e);
     return { success: false, message: e.message };
   }
 };

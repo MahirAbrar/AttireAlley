@@ -12,6 +12,7 @@ import {
 } from "../../services/address";
 import { toast } from "react-toastify";
 import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const Account = () => {
   const { user } = useContext(GlobalContext);
@@ -22,7 +23,6 @@ const Account = () => {
 
   const fetchAddresses = useCallback(async (userID) => {
     const { success, data } = await getAllAddresses(userID);
-    console.log("fetching addresses");
     if (success) {
       setAddresses(data.data);
     }
@@ -34,14 +34,12 @@ const Account = () => {
     let userExist = user ? true : false;
     if (userExist) {
       fetchAddresses(user._id);
-      setFormData(prevFormData => ({ ...prevFormData, userID: user._id }));
-      console.log(user);
+      setFormData((prevFormData) => ({ ...prevFormData, userID: user._id }));
     }
   }, [user, fetchAddresses]);
 
   const updateAddressHandler = (address) => {
-    console.log("Update address", address);
-  };
+    };
 
   const deleteAddressHandler = (address) => {
     setDeleteLoading((prevState) => ({ ...prevState, [address._id]: true }));
@@ -95,11 +93,75 @@ const Account = () => {
 
   return (
     <div className="dark:border-primaryDark dark:shadow-primaryDark/30 container mx-4 my-4 rounded-lg border-2 border-primary border-opacity-50 bg-opacity-50 px-8 py-8 text-lg shadow-lg shadow-primary/30 dark:border-opacity-50">
-      {user && <h3>{user.name}</h3>}
-      {user && <h3>{user.email}</h3>}
-      {user && user.role === "admin" && <h3>Admin</h3>}
-      {user && user.role === "customer" && <h3>Customer</h3>}
-      <h1 className="font-bold">Your addresses :</h1>
+      {/* Quick Navigation Shortcuts */}
+      <div className="mb-6 flex flex-wrap gap-4">
+        <Link href="/cart" className="btn btn-outline btn-primary btn-sm">
+          <svg
+            className="mr-2 h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+            />
+          </svg>
+          View Cart
+        </Link>
+        <Link href="/orders" className="btn btn-outline btn-primary btn-sm">
+          <svg
+            className="mr-2 h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            />
+          </svg>
+          My Orders
+        </Link>
+        <Link href="/products" className="btn btn-outline btn-primary btn-sm">
+          <svg
+            className="mr-2 h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            />
+          </svg>
+          Shop Products
+        </Link>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* User Info */}
+      <div className="mb-6">
+        {user && <h3 className="text-2xl font-bold">{user.name}</h3>}
+        {user && (
+          <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
+        )}
+        {user && user.role === "admin" && (
+          <span className="badge badge-warning">Admin</span>
+        )}
+        {user && user.role === "customer" && (
+          <span className="badge badge-primary">Customer</span>
+        )}
+      </div>
+
+      <h1 className="mb-4 text-xl font-bold">Your addresses:</h1>
       {fetchLoading ? (
         <Loader />
       ) : (

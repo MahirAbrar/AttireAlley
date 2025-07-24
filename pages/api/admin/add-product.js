@@ -2,6 +2,7 @@ import connectToDB from "@/database";
 import Product from "@/models/products";
 import AuthUser from "@/middleware/AuthUser";
 import Joi from "joi";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ const addNewProductSchema = Joi.object({
   priceDrop: Joi.number().required(),
 });
 
-export default async function handler(req, res, next) {
+async function handler(req, res, next) {
   // todo
   // const { error } = addNewProductSchema.validate(req.body);
 
@@ -90,3 +91,5 @@ export default async function handler(req, res, next) {
     });
   }
 }
+
+export default withApiMiddleware(handler);

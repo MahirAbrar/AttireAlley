@@ -2,7 +2,6 @@ import Cookies from "js-cookie";
 
 // Frontend will send to Backend API to delete a product
 export const deleteProduct = async (productId, userID) => {
-  console.log("deleting from services");
   try {
     const response = await fetch(`/api/admin/delete-product?id=${productId}&userID=${userID}`, {
       method: "DELETE",
@@ -13,8 +12,6 @@ export const deleteProduct = async (productId, userID) => {
     });
 
     const data = await response.json();
-    console.log("Attempted to delete product in services/products");
-
     if (!response.ok) {
       return {
         success: false,
@@ -25,7 +22,6 @@ export const deleteProduct = async (productId, userID) => {
 
     return { success: true, data };
   } catch (e) {
-    console.log("Error deleting product in services/products", e);
     return { success: false, message: e.message };
   }
 };

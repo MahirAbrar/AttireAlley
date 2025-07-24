@@ -1,3 +1,4 @@
+import { fetchWithAuth } from "@/utils/fetchWithAuth";
 import Cookies from "js-cookie";
 
 // Landing apge
@@ -20,6 +21,37 @@ import Cookies from "js-cookie";
 // 3. ❌ Token refresh mechanism
 // 4. ❌ Content Security Policy
 
+// The Timeout Problem You're Experiencing:
+
+//   The issue where "the thing times out but you don't get logged out"
+//   happens because:
+
+//   1. Token expiration is only checked in the Navbar component when
+//   fetching cart items (lines 75-90)
+//   2. Most API calls don't handle token expiration, so expired tokens go
+//   unnoticed
+//   3. No global interceptor to catch expired tokens across all API requests
+//   4. The logout only happens in specific flows, not automatically when any
+//    API call detects an expired token
+
+//   Critical Security Vulnerabilities Found:
+
+//   1. CRITICAL: Hardcoded JWT Secret
+//     - "default_secret_key" is hardcoded as fallback
+//     - Anyone can forge valid tokens with this known secret
+//   2. No Token Revocation
+//     - Tokens remain valid until expiration
+//     - No server-side session invalidation
+//     - Logout only clears client-side cookie
+//   3. Weak Password Requirements
+//     - Only 6 characters minimum
+//     - No complexity requirements
+//   4. Missing Security Features
+//     - No CSRF protection
+//     - No account lockout mechanism
+//     - No audit logging
+//     - No MFA support
+
 // TODO: Eslint
 // TODO 9 11 40
 // TODO Need to hook up with frontend
@@ -40,76 +72,35 @@ export const createNewOrder = async (formData) => {
 
     return data;
   } catch (e) {
-    console.log(e);
+    return { success: false, message: "Failed to create order", error: e };
   }
 };
 
 export const getAllOrdersForUser = async (id) => {
-  try {
-    const res = await fetch(`/api/order/get-order?userID=${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-    });
-
-    const data = await res.json();
-    return data;
-  } catch (e) {
-    console.log(e);
-    return { success: false, message: "Failed to fetch orders" };
-  }
+  const data = await fetchWithAuth(`/api/order/get-order?userID=${id}`, {
+    method: "GET",
+  });
+  return data;
 };
 
 export const getOrderDetails = async (id) => {
-  try {
-    const res = await fetch(`/api/order/order-details?id=${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-    });
-
-    const data = await res.json();
-
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
+  const data = await fetchWithAuth(`/api/order/order-details?id=${id}`, {
+    method: "GET",
+  });
+  return data;
 };
 
 export const getAllOrdersForAllUsers = async () => {
-  try {
-    const res = await fetch(`/api/admin/orders/get-all-orders`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-    });
-
-    const data = await res.json();
-
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
+  const data = await fetchWithAuth(`/api/admin/orders/get-all-orders`, {
+    method: "GET",
+  });
+  return data;
 };
 
 export const updateStatusOfOrder = async (formData) => {
-  try {
-    const res = await fetch(`/api/admin/orders/update-order`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("token")}`,
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await res.json();
-
-    return data;
-  } catch (e) {
-    console.log(e);
-  }
+  const data = await fetchWithAuth(`/api/admin/orders/update-order`, {
+    method: "PUT",
+    body: JSON.stringify(formData),
+  });
+  return data;
 };

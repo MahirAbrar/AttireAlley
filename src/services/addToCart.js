@@ -12,7 +12,6 @@ export const addToCart = async (data) => {
     quantity: data.quantity,
   };
 
-  console.log("formData is ", formData);
   try {
     const response = await fetch("/api/cart/add-to-cart", {
       method: "POST",
@@ -36,7 +35,6 @@ export const addToCart = async (data) => {
 
     return { success: true, data };
   } catch (e) {
-    console.log("Error in add to cart services", e);
     return { success: false, message: e.message };
   }
 };

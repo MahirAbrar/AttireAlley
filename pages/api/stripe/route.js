@@ -1,9 +1,10 @@
 import Stripe from "stripe";
 import AuthUser from "@/middleware/AuthUser";
+import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
@@ -40,15 +41,19 @@ export default async function handler(req, res) {
         : "https://attirealley.vercel.app/");
 
     // Parse the request body
-    const { createLineItems } = req.body;
+    const { createLineItems, orderId } = req.body;
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: createLineItems, // Make sure this matches what you're sending
+      line_items: createLineItems,
       mode: "payment",
-      success_url: `${baseUrl}/checkout?status=success&session_id={CHECKOUT_SESSION_ID}&user_id=${user.id}`,
+      success_url: `${baseUrl}/checkout?status=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/checkout?status=cancel`,
+      metadata: {
+        userId: user._id || user.id,
+        orderId: orderId || "", // Will be set if order is created before payment
+      },
     });
 
     return res.status(200).json({
@@ -63,3 +68,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default withApiMiddleware(handler);

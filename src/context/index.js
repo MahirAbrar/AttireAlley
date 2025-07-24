@@ -2,6 +2,7 @@
 import "../app/globals.css";
 
 import { createContext, useEffect, useState } from "react";
+import { onAuthExpired } from "@/utils/fetchWithAuth";
 
 export const GlobalContext = createContext(null);
 
@@ -26,6 +27,18 @@ export default function GlobalState({ children }) {
   const triggerNavbarUpdate = () => {
     setNavbarUpdateTrigger((prevTrigger) => (prevTrigger + 1) % 11);
   };
+
+  // Handle auth expiration globally
+  useEffect(() => {
+    const cleanup = onAuthExpired(() => {
+      setIsAuthUser(false);
+      setUser(null);
+      setCartItemsCount(0);
+      setPageLevel("Customer");
+    });
+
+    return cleanup;
+  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

@@ -4,12 +4,6 @@ import Cookies from "js-cookie";
 
 export const addNewProduct = async (formData) => {
   try {
-    console.log(
-      "adding product in from services",
-      "sending",
-      JSON.stringify(formData),
-    );
-
     const response = await fetch(`/api/admin/add-product?userID=${formData.user}`, {
       method: "POST",
       headers: {
@@ -20,8 +14,6 @@ export const addNewProduct = async (formData) => {
     });
 
     const data = await response.json();
-    console.log("This is the response", data);
-
     if (!response.ok) {
       return {
         success: false,
@@ -32,7 +24,6 @@ export const addNewProduct = async (formData) => {
 
     return { success: true, data };
   } catch (e) {
-    console.log("error in services/product", e);
     return { success: false, message: e.message };
   }
 };

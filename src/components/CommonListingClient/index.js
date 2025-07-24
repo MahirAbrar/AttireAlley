@@ -50,7 +50,6 @@ const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
     } else {
       toast.error(res.message || "Error adding item to cart");
     }
-    console.log("res is ", res);
     setLoading(false);
   }
 

@@ -15,12 +15,10 @@ const connectToDB = async () => {
   // -------------------------------------
 
   if (FORCE_GOOGLE_DNS) {
-    console.log("Set DNS to Google DNS");
     // Attempt to set DNS servers for this Node.js process
     try {
       dns.setServers(['8.8.8.8', '8.8.4.4']);
-      console.log('Attempted to set DNS servers to Google DNS for this process.');
-    } catch (err) {
+      } catch (err) {
       console.error('Error setting DNS servers:', err);
       // Continue regardless, maybe it works without it
     }
@@ -31,17 +29,13 @@ const connectToDB = async () => {
     mongoose.connection.readyState === 1 ||
     mongoose.connection.readyState === 2
   ) {
-    console.log("Already connected or connecting to MongoDB Database");
     return;
   }
 
   const connectionUrl = `mongodb+srv://${user}:${pass}@cluster0.c6uaqdr.mongodb.net/`;
-  console.log("Connecting to MongoDB Database...");
-
   try {
     await mongoose.connect(connectionUrl, configOptions);
-    console.log("Successfully connected to MongoDB Database");
-  } catch (error) {
+    } catch (error) {
     console.error("Error connecting to MongoDB Database:", {
       message: error.message,
       code: error.code,
