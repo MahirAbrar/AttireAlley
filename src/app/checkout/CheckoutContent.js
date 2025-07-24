@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { getAddresses } from "../../services/address";
+import { getAllAddresses } from "../../services/address";
 import { getCartItems } from "../../services/getCartItems";
 import { GlobalContext } from "@/context/index";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -56,7 +56,7 @@ const CheckoutContent = () => {
     if (!user?._id) return;
     setAddressLoading(true);
     try {
-      const response = await getAddresses(user._id);
+      const response = await getAllAddresses(user._id);
       if (response.success && response.data) {
         setAddresses(response.data);
         if (response.data.length === 1) {
