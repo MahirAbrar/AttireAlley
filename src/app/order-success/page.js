@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { GlobalContext } from "@/context/index";
-import { useContext } from "react";
 import { clearCart } from "@/services/clearCart";
 
 const OrderSuccess = () => {

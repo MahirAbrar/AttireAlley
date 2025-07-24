@@ -1,10 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import AdminCommonListing from "@/components/CommonListingAdmin";
 import { getProducts } from "@/services/getProducts";
 import { useRouter } from "next/navigation";
 import LoaderBig from "@/components/LoaderBig";
-import { useContext } from "react";
 import { GlobalContext } from "@/context/index";
 import { deleteProduct } from "@/services/deleteProduct";
 import ConfirmationModal from "@/components/ConfirmationModal";

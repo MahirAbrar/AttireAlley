@@ -1,16 +1,14 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { addToCart } from "@/services/addToCart";
 import { GlobalContext } from "@/context";
 import { toast } from "react-toastify";
-import { useContext } from "react";
 import { getCartItems } from "@/services/getCartItems";
 import Loader from "../Loader";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 
-const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
+const ClientCommonListing = ({ product, viewMode = "grid" }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
@@ -19,7 +17,7 @@ const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
   const [loading, setLoading] = useState(false);
 
   let redirectLink = "";
-  if (pathname == "/products") {
+  if (pathname === "/products") {
     redirectLink = `products/${product._id}`;
   } else {
     redirectLink = `${product._id}`;
@@ -64,9 +62,16 @@ const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
   if (viewMode === "list") {
     return (
       <div className="flex w-full items-center gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-md transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
-        <figure onClick={() => router.push(redirectLink)} className="cursor-pointer">
+        <figure
+          onClick={() => router.push(redirectLink)}
+          className="cursor-pointer"
+        >
           <Image
-            src={Array.isArray(product.imageURL) ? product.imageURL[0] : product.imageURL}
+            src={
+              Array.isArray(product.imageURL)
+                ? product.imageURL[0]
+                : product.imageURL
+            }
             alt={product.name}
             width={150}
             height={150}
@@ -91,7 +96,9 @@ const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
             <div className="text-right">
               {product.onSale === "Yes" ? (
                 <div>
-                  <p className="text-sm text-gray-500 line-through">${product.price}</p>
+                  <p className="text-sm text-gray-500 line-through">
+                    ${product.price}
+                  </p>
                   <p className="text-xl font-bold text-red-600">
                     ${product.price - product.priceDrop}
                   </p>
@@ -127,11 +134,15 @@ const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
 
   // Grid view (default)
   return (
-    <div className="mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col shadow-xl hover:shadow-blue-500/30 border-b border-b-primary hover:ring-primary transition duration-500 ease-in-out hover:scale-105 partial-left-border">
+    <div className="partial-left-border mx-3 my-4 flex min-w-[360px] max-w-sm transform flex-col border-b border-b-primary shadow-xl transition duration-500 ease-in-out hover:scale-105 hover:shadow-blue-500/30 hover:ring-primary">
       <div className="middle-line"></div>
       <figure onClick={() => router.push(redirectLink)}>
         <Image
-          src={Array.isArray(product.imageURL) ? product.imageURL[0] : product.imageURL}
+          src={
+            Array.isArray(product.imageURL)
+              ? product.imageURL[0]
+              : product.imageURL
+          }
           alt={product.name}
           width={500}
           height={240}
@@ -142,7 +153,7 @@ const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
       <div className="card-body flex-grow">
         <h2 className="card-title">
           {product.name}
-          {product.onSale == "Yes" ? (
+          {product.onSale === "Yes" ? (
             <div className="badge badge-secondary">Sale</div>
           ) : (
             ""
@@ -161,7 +172,7 @@ const ClientCommonListing = ({ product, params, viewMode = "grid" }) => {
             </span>
           )}
         </p>
-        {product.onSale == "Yes" ? (
+        {product.onSale === "Yes" ? (
           <div className="flex items-center">
             <strike>
               <h3 className="mr-2">{product.price} AUD </h3>

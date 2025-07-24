@@ -1,11 +1,8 @@
 "use client";
 
-import React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { GlobalContext } from "@/context";
-import { useContext } from "react";
 import {
-  updateAddress,
   deleteAddress,
   addAddress,
   getAllAddresses,
@@ -31,15 +28,16 @@ const Account = () => {
 
   useEffect(() => {
     // check if user exists
-    let userExist = user ? true : false;
+    const userExist = user ? true : false;
     if (userExist) {
       fetchAddresses(user._id);
       setFormData((prevFormData) => ({ ...prevFormData, userID: user._id }));
     }
   }, [user, fetchAddresses]);
 
-  const updateAddressHandler = (address) => {
-    };
+  const updateAddressHandler = () => {
+    // TODO: Implement address update functionality
+  };
 
   const deleteAddressHandler = (address) => {
     setDeleteLoading((prevState) => ({ ...prevState, [address._id]: true }));
@@ -52,7 +50,7 @@ const Account = () => {
           [address._id]: false,
         }));
       })
-      .catch((e) => {
+      .catch((_e) => {
         toast.error("Error deleting address");
         setDeleteLoading((prevState) => ({
           ...prevState,

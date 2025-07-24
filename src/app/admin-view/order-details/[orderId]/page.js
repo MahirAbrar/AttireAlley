@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { GlobalContext } from "@/context/index";
 import { useRouter } from "next/navigation";
 import LoaderBig from "@/components/LoaderBig";
@@ -16,17 +16,7 @@ const OrderDetails = ({ params }) => {
   const [statusNote, setStatusNote] = useState("");
   const [showTrackingInput, setShowTrackingInput] = useState(false);
 
-  useEffect(() => {
-    if (isAuthUser !== null) {
-      if (!isAuthUser || user?.role !== "admin") {
-        router.push("/some-other-route");
-      } else {
-        fetchOrderDetails();
-      }
-    }
-  }, [isAuthUser, user]);
-
-  const fetchOrderDetails = async () => {
+  const fetchOrderDetails = useCallback(async () => {
     try {
       const response = await getOrderDetails(params.orderId);
       if (response?.success) {
@@ -37,7 +27,17 @@ const OrderDetails = ({ params }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.orderId]);
+
+  useEffect(() => {
+    if (isAuthUser !== null) {
+      if (!isAuthUser || user?.role !== "admin") {
+        router.push("/some-other-route");
+      } else {
+        fetchOrderDetails();
+      }
+    }
+  }, [isAuthUser, user, router, fetchOrderDetails]);
 
   const handleStatusUpdate = async (newStatus) => {
     try {

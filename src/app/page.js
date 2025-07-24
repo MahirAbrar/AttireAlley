@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import LoaderBig from "@/components/LoaderBig";
 import Image from "next/image";
@@ -9,7 +9,6 @@ import NeonButton from "@/components/NeonButton";
 import { gsap } from "gsap";
 import { Observer } from "gsap/Observer";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// ScrollToPlugin import removed - will use custom implementation
 import ImprovedAnimatedSection from "@/components/ImprovedAnimatedSection";
 import InteractiveStyleSection from "@/components/InteractiveStyleSection";
 
@@ -24,7 +23,6 @@ const AnimatedText = ({
   className,
   delay = 0,
   stagger = 0.01,
-  wordStagger = 0.1,
   as = "h1",
   onComplete = null,
 }) => {
@@ -113,7 +111,7 @@ export default function Home() {
     );
   }, []);
 
-  const images = [
+  const images = useMemo(() => [
     {
       src: "/landingpage/seconddiv1.jpg",
       alt: "Army Girl",
@@ -126,7 +124,7 @@ export default function Home() {
       src: "/landingpage/seconddiv3.jpg",
       alt: "Grok Collection",
     },
-  ];
+  ], []);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % images.length);
@@ -227,17 +225,14 @@ export default function Home() {
     }, 3000);
 
     // Add GSAP Observer to track scroll direction
-    let lastY = window.scrollY;
     const scrollObserver = Observer.create({
       type: "wheel,touch,scroll,pointer",
       wheelSpeed: -1,
       onUp: () => {
-        const currentY = window.scrollY;
-        lastY = currentY;
+        // Scroll direction tracking handled by observer
       },
       onDown: () => {
-        const currentY = window.scrollY;
-        lastY = currentY;
+        // Scroll direction tracking handled by observer
       },
       tolerance: 10,
     });

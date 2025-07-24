@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { gsap } from "gsap";
 
 const EnhancedHeroSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -15,29 +14,29 @@ const EnhancedHeroSection = () => {
       subtitle: "Light & Breezy",
       image: "/landingpage/seconddiv1.jpg",
       color: "#FF006E",
-      link: "/products/women"
+      link: "/products/women",
     },
     {
       title: "Urban Edge",
       subtitle: "Street Style",
       image: "/landingpage/seconddiv2.jpg",
       color: "#00D9FF",
-      link: "/products/men"
+      link: "/products/men",
     },
     {
       title: "Kid's World",
       subtitle: "Fun & Colorful",
       image: "/landingpage/seconddiv3.webp",
       color: "#FFE66D",
-      link: "/products/kids"
-    }
+      link: "/products/kids",
+    },
   ];
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100
+        y: (e.clientY / window.innerHeight) * 100,
       });
     };
 
@@ -55,10 +54,10 @@ const EnhancedHeroSection = () => {
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-background via-white to-secondary/10 dark:from-backgroundDark dark:via-gray-900 dark:to-secondary/5">
       {/* Dynamic gradient background that follows mouse */}
-      <div 
+      <div
         className="absolute inset-0 opacity-30"
         style={{
-          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, ${collections[activeIndex].color}40 0%, transparent 50%)`
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, ${collections[activeIndex].color}40 0%, transparent 50%)`,
         }}
       />
 
@@ -102,7 +101,9 @@ const EnhancedHeroSection = () => {
                   <h3 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white">
                     {collection.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300">{collection.subtitle}</p>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {collection.subtitle}
+                  </p>
                 </div>
                 <div
                   className="absolute inset-0 opacity-20 transition-opacity group-hover:opacity-30"
@@ -120,8 +121,8 @@ const EnhancedHeroSection = () => {
                   key={index}
                   className={`absolute inset-0 transition-all duration-700 ${
                     activeIndex === index
-                      ? "opacity-100 scale-100"
-                      : "opacity-0 scale-110"
+                      ? "scale-100 opacity-100"
+                      : "scale-110 opacity-0"
                   }`}
                 >
                   <Image
@@ -170,9 +171,13 @@ const EnhancedHeroSection = () => {
         {/* Feature highlights */}
         <div className="grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
           {[
-            { icon: "✨", title: "Premium Quality", desc: "Hand-picked materials" },
+            {
+              icon: "✨",
+              title: "Premium Quality",
+              desc: "Hand-picked materials",
+            },
             { icon: "🚚", title: "Free Shipping", desc: "On orders over $50" },
-            { icon: "♻️", title: "Sustainable", desc: "Eco-friendly fashion" }
+            { icon: "♻️", title: "Sustainable", desc: "Eco-friendly fashion" },
           ].map((feature, index) => (
             <div
               key={index}

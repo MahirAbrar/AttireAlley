@@ -5,7 +5,7 @@ import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
 
-async function handler(req, res, next) {
+async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({
       success: false,

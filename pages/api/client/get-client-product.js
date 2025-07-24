@@ -30,22 +30,20 @@ async function handler(req, res) {
   try {
     await connectToDB();
 
-    let products;
     let query = {};
 
     if (lowerCaseCategory === "all") {
-        // Fetch all products regardless of category
-        query = {};
+      // Fetch all products regardless of category
+      query = {};
     } else {
-        // Fetch products for the specific category OR 'Everyone'
-        const capitalizedCategory = capitalizeFirstLetter(category);
-        query = {
-            $or: [{ category: capitalizedCategory }, { category: "Everyone" }],
-        };
+      // Fetch products for the specific category OR 'Everyone'
+      const capitalizedCategory = capitalizeFirstLetter(category);
+      query = {
+        $or: [{ category: capitalizedCategory }, { category: "Everyone" }],
+      };
     }
-    
-    products = await Product.find(query);
 
+    const products = await Product.find(query);
 
     if (!products || products.length === 0) {
       // No products found

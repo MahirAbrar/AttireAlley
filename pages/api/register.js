@@ -20,12 +20,12 @@ async function registerHandler(req, res) {
   await connectToDB();
   const { name, email, password, role } = req.body;
   //validate the schema
-  let correctName = name
+  const correctName = name
     .split(" ")
     .map((word) => word[0].toUpperCase() + word.slice(1))
     .join(" ");
 
-  let correctEmail = email.toLowerCase();
+  const correctEmail = email.toLowerCase();
 
   const { error } = schema.validate({ name, email, password, role });
 

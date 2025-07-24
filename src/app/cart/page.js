@@ -1,16 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { getCartItems } from "../../services/getCartItems";
 import { GlobalContext } from "@/context/index";
-import { useContext } from "react";
 import { useRouter } from "next/navigation";
 import CartItemCard from "@/components/CartItem";
 import { deleteCartItem } from "@/services/deleteCartItem";
 import NeonButton from "@/components/NeonButton";
 
 const Cart = () => {
-  const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
-    useContext(GlobalContext);
+  const { isAuthUser, user, triggerNavbarUpdate } = useContext(GlobalContext);
   const [cartItems, setCartItems] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const router = useRouter();
@@ -18,15 +16,9 @@ const Cart = () => {
   const handleCheckout = () => {
     router.push("/checkout");
   };
-  useEffect(() => {
-    if (isAuthUser && user) {
-      fetchUserCartItems();
-    } else {
-      // toast.error("You need to be logged in to view this page");
-    }
-  }, [user, isAuthUser]);
 
-  const fetchUserCartItems = async () => {
+  const fetchUserCartItems = useCallback(async () => {
+    if (!user?._id) return;
     try {
       const response = await getCartItems(user._id);
       setCartItems(response.data);
@@ -41,7 +33,15 @@ const Cart = () => {
       console.error("Error fetching cart items:", error);
       // Handle error if needed
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (isAuthUser && user) {
+      fetchUserCartItems();
+    } else {
+      // toast.error("You need to be logged in to view this page");
+    }
+  }, [user, isAuthUser, fetchUserCartItems]);
 
   const handleDelete = (item) => {
     deleteCartItem(user._id, item.productID._id)

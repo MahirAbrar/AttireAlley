@@ -21,7 +21,7 @@ const AdminView = () => {
         fetchOrders();
       }
     }
-  }, [isAuthUser, user]);
+  }, [isAuthUser, user, router]);
 
   const fetchOrders = async () => {
     try {

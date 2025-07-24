@@ -26,7 +26,7 @@ export default async function handler(req, res) {
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   
-  console.log("Webhook called, secret exists:", !!webhookSecret);
+  // console.log("Webhook called, secret exists:", !!webhookSecret);
   
   if (!webhookSecret) {
     console.error("STRIPE_WEBHOOK_SECRET is not set in environment variables!");
@@ -65,8 +65,8 @@ export default async function handler(req, res) {
       case "checkout.session.completed": {
         const session = event.data.object;
         
-        console.log("Checkout session completed:", session.id);
-        console.log("Session metadata:", session.metadata);
+        // console.log("Checkout session completed:", session.id);
+        // console.log("Session metadata:", session.metadata);
         
         // Extract user ID and order ID from metadata
         const userId = session.metadata?.userId;
@@ -108,14 +108,14 @@ export default async function handler(req, res) {
           
           await order.save();
 
-          console.log(`Order ${order._id} marked as paid`);
+          // console.log(`Order ${order._id} marked as paid`);
 
           // Clear user's cart after successful payment
           const user = await User.findById(userId);
           if (user) {
             user.cart = [];
             await user.save();
-            console.log(`Cart cleared for user ${userId}`);
+            // console.log(`Cart cleared for user ${userId}`);
           }
         } else {
           console.error(`No unpaid order found for user ${userId}`);
@@ -131,7 +131,7 @@ export default async function handler(req, res) {
       }
 
       default:
-        console.log(`Unhandled event type ${event.type}`);
+        // console.log(`Unhandled event type ${event.type}`);
     }
 
     return res.status(200).json({

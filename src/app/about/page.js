@@ -13,8 +13,6 @@ import {
   ShieldCheckIcon,
   ClipboardDocumentCheckIcon,
   CheckCircleIcon,
-  CommandLineIcon,
-  CpuChipIcon,
   CircleStackIcon,
   RocketLaunchIcon,
 } from "@heroicons/react/24/outline";

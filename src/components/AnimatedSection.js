@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -15,7 +15,7 @@ const AnimatedSection = () => {
   const imageRefs = useRef([]);
   const [masonryLayout, setMasonryLayout] = useState([]);
 
-  const images = [
+  const images = useMemo(() => [
     {
       src: "/landingpage/coverpageman3.webp",
       alt: "Fashion model 1",
@@ -46,9 +46,9 @@ const AnimatedSection = () => {
       alt: "Fashion model 6",
       height: 320,
     },
-  ];
+  ], []);
 
-  const calculateMasonryLayout = () => {
+  const calculateMasonryLayout = useCallback(() => {
     if (!containerRef.current) return;
 
     const containerWidth = containerRef.current.offsetWidth;
@@ -75,7 +75,7 @@ const AnimatedSection = () => {
     });
 
     setMasonryLayout(layout);
-  };
+  }, [images]);
 
   useEffect(() => {
     calculateMasonryLayout();
@@ -86,7 +86,7 @@ const AnimatedSection = () => {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [calculateMasonryLayout]);
 
   useEffect(() => {
     if (masonryLayout.length === 0) return;

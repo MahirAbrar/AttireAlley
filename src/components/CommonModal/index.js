@@ -16,14 +16,14 @@ export default function CommonModal({
   adminNavOptions,
   isAdminView,
 }) {
-  let handleClose = () => {
+  const handleClose = () => {
     setShow(false);
     checkBoxRef.current.checked = false;
   };
 
-  let router = useRouter();
+  const router = useRouter();
 
-  let mainContent = isAdminView ? adminNavOptions : navOptions;
+  const mainContent = isAdminView ? adminNavOptions : navOptions;
   return (
     // show is a headless ui attribute to show or not show
     <Transition.Root show={show} as={Fragment}>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { GlobalContext } from "@/context/index";
 import { useRouter } from "next/navigation";
 import { getOrderDetails } from "@/services/order";
@@ -14,15 +14,7 @@ const OrderDetailsPage = ({ params }) => {
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState(null);
 
-  useEffect(() => {
-    if (isAuthUser === false) {
-      router.push("/login");
-    } else if (isAuthUser && user && params.orderId) {
-      fetchOrderDetails();
-    }
-  }, [isAuthUser, user, params.orderId]);
-
-  const fetchOrderDetails = async () => {
+  const fetchOrderDetails = useCallback(async () => {
     try {
       setLoading(true);
       const response = await getOrderDetails(params.orderId);
@@ -36,7 +28,15 @@ const OrderDetailsPage = ({ params }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.orderId]);
+
+  useEffect(() => {
+    if (isAuthUser === false) {
+      router.push("/login");
+    } else if (isAuthUser && user && params.orderId) {
+      fetchOrderDetails();
+    }
+  }, [isAuthUser, user, params.orderId, router, fetchOrderDetails]);
 
   const getStatusBadgeColor = (status) => {
     switch (status) {

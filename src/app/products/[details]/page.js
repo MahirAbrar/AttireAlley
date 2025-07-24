@@ -1,17 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { getProductDetails } from "@/services/getProductDetails";
 import { toast } from "react-toastify";
 import Loader from "@/components/Loader";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from 'next/image';
-
 import { getCartItems } from "@/services/getCartItems";
-
 import { GlobalContext } from "@/context";
 import { addToCart } from "@/services/addToCart";
-import { useContext } from "react";
 import LoaderBig from "@/components/LoaderBig";
 
 const Page = ({ params }) => {
@@ -22,13 +19,9 @@ const Page = ({ params }) => {
   const { isAuthUser, user, setCartItemsCount, triggerNavbarUpdate } =
     useContext(GlobalContext);
 
-  useEffect(() => {
-    setLoading(true);
-    fetchProductDetails();
-  }, [params.details]); // Ensure this is dependent on `params.details` if it's supposed to update on change
-
   // Fetch the product details
-  const fetchProductDetails = async () => {
+  const fetchProductDetails = useCallback(async () => {
+    setLoading(true);
     const response = await getProductDetails(params.details);
     if (response.success) {
       setProductDetails(response.data.data);
@@ -36,7 +29,11 @@ const Page = ({ params }) => {
       toast.error("Error fetching product details");
     }
     setLoading(false);
-  };
+  }, [params.details]);
+
+  useEffect(() => {
+    fetchProductDetails();
+  }, [fetchProductDetails]);
 
   async function addItemToCart(product) {
     setLoadingCart(true);
@@ -117,7 +114,7 @@ const Page = ({ params }) => {
               <FontAwesomeIcon icon={faShoppingCart} />
               Add to cart {loadingCart && <Loader />}
             </button>
-            {productDetails.onSale == "Yes" ? (
+            {productDetails.onSale === "Yes" ? (
               <>
                 <div className="flex items-center">
                   <strike>

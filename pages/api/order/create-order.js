@@ -1,7 +1,6 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Order from "@/models/order";
-import User from "@/models/user";
 import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +19,6 @@ async function handler(req, res) {
 
     if (isAuthUser) {
       const data = req.body;
-      const { user } = data;
 
       const saveNewOrder = await Order.create({
         user: data.user,

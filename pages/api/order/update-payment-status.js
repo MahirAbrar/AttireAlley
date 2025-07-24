@@ -41,7 +41,7 @@ async function handler(req, res) {
     }).sort({ createdAt: -1 });
 
     if (!order) {
-      console.log("No unpaid order found for user:", userId);
+      // console.log("No unpaid order found for user:", userId);
       return res.status(404).json({
         success: false,
         message: "No unpaid order found",
@@ -67,14 +67,14 @@ async function handler(req, res) {
 
     await order.save();
 
-    console.log(`Order ${order._id} marked as paid via checkout redirect`);
+    // console.log(`Order ${order._id} marked as paid via checkout redirect`);
 
     // Clear user's cart
     const userDoc = await User.findById(userId);
     if (userDoc) {
       userDoc.cart = [];
       await userDoc.save();
-      console.log(`Cart cleared for user ${userId}`);
+      // console.log(`Cart cleared for user ${userId}`);
     }
 
     return res.status(200).json({

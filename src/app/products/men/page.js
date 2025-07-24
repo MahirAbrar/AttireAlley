@@ -1,7 +1,6 @@
 "use client";
-import React from "react";
-import { getClientProducts } from "@/services/getClientProducts";
 import { useState, useEffect } from "react";
+import { getClientProducts } from "@/services/getClientProducts";
 import ClientCommonListing from "@/components/CommonListingClient";
 import { toast } from "react-toastify";
 import LoaderBig from "@/components/LoaderBig";
@@ -90,7 +89,7 @@ const Men = () => {
             <ClientCommonListing key={product._id} product={product} />
           ))}
 
-        {currentProducts.length == 0 && (
+        {currentProducts.length === 0 && (
           <div className="flex items-center justify-center">
             <div className="rounded-lg bg-gray-100 p-8 text-center shadow-md dark:bg-gray-800">
               <h1 className="mb-2 text-2xl font-bold text-primary dark:text-primaryDark">
@@ -103,7 +102,7 @@ const Men = () => {
           </div>
         )}
       </div>
-      {numberOfPages == currentPage && (
+      {numberOfPages === currentPage && (
         <div className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-4 text-center dark:border-gray-600 dark:bg-gray-700">
           <h1 className="text-xl font-semibold text-gray-700 dark:text-gray-200">
             No more products available

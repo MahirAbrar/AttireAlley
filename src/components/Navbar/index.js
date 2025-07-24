@@ -6,14 +6,11 @@ import { useContext, useRef, useCallback, useEffect, useState } from "react";
 import CommonModal from "../CommonModal";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { getCartItems } from "@/services/getCartItems";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 import DarkModeToggle from "../DarkModeToggle";
-import NeonButton from "../NeonButton";
 import "@/styles/navbar.css";
-import { clearConfigCache } from "prettier";
 
 function Navbar() {
   const {

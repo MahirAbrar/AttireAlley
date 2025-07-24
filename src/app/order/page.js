@@ -1,7 +1,6 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GlobalContext } from "@/context/index";
-import { useContext } from "react";
 import { getAllOrdersForUser } from "../../services/order";
 import Loader from "@/components/Loader";
 import Image from "next/image";

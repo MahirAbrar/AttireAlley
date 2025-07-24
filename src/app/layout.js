@@ -1,12 +1,9 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import GlobalState from "../context";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Attire Alley: Find your fit",

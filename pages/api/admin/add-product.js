@@ -1,25 +1,11 @@
 import connectToDB from "@/database";
 import Product from "@/models/products";
 import AuthUser from "@/middleware/AuthUser";
-import Joi from "joi";
 import { withApiMiddleware } from "@/middleware/ApiMiddleware";
 
 export const dynamic = "force-dynamic";
 
-const addNewProductSchema = Joi.object({
-  user: Joi.string().required(),
-  name: Joi.string().required(),
-  description: Joi.string().required(),
-  price: Joi.number().required(),
-  category: Joi.string().required(),
-  sizes: Joi.array().required(),
-  deliveryInfo: Joi.string().required(),
-  onSale: Joi.string().required(),
-  imageURL: Joi.array().required(),
-  priceDrop: Joi.number().required(),
-});
-
-async function handler(req, res, next) {
+async function handler(req, res) {
   // todo
   // const { error } = addNewProductSchema.validate(req.body);
 
@@ -50,12 +36,12 @@ async function handler(req, res, next) {
     } else if (user.id !== req.query.userID) {
       return res.status(403).json({
         success: false,
-        message: "Forbidden, you are not allowed to perform this action from this account.",
+        message:
+          "Forbidden, you are not allowed to perform this action from this account.",
       });
     }
 
     if (user.role === "admin") {
-
       const data = req.body;
 
       try {

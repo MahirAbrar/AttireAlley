@@ -1,6 +1,5 @@
 export const registerNewUser = async (formData) => {
   try {
-    );
     const response = await fetch("/api/register", {
       method: "POST",
       headers: {

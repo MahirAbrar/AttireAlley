@@ -1,13 +1,12 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/navigation";
 import { GlobalContext } from "@/context/index";
-import { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 const AdminCommonListing = ({ user, onDelete }) => {
-  const { updateItem, setUpdateItem } = useContext(GlobalContext);
+  const { setUpdateItem } = useContext(GlobalContext);
   const router = useRouter();
 
   const handleUpdate = (item) => {

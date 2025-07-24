@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/utils";
 import {
@@ -28,7 +28,6 @@ const UpdateProduct = () => {
     isAuthUser,
     user,
     updateItem,
-    setUpdateItem,
   } = useContext(GlobalContext);
 
   const [imageUploading, setImageUploading] = useState(false);
@@ -86,7 +85,7 @@ const UpdateProduct = () => {
     return new Promise((resolve, reject) => {
       uploadImage.on(
         "state_changed",
-        (snapshot) => {},
+        () => {},
         (error) => {
           reject(error);
         },

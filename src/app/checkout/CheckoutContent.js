@@ -1,9 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { getAllAddresses } from "../../services/address";
+import React, { useState, useEffect, useContext, useCallback } from "react";
+import { getAddresses } from "../../services/address";
 import { getCartItems } from "../../services/getCartItems";
 import { GlobalContext } from "@/context/index";
-import { useContext } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "@/components/Loader";
 import { loadStripe } from "@stripe/stripe-js";
@@ -22,29 +21,66 @@ const CheckoutContent = () => {
 
   const [cartItems, setCartItems] = useState([]);
   const [addresses, setAddresses] = useState([]);
-  const [totalItems, setTotalItems] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [cartLoading, setCartLoading] = useState(false);
   const [addressLoading, setAddressLoading] = useState(false);
+  const [_totalItems, setTotalItems] = useState(0);
+
+  const fetchUserCartItems = useCallback(async () => {
+    if (!user?._id) return;
+    setCartLoading(true);
+    try {
+      const response = await getCartItems(user._id);
+      if (response.success && response.data) {
+        const items = Array.isArray(response.data) ? response.data : [];
+        setCartItems(items);
+        const totalItemCount = items.reduce(
+          (total, item) => total + item.quantity,
+          0,
+        );
+        setTotalItems(totalItemCount);
+      } else {
+        setCartItems([]);
+        setTotalItems(0);
+      }
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+      setCartItems([]);
+      setTotalItems(0);
+    } finally {
+      setCartLoading(false);
+    }
+  }, [user]);
+
+  const fetchUserAddresses = useCallback(async () => {
+    if (!user?._id) return;
+    setAddressLoading(true);
+    try {
+      const response = await getAddresses(user._id);
+      if (response.success && response.data) {
+        setAddresses(response.data);
+        if (response.data.length === 1) {
+          setSelectedAddress(response.data[0]);
+        }
+      } else {
+        setAddresses([]);
+      }
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+      setAddresses([]);
+    } finally {
+      setAddressLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (isAuthUser && user) {
       fetchUserCartItems();
       fetchUserAddresses();
     }
-  }, [user, isAuthUser]);
+  }, [user, isAuthUser, fetchUserCartItems, fetchUserAddresses]);
 
-  useEffect(() => {
-    const status = searchParams.get('status');
-    const sessionId = searchParams.get('session_id');
-    
-    if (status === 'success' && sessionId && user) {
-      // Update the most recent order as paid
-      updateOrderPaymentStatus(sessionId);
-    }
-  }, [searchParams, user]);
-
-  const updateOrderPaymentStatus = async (sessionId) => {
+  const updateOrderPaymentStatus = useCallback(async (sessionId) => {
     try {
       // Find and update the most recent order for this user
       const response = await fetch('/api/order/update-payment-status', {
@@ -69,51 +105,17 @@ const CheckoutContent = () => {
       console.error('Error updating payment status:', error);
       router.push('/order-success?status=success&session_id=' + sessionId);
     }
-  };
+  }, [user, router]);
 
-  const fetchUserCartItems = async () => {
-    setCartLoading(true);
-    try {
-      const response = await getCartItems(user._id);
-      if (response.success && response.data) {
-        const items = Array.isArray(response.data) ? response.data : [];
-        setCartItems(items);
-        const totalItemCount = items.reduce(
-          (total, item) => total + item.quantity,
-          0,
-        );
-        setTotalItems(totalItemCount);
-      } else {
-        setCartItems([]);
-        setTotalItems(0);
-      }
-    } catch (error) {
-      console.error("Error fetching cart items:", error);
-      setCartItems([]);
-      setTotalItems(0);
-    } finally {
-      setCartLoading(false);
+  useEffect(() => {
+    const status = searchParams.get('status');
+    const sessionId = searchParams.get('session_id');
+    
+    if (status === 'success' && sessionId && user) {
+      // Update the most recent order as paid
+      updateOrderPaymentStatus(sessionId);
     }
-  };
-
-  const fetchUserAddresses = async () => {
-    setAddressLoading(true);
-    try {
-      const response = await getAllAddresses(user._id);
-      if (response.success && response.data) {
-        // Ensure we always have an array
-        const addressData = response.data.data || response.data || [];
-        setAddresses(Array.isArray(addressData) ? addressData : []);
-      } else {
-        setAddresses([]);
-      }
-    } catch (error) {
-      console.error("Error fetching addresses:", error);
-      setAddresses([]);
-    } finally {
-      setAddressLoading(false);
-    }
-  };
+  }, [searchParams, user, updateOrderPaymentStatus]);
 
   const handleAddressSelect = (address) => {
     setSelectedAddress(address);
