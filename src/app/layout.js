@@ -4,6 +4,22 @@ import Footer from "../components/Footer";
 import GlobalState from "../context";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
+
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "Attire Alley: Find your fit",
@@ -12,7 +28,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${instrumentSerif.variable} ${jetbrainsMono.variable}`}>
       <body>
         <GlobalState>
           <Navbar />

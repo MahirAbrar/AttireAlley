@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import Link from "next/link";
 import LoaderBig from "@/components/LoaderBig";
 import Image from "next/image";
@@ -35,8 +35,7 @@ const AnimatedText = ({
       // Set initial state
       gsap.set(letters, { opacity: 0, y: 50, rotationX: -90 });
 
-      // Animate in
-      gsap.to(letters, {
+      const tweenConfig = {
         opacity: 1,
         y: 0,
         rotationX: 0,
@@ -44,9 +43,15 @@ const AnimatedText = ({
         delay: delay,
         stagger: stagger,
         ease: "back.out(1.7)",
-        onComplete: letters.length <= 1 ? onComplete : undefined,
-        onCompleteAll: letters.length > 1 ? onComplete : undefined,
-      });
+      };
+      if (onComplete) {
+        if (letters.length <= 1) {
+          tweenConfig.onComplete = onComplete;
+        } else {
+          tweenConfig.onCompleteAll = onComplete;
+        }
+      }
+      gsap.to(letters, tweenConfig);
     }
   }, [delay, stagger, onComplete]);
 
@@ -90,26 +95,6 @@ export default function Home() {
   const thirdSectionRef = useRef(null);
   const imageRefs = useRef([]);
   const sectionsRef = useRef([]);
-
-  // Memoized callback for scroll down animation
-  const handleScrollDownAnimation = useCallback(() => {
-    // Animate scroll down section after paragraph completes
-    gsap.fromTo(
-      ".scroll-down",
-      {
-        opacity: 0,
-        y: 30,
-        scale: 0.8,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1,
-        ease: "elastic.out(1, 0.8)",
-      }
-    );
-  }, []);
 
   const images = useMemo(() => [
     {
@@ -288,76 +273,162 @@ export default function Home() {
   }
 
   return (
-    <main className="-mt-6 w-full">
+    <main className="w-full">
       {/* First Section */}
       <div
         ref={firstSectionRef}
         id="section-1"
-        className="relative h-screen w-full overflow-hidden"
+        className="relative -mt-[80px] w-full bg-paper text-ink dark:bg-backgroundDark dark:text-paper"
       >
-        <div
-          className="absolute inset-0 h-full w-full bg-cover bg-center bg-no-repeat transition-transform duration-1000 ease-out"
-          style={{
-            backgroundImage: "url('/backgroundlanding.png')",
-            maxWidth: "1920px",
-            margin: "0 auto",
-            left: "0",
-            right: "0",
-          }}
-        />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-        <div className="relative z-10 flex h-full items-center justify-center px-4">
-          <div className="mx-auto max-w-4xl text-center">
-            <div
-              onMouseEnter={() => {
-                const bg = document.querySelector(".bg-cover");
-                if (bg) bg.style.transform = "scale(1.03)";
-              }}
-              onMouseLeave={() => {
-                const bg = document.querySelector(".bg-cover");
-                if (bg) bg.style.transform = "scale(1)";
-              }}
-            >
+        {/* Mobile layout */}
+        <div className="lg:hidden">
+          <div className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-900">
+            <Image
+              src="/backgroundlanding.png"
+              alt="SS26 Look 04 cover"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/55 to-transparent" />
+          </div>
+
+          <div className="bg-paper px-6 pb-12 pt-10 text-ink dark:bg-backgroundDark dark:text-paper">
+            <span className="label-mono inline-flex items-center gap-2 text-ink/60 dark:text-paper/60">
+              <span
+                className="inline-block h-[8px] w-[8px] rounded-full bg-primary"
+                style={{ boxShadow: "0 0 0 3px rgba(87,167,168,.18), 0 0 10px rgba(87,167,168,.7)" }}
+                aria-hidden="true"
+              />
+              SS26 — Vol. 04
+            </span>
+
+            <div className="mt-4 font-display leading-[0.95] tracking-[-0.02em]" style={{ fontSize: "clamp(40px, 12vw, 72px)" }}>
+              <div className="flex flex-wrap items-baseline">
+                <AnimatedText
+                  text="Style is a"
+                  className="mr-[0.25em] inline-block"
+                  delay={0.1}
+                  stagger={0.01}
+                  as="span"
+                />
+                <AnimatedText
+                  text="way"
+                  className="inline-block italic text-primary [text-shadow:0_0_28px_rgba(87,167,168,0.5)]"
+                  delay={0.4}
+                  stagger={0.01}
+                  as="span"
+                />
+              </div>
               <AnimatedText
-                text='"Style is a way to say who you are without having to speak"'
-                className="mb-6 text-5xl font-bold text-white drop-shadow-lg md:text-7xl"
-                delay={0.3}
+                text="to say who you are."
+                className="block"
+                delay={0.7}
                 stagger={0.01}
                 as="h1"
               />
-              <AnimatedText
-                text="At Attire Alley, we believe in making fashion speak volumes about your unique personality"
-                className="text-xl text-white/90 drop-shadow-md md:text-2xl"
-                delay={0.7}
-                stagger={0.005}
-                as="p"
-                onComplete={handleScrollDownAnimation}
-              />
+            </div>
+
+            <div className="mt-8 flex flex-col items-start gap-4">
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[12px] uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:bg-primary hover:text-white dark:bg-paper dark:text-ink"
+              >
+                Shop the edit <span aria-hidden="true">→</span>
+              </Link>
+              <Link
+                href="#"
+                className="relative text-[12px] uppercase tracking-[0.18em] font-medium text-ink/80 after:absolute after:left-0 after:bottom-[-4px] after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 dark:text-paper/80"
+              >
+                View lookbook
+              </Link>
+            </div>
+          </div>
+
+          <div className="border-t border-ink/15 bg-ink/[0.03] dark:border-paper/15 dark:bg-paper/[0.03]">
+            <div className="flex items-center gap-6 overflow-hidden whitespace-nowrap px-6 py-3.5 label-mono text-ink/65 dark:text-paper/65">
+              <span>Finished, small runs</span>
+              <span aria-hidden="true" className="opacity-40">×</span>
+              <span>Returns within 30 days</span>
+              <span aria-hidden="true" className="opacity-40">×</span>
+              <span className="hidden sm:inline">AI Stylist Beta — try it</span>
+              <span aria-hidden="true" className="hidden opacity-40 sm:inline">×</span>
+              <span className="hidden md:inline">Members get 10% off</span>
             </div>
           </div>
         </div>
-        <div
-          className="scroll-down absolute bottom-8 left-1/2 flex -translate-x-1/2 transform flex-col items-center gap-2"
-          style={{ opacity: 0 }}
-        >
-          <p className="text-lg text-white drop-shadow-md">
-            Scroll down to explore
-          </p>
-          <div className="animate-bounce">
-            <svg
-              className="h-6 w-6 text-white drop-shadow-md"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
+
+        {/* Desktop layout */}
+        <div className="relative hidden h-[calc(100vh+80px)] min-h-[720px] w-full overflow-hidden bg-neutral-900 text-white lg:flex lg:flex-col">
+          <Image
+            src="/backgroundlanding.png"
+            alt="SS26 Look 04 cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-black/70 via-black/25 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+          <div className="absolute inset-0 z-10 flex flex-col">
+            <div className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col justify-end px-6 pb-10 lg:px-10 lg:pb-14">
+              <span className="label-mono text-white/75">SS26 — Vol. 04</span>
+
+              <div className="mt-4 font-display leading-[0.95] tracking-[-0.02em] text-white" style={{ fontSize: "clamp(44px, 9vw, 140px)" }}>
+                <div className="flex flex-wrap items-baseline">
+                  <AnimatedText
+                    text="Style is a"
+                    className="mr-[0.25em] inline-block"
+                    delay={0.1}
+                    stagger={0.01}
+                    as="span"
+                  />
+                  <AnimatedText
+                    text="way"
+                    className="inline-block italic text-primary [text-shadow:0_0_28px_rgba(87,167,168,0.5)]"
+                    delay={0.4}
+                    stagger={0.01}
+                    as="span"
+                  />
+                </div>
+                <AnimatedText
+                  text="to say who you are."
+                  className="block"
+                  delay={0.7}
+                  stagger={0.01}
+                  as="h1"
+                />
+              </div>
+
+              <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <Link
+                  href="/products"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-[12px] uppercase tracking-[0.18em] text-neutral-900 transition-colors duration-300 hover:bg-primary hover:text-white"
+                >
+                  Shop the edit <span aria-hidden="true">→</span>
+                </Link>
+                <Link
+                  href="#"
+                  className="relative text-[12px] uppercase tracking-[0.18em] font-medium text-white after:absolute after:left-0 after:bottom-[-4px] after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100"
+                >
+                  View lookbook
+                </Link>
+              </div>
+            </div>
+
+            <div className="border-t border-white/15 bg-black/35 backdrop-blur-sm">
+              <div className="mx-auto flex max-w-[1440px] items-center gap-6 overflow-hidden whitespace-nowrap px-6 py-3.5 label-mono text-white/80 lg:px-10">
+                <span>Finished, small runs</span>
+                <span aria-hidden="true" className="opacity-40">×</span>
+                <span>Returns within 30 days</span>
+                <span aria-hidden="true" className="opacity-40">×</span>
+                <span className="hidden sm:inline">AI Stylist Beta — try it</span>
+                <span aria-hidden="true" className="hidden opacity-40 sm:inline">×</span>
+                <span className="hidden md:inline">Members get 10% off</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

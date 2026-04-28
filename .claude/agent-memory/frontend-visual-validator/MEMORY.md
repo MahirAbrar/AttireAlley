@@ -1,0 +1,1 @@
+- [Editorial Redesign — Landing Page & Navbar](project_editorial_redesign.md) — Key visual facts about the April 2026 editorial redesign: fonts, scroll transitions, hero grid, known GSAP warnings

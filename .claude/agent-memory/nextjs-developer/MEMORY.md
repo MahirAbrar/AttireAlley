@@ -1,0 +1,2 @@
+- [Men's Catalog Page Redesign](project_mens_catalog.md) — decisions from men's page redesign: scoped card component, color filter workaround, heading override pattern, new Tailwind colors
+- [Catalog Index Shared Component](project_catalog_index_refactor.md) — CatalogIndex + CategoryProductCard locations, apiCategory casing per route (Women capital W, men/kids lowercase)

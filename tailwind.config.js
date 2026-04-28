@@ -21,6 +21,12 @@ module.exports = {
         background: "#f8fbfc",
         accent: "#ffd166",
         backgroundDark: "#030607",
+        ink: "#0b0d0d",
+        paper: "#f6f4ee",
+      },
+      fontFamily: {
+        display: ["var(--font-display)", "ui-serif", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

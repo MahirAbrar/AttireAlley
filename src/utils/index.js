@@ -1,27 +1,8 @@
 export const navOptions = [
-
-  {
-    id: 2,
-    label: "Products",
-    path: "/products/",
-  },
-  {
-    id: 3,
-    label: "Men",
-    path: "/products/men",
-  },
-  {
-    id: 4,
-    label: "Women",
-    path: "/products/women",
-  },
-  {
-    id: 5,
-    label: "Kids",
-    path: "/products/kids",
-  },
-  { id: 6, label: "About", path: "/about" },
-  { id: 7, label: "AI Match", path: "/aipage" },
+  { id: 1, label: "Women", path: "/products/women" },
+  { id: 2, label: "Men", path: "/products/men" },
+  { id: 3, label: "Kids", path: "/products/kids" },
+  { id: 4, label: "Editorial", path: "/about" },
 ];
 
 export const adminNavOptions = [
